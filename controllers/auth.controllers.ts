@@ -5,10 +5,10 @@ import { generateJWTToken } from '../utils/generateJWTToken'
 import { User } from '../model/user'
 
 export const signup = async (req: Request, res: Response) => {
-	const { username, firstName, email, password } = req.body
+	const { firstName, email, password } = req.body
 
 	try {
-		if (!username || !email || !password || !firstName) {
+		if (!email || !password || !firstName) {
 			res.status(400).json({ message: "All fields are required" })
 			return
 		}
@@ -19,13 +19,11 @@ export const signup = async (req: Request, res: Response) => {
 			return
 		}
 
-
-
 		const hashedPassword = await bcrypt.hash(password, 10)
 		const verificationToken = generateVerificationToken()
 
 		const user = new User({
-			name,
+			firstName,
 			email,
 			password: hashedPassword,
 			verificationToken: verificationToken,
@@ -35,8 +33,8 @@ export const signup = async (req: Request, res: Response) => {
 		await user.save();
 
 		generateJWTToken(res, user._id.toString());
-
-		res.status(201).json({ success: true, message: "User created successfully", user: { ...user, password: undefined } })
+		const userObject = user.toJSON()
+		res.status(201).json({ success: true, message: "User created successfully", user: { ...userObject, password: undefined } })
 		return
 	} catch (error) {
 		res.status(500).json({ success: false, message: error })

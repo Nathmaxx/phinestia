@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-	name: {
+	firstName: {
 		type: String,
 		required: true
 	},
@@ -21,7 +21,15 @@ const userSchema = new mongoose.Schema({
 	resetPasswordToken: String,
 	resetPasswordExpiresAt: Date,
 	verificationToken: String,
-	verificationTokenExpiresAt: Date
+	verificationTokenExpiresAt: Date,
+	lastLogin: {
+		type: Date,
+		default: null
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now()
+	}
 })
 
 export const User = mongoose.model("User", userSchema);
