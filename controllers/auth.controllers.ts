@@ -1,27 +1,45 @@
 import { Request, Response } from 'express'
-import prisma from '../database/prisma'
-
+import bcrypt from "bcrypt"
+import { generateVerificationToken } from '../utils/generateVerificationToken'
+import { generateJWTToken } from '../utils/generateJWTToken'
+import { User } from '../model/user'
 
 export const signup = async (req: Request, res: Response) => {
 	const { username, firstName, email, password } = req.body
 
 	try {
 		if (!username || !email || !password || !firstName) {
-			return res.status(400).json({ message: "All fields are required" })
+			res.status(400).json({ message: "All fields are required" })
+			return
 		}
 
-		const existingUser = await prisma.user.findFirst({
-			where: {
-				OR: [
-					{ email },
-					{ username }
-				]
-			}
-		})
+		const userAlreadyExists = await User.findOne({ email });
+		if (userAlreadyExists) {
+			res.status(400).json({ message: "User already exists" });
+			return
+		}
 
 
+
+		const hashedPassword = await bcrypt.hash(password, 10)
+		const verificationToken = generateVerificationToken()
+
+		const user = new User({
+			name,
+			email,
+			password: hashedPassword,
+			verificationToken: verificationToken,
+			verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+		});
+
+		await user.save();
+
+		generateJWTToken(res, user._id.toString());
+
+		res.status(201).json({ success: true, message: "User created successfully", user: { ...user, password: undefined } })
+		return
 	} catch (error) {
-
+		res.status(500).json({ success: false, message: error })
 	}
 }
 
