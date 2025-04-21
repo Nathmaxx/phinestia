@@ -1,11 +1,21 @@
-import mongoose from "mongoose"
+import mysql from 'mysql2/promise'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
-export const connect = async () => {
+export const db = mysql.createPool({
+	host: process.env.MYSQL_HOST,
+	user: process.env.MYSQL_USR,
+	password: process.env.MYSQL_PWD,
+	database: process.env.MYSQL_DB
+})
+
+export const connectDB = async () => {
 	try {
-		const connection = await mongoose.connect(process.env.MONGO_URI as string)
+		await db.getConnection()
 		console.log("Connected to database")
 	} catch (error) {
-		console.log("Error while connecting to DB : ", error)
+		console.error("Conneciton error : ", error)
+		process.exit(1)
 	}
 }
