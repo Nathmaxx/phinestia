@@ -35,7 +35,7 @@ export const signup = async (req: Request, res: Response) => {
 
 		generateJWTToken(res, user._id.toString());
 
-		sendVerificationEmail(user.email, verificationToken)
+		await sendVerificationEmail(user.email, verificationToken)
 
 		const userObject = user.toJSON()
 		res.status(201).json({ success: true, message: "User created successfully", user: { ...userObject, password: undefined } })
@@ -51,4 +51,32 @@ export const login = (req: Request, res: Response) => {
 
 export const logout = (req: Request, res: Response) => {
 
+}
+
+export const verifyEmail = async (req: Request, res: Response) => {
+	const { code } = req.body
+
+	try {
+		const user = await User.findOne({
+			verificationToken: code,
+			verificationTokenExpiresAt: { $gt: Date.now() }
+		})
+
+		if (!user) {
+			res.status(400).json({ success: false, message: "Invalid or expired" })
+			return
+		}
+
+		user.isVerified = true
+		user.verificationToken = undefined
+		user.verificationTokenExpiresAt = undefined
+
+		await user.save()
+
+		// Possibilité d'envoyer un mail de bienvenue
+
+		res.status(200).json({ success: true, message: 'Email verified successfully' })
+	} catch (error) {
+
+	}
 }
