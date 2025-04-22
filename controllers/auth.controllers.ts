@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import { generateVerificationToken } from '../utils/generateVerificationToken'
 import { generateJWTToken } from '../utils/generateJWTToken'
 import { User } from '../model/user'
+import { sendVerificationEmail } from '../resend/email'
 
 export const signup = async (req: Request, res: Response) => {
 	const { firstName, email, password } = req.body
@@ -33,6 +34,9 @@ export const signup = async (req: Request, res: Response) => {
 		await user.save();
 
 		generateJWTToken(res, user._id.toString());
+
+		sendVerificationEmail(user.email, verificationToken)
+
 		const userObject = user.toJSON()
 		res.status(201).json({ success: true, message: "User created successfully", user: { ...userObject, password: undefined } })
 		return
