@@ -45,8 +45,38 @@ export const signup = async (req: Request, res: Response) => {
 	}
 }
 
-export const login = (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
+	const { email, password } = req.body
+	try {
+		const user = await User.findOne({ email })
 
+		if (!user) {
+			res.status(400).json({ success: false, message: "Invalid credentials" })
+			return
+		}
+
+		const isPasswordValid = await bcrypt.compare(password, user.password)
+		if (!isPasswordValid) {
+			res.status(400).json({ success: false, message: "Invalid credentials" })
+			return
+		}
+
+		if (!user.isVerified) {
+			res.status(400).json({ success: false, message: "Email not verified" })
+			return
+		}
+
+		generateJWTToken(res, user._id.toString())
+
+		res.status(200).json({ success: true, message: "Login successfull" })
+	} catch (error) {
+		console.log("Error logging in : ", error)
+		if (error instanceof Error) {
+			res.status(500).json({ success: false, message: error.message });
+		} else {
+			res.status(500).json({ success: false, message: String(error) });
+		}
+	}
 }
 
 export const logout = (req: Request, res: Response) => {
