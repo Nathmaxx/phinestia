@@ -23,6 +23,8 @@ const Home = () => {
 		e.preventDefault()
 	}
 
+	// Formulaire inscription
+
 	return (
 		<div className="w-full h-screen flex items-center justify-center">
 			<form
