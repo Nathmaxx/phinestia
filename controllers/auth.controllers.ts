@@ -3,8 +3,9 @@ import bcrypt from "bcrypt"
 import { generateVerificationToken } from '../utils/generateVerificationToken'
 import { generateJWTToken } from '../utils/generateJWTToken'
 import { User } from '../model/user'
-import { sendResetPasswordEmail, sendVerificationEmail } from '../resend/email'
+import { sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } from '../resend/email'
 import crypto from 'crypto'
+import { catchError } from '../utils/error'
 
 export const signup = async (req: Request, res: Response) => {
 	const { firstName, email, password } = req.body
@@ -17,7 +18,7 @@ export const signup = async (req: Request, res: Response) => {
 
 		const userAlreadyExists = await User.findOne({ email });
 		if (userAlreadyExists) {
-			res.status(400).json({ message: "User already exists" });
+			res.status(400).json({ success: false, message: "User already exists" });
 			return
 		}
 
@@ -42,7 +43,7 @@ export const signup = async (req: Request, res: Response) => {
 		res.status(201).json({ success: true, message: "User created successfully", user: { ...userObject, password: undefined } })
 		return
 	} catch (error) {
-		res.status(500).json({ success: false, message: error })
+		catchError(res, error)
 	}
 }
 
@@ -67,16 +68,15 @@ export const login = async (req: Request, res: Response) => {
 			return
 		}
 
+		user.lastLogin = new Date(Date.now())
+
+		await user.save()
+
 		generateJWTToken(res, user._id.toString())
 
-		res.status(200).json({ success: true, message: "Login successfull" })
+		res.status(200).json({ success: true, message: "Login successful" })
 	} catch (error) {
-		console.log("Error logging in : ", error)
-		if (error instanceof Error) {
-			res.status(500).json({ success: false, message: error.message });
-		} else {
-			res.status(500).json({ success: false, message: String(error) });
-		}
+		catchError(res, error)
 	}
 }
 
@@ -109,7 +109,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
 		res.status(200).json({ success: true, message: 'Email verified successfully' })
 	} catch (error) {
-		console.error(error)
+		catchError(res, error)
 	}
 }
 
@@ -119,7 +119,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 		const user = await User.findOne({ email })
 
 		if (!user) {
-			res.status(400).json({ sucess: false, message: "User not found" })
+			res.status(400).json({ success: false, message: "User not found" })
 			return
 		}
 
@@ -134,11 +134,51 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
 		res.status(200).json({ success: true, message: "Password reset email sent successfully" })
 	} catch (error) {
-		console.log("Error logging in : ", error)
-		if (error instanceof Error) {
-			res.status(500).json({ success: false, message: error.message });
-		} else {
-			res.status(500).json({ success: false, message: String(error) });
+		catchError(res, error)
+	}
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+	try {
+		const { token } = req.params
+		const { password } = req.body
+
+		const user = await User.findOne({
+			resetPasswordToken: token,
+			resetPasswordExpiresAt: { $gt: Date.now() }
+		})
+
+		if (!user) {
+			res.status(400).json({ success: false, message: "Invalid or expired reset token" })
+			return
 		}
+
+		const hashedPassword = await bcrypt.hash(password, 10)
+		user.password = hashedPassword
+		user.resetPasswordToken = undefined
+		user.resetPasswordExpiresAt = undefined
+
+		await user.save()
+
+		await sendResetSuccessEmail(user.email)
+
+		res.status(200).json({ success: true, message: "Password reset successfully" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
+export const checkAuth = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.userId)
+
+		if (!user) {
+			res.status(400).json({ success: false, message: "" })
+			return
+		}
+
+		res.status(200).json({ success: true, user: { ...user.toObject(), password: undefined } })
+	} catch (error) {
+		catchError(res, error)
 	}
 }

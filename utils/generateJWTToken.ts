@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { Response } from 'express'
+import { catchError } from './error'
 
 export const generateJWTToken = (res: Response, userId: string) => {
 	try {
@@ -16,6 +17,6 @@ export const generateJWTToken = (res: Response, userId: string) => {
 
 		return token
 	} catch (error) {
-		console.error(error)
+		catchError(res, error)
 	}
 }
