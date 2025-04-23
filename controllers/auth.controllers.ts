@@ -3,7 +3,8 @@ import bcrypt from "bcrypt"
 import { generateVerificationToken } from '../utils/generateVerificationToken'
 import { generateJWTToken } from '../utils/generateJWTToken'
 import { User } from '../model/user'
-import { sendVerificationEmail } from '../resend/email'
+import { sendResetPasswordEmail, sendVerificationEmail } from '../resend/email'
+import crypto from 'crypto'
 
 export const signup = async (req: Request, res: Response) => {
 	const { firstName, email, password } = req.body
@@ -28,7 +29,7 @@ export const signup = async (req: Request, res: Response) => {
 			email,
 			password: hashedPassword,
 			verificationToken: verificationToken,
-			verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+			verificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
 		});
 
 		await user.save();
@@ -79,8 +80,9 @@ export const login = async (req: Request, res: Response) => {
 	}
 }
 
-export const logout = (req: Request, res: Response) => {
-
+export const logout = async (_: Request, res: Response) => {
+	res.clearCookie('token')
+	res.status(200).json({ success: true, message: "Logged out successfully" })
 }
 
 export const verifyEmail = async (req: Request, res: Response) => {
@@ -107,6 +109,36 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
 		res.status(200).json({ success: true, message: 'Email verified successfully' })
 	} catch (error) {
+		console.error(error)
+	}
+}
 
+export const forgotPassword = async (req: Request, res: Response) => {
+	const { email } = req.body
+	try {
+		const user = await User.findOne({ email })
+
+		if (!user) {
+			res.status(400).json({ sucess: false, message: "User not found" })
+			return
+		}
+
+		const resetPasswordToken = crypto.randomBytes(32).toString("hex")
+		const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000) // 1h
+
+		user.resetPasswordToken = resetPasswordToken
+		user.resetPasswordExpiresAt = resetPasswordExpiresAt
+
+		await user.save()
+		await sendResetPasswordEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`)
+
+		res.status(200).json({ success: true, message: "Password reset email sent successfully" })
+	} catch (error) {
+		console.log("Error logging in : ", error)
+		if (error instanceof Error) {
+			res.status(500).json({ success: false, message: error.message });
+		} else {
+			res.status(500).json({ success: false, message: String(error) });
+		}
 	}
 }
