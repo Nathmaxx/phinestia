@@ -2,5 +2,11 @@
 
 @theme {
 	--font-bricolage: "Bricolage Grotesque", sans-serif;
-	--font-nunito: "Nunito Sans", sans-serif;
+	--font-gabarito: "Gabarito", sans-serif;
+
+	--color-sky-violet: #946ea1;
+	--color-sky-semiviolet: #d69fc5;
+	--color-sky-dark-violet: #614b79;
+	--color-sky-salmon: #efa8ba;
+	--color-sky-pale-pink: #ecc2cd;
 }

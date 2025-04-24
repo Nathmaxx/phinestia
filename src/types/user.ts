@@ -1,6 +1,7 @@
 
-export type SignInInfos = {
+export type LoginInfos = {
 	email: string
 	password: string
-	firstName: string
-} 
+}
+
+export type SignInInfos = LoginInfos & { firstName: string }
