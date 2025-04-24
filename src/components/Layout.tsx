@@ -6,6 +6,7 @@ const Layout = () => {
 		<div>
 			<nav className="flex gap-5 absolute">
 				<Link to={'/'}>Accueil</Link>
+				<Link to={'/authentification/connexion'}>Login</Link>
 			</nav>
 
 			<main>

@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './components/Layout';
+import Authentication from './pages/Authentication';
 
 function App() {
 
@@ -9,7 +10,11 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Layout />}>
 					<Route index element={<Home />} />
-					{/* <Route path="add-expense" element={<ExpenseFormPage />} /> */}
+					<Route path="authentification">
+						<Route index element={<Navigate to="/authentification/connexion" replace />} />
+						<Route path="connexion" element={<Authentication method="login" />} />
+						<Route path="inscription" element={<Authentication method="signin" />} />
+					</Route>
 
 
 					{/* Route 404 */}

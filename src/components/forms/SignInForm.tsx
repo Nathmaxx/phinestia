@@ -2,7 +2,6 @@ import { useState } from "react"
 import { SignInInfos } from "../../types/user"
 import TextInput from "../Inputs/TextInput"
 import SubmitButton from "../SubmitButton"
-import { MoveRight } from "lucide-react"
 
 type SignInFormProps = {
 	className?: string
@@ -55,15 +54,12 @@ const SignInForm = ({ className, gap = 4 }: SignInFormProps) => {
 			<TextInput
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
-				className={`mb-${gap}`}
 				placeholder="motdepasse123"
+				className={`mb-${gap}`}
 			/>
-			<SubmitButton className="relative flex items-center justify-center group mt-4">
+
+			<SubmitButton className="flex items-center justify-center group mt-4">
 				<span>Valider</span>
-				<MoveRight
-					strokeWidth={1.5}
-					className="absolute right-6 group-hover:translate-x-2 transition duration-300"
-				/>
 			</SubmitButton>
 		</form>
 	)

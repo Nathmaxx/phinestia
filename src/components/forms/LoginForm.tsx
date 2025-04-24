@@ -3,8 +3,12 @@ import SubmitButton from "../SubmitButton"
 import { LoginInfos } from "../../types/user"
 import { useState } from "react"
 
+type LoginFormProps = {
+	className?: string
+	gap?: number
+}
 
-const LoginForm = () => {
+const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
 
 	const [userInfos, setUserInfos] = useState({
 		email: "",
@@ -24,27 +28,29 @@ const LoginForm = () => {
 
 	return (
 		<form
-			className="w-[300px] font-bricolage flex flex-col"
+			className={`w-[300px] font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center font-semibold text-2xl text-violet-800 my-3 select-none">Se connecter</h2>
+			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-gabarito">Se connecter</h2>
 
 			<p className="text-gray-700">Adresse mail</p>
 			<TextInput
 				value={userInfos.email}
 				setValue={(value: string) => setInfo("email", value)}
 				placeholder="jeandupont@mail.com"
-				className="mb-4"
+				className={`mb-${gap}`}
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
 			<TextInput
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
-				className="mb-6"
 				placeholder="motdepasse123"
 			/>
-			<SubmitButton className="flex items-center justify-center">
+			<p className={`mb-${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
+
+
+			<SubmitButton className="flex items-center justify-center mt-4">
 				<span>Connexion</span>
 			</SubmitButton>
 		</form>
