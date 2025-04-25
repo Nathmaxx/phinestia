@@ -74,7 +74,14 @@ export const login = async (req: Request, res: Response) => {
 
 		generateJWTToken(res, user._id.toString())
 
-		res.status(200).json({ success: true, message: "Login successful" })
+		const userInfos = {
+			id: user._id,
+			email: user.email,
+			firstName: user.firstName,
+			isVerified: user.isVerified
+		}
+
+		res.status(200).json({ success: true, message: "Login successful", user: userInfos })
 	} catch (error) {
 		catchError(res, error)
 	}
