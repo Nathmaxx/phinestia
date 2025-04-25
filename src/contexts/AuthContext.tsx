@@ -28,6 +28,10 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		try {
 			const response = await api.get("/auth/check-auth")
 			console.log(response)
+			if (response && response.data.user) {
+				const user = response.data.user as UserContextInfos
+				setUserInfos(user)
+			}
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
 			return catchError(error, "Imporrible de vérifier l'authentification")

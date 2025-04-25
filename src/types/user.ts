@@ -4,7 +4,7 @@ export type LoginInfos = {
 	password: string
 }
 
-export type SignInInfos = LoginInfos & { firstName: string }
+export type SignInInfos = LoginInfos & { firstName: string, confirmPassword: string }
 
 export type UserContextInfos = {
 	id: string

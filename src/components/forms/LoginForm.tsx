@@ -6,10 +6,10 @@ import { useAuth } from "../../hooks/useAuthContext"
 
 type LoginFormProps = {
 	className?: string
-	gap?: number
+	gap?: string
 }
 
-const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
+const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 
 	const { login } = useAuth()
 
@@ -42,7 +42,7 @@ const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
 				value={userInfos.email}
 				setValue={(value: string) => setInfo("email", value)}
 				placeholder="jeandupont@mail.com"
-				className={`mb-${gap}`}
+				className={gap}
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
@@ -52,10 +52,10 @@ const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
 				placeholder="************"
 				password
 			/>
-			<p className={`mb-${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
+			<p className={`${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
 
 
-			<SubmitButton className="flex items-center justify-center mt-4">
+			<SubmitButton className="flex items-center justify-center mt-2">
 				<span>Connexion</span>
 			</SubmitButton>
 		</form>

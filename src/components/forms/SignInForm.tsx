@@ -5,15 +5,16 @@ import SubmitButton from "../SubmitButton"
 
 type SignInFormProps = {
 	className?: string
-	gap?: number
+	gap?: string
 }
 
-const SignInForm = ({ className, gap = 4 }: SignInFormProps) => {
+const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 
 	const [userInfos, setUserInfos] = useState({
 		firstName: "",
 		email: "",
-		password: ""
+		password: "",
+		confirmPassword: ""
 	})
 
 	const setInfo = (type: keyof SignInInfos, value: string) => {
@@ -39,7 +40,7 @@ const SignInForm = ({ className, gap = 4 }: SignInFormProps) => {
 				value={userInfos.firstName}
 				setValue={(value: string) => setInfo("firstName", value)}
 				placeholder="Jean"
-				className={`mb-${gap}`}
+				className={gap}
 			/>
 
 			<p className="text-gray-700">Adresse mail</p>
@@ -47,7 +48,7 @@ const SignInForm = ({ className, gap = 4 }: SignInFormProps) => {
 				value={userInfos.email}
 				setValue={(value: string) => setInfo("email", value)}
 				placeholder="jeandupont@mail.com"
-				className={`mb-${gap}`}
+				className={gap}
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
@@ -55,10 +56,18 @@ const SignInForm = ({ className, gap = 4 }: SignInFormProps) => {
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
 				placeholder="motdepasse123"
-				className={`mb-${gap}`}
+				className={gap}
 			/>
 
-			<SubmitButton className="flex items-center justify-center group mt-4">
+			<p className="text-gray-700">Confirmer le mot de passe</p>
+			<TextInput
+				value={userInfos.confirmPassword}
+				setValue={(value: string) => setInfo("confirmPassword", value)}
+				placeholder="motdepasse123"
+				className={gap}
+			/>
+
+			<SubmitButton className="flex items-center justify-center group mt-2">
 				<span>Valider</span>
 			</SubmitButton>
 		</form>

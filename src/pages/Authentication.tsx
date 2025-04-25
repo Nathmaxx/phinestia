@@ -60,14 +60,14 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 					>
 						{currentMethod === "signin" ? (
 							<>
-								<SignInForm className="w-full" gap={6} />
+								<SignInForm className="w-full" />
 								<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
 									Vous avez déjà un compte ? <span className="underline">Se connecter</span>
 								</p>
 							</>
 						) : (
 							<>
-								<LoginForm className="w-full" gap={6} />
+								<LoginForm className="w-full" />
 								<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle} >
 									Pas encore de compte ? <span className="underline">S'inscrire</span>
 								</p>

@@ -18,7 +18,7 @@ const TextInput = ({ value, setValue, placeholder, className, password = false }
 			value={value}
 			onChange={(e) => handleChange(e.target.value)}
 			type={password ? "password" : "text"}
-			className={`w-full border border-gray-300 rounded-md outline-none py-0.5 px-1.5 shadow-xs ${className}`}
+			className={`w-full border border-gray-300 rounded-md outline-none py-0.5 px-1.5 shadow-xs ${password ? "tracking-widest" : ""} ${className}`}
 			placeholder={placeholder}
 		/>
 	)
