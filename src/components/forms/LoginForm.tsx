@@ -2,6 +2,7 @@ import TextInput from "../Inputs/TextInput"
 import SubmitButton from "../SubmitButton"
 import { LoginInfos } from "../../types/user"
 import { useState } from "react"
+import { useAuth } from "../../hooks/useAuthContext"
 
 type LoginFormProps = {
 	className?: string
@@ -9,6 +10,8 @@ type LoginFormProps = {
 }
 
 const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
+
+	const { login } = useAuth()
 
 	const [userInfos, setUserInfos] = useState({
 		email: "",
@@ -24,6 +27,7 @@ const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		login(userInfos.email, userInfos.password)
 	}
 
 	return (
@@ -45,7 +49,8 @@ const LoginForm = ({ className, gap = 4 }: LoginFormProps) => {
 			<TextInput
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
-				placeholder="motdepasse123"
+				placeholder="************"
+				password
 			/>
 			<p className={`mb-${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
 

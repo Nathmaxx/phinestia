@@ -1,0 +1,19 @@
+import { createContext, useContext } from "react"
+import { Operation } from "../types/context"
+
+type AuthContextType = {
+	checkAuth: () => Promise<Operation>
+	login: (email: string, password: string) => Promise<Operation>
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const useAuth = () => {
+	const context = useContext(AuthContext)
+
+	if (context === undefined) {
+		throw new Error("UseAuth doit être utilisé à l'intérieur d'un AuthProvider")
+	}
+
+	return context
+}
