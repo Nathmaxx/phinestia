@@ -7,6 +7,7 @@ type AuthContextType = {
 	userInfos: UserContextInfos
 	checkAuth: () => Promise<Operation>
 	login: (email: string, password: string) => Promise<Operation>
+	logout: () => Promise<Operation>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

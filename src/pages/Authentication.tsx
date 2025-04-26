@@ -22,7 +22,6 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	const panelRef = useRef<HTMLDivElement>(null)
 	const contentRef = useRef<HTMLDivElement>(null);
 
-
 	const handleToggle = () => {
 		if (isAnimating || !contentRef.current || !panelRef.current) return;
 

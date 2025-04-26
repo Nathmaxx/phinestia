@@ -10,13 +10,14 @@ type ExpenseProviderProps = {
 
 export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 
-	const [userInfos, setUserInfos] = useState<UserContextInfos>({
+	const initialInfos = {
 		id: "",
 		firstName: "",
 		email: "",
 		isVerified: false,
 		createdAt: ""
-	})
+	}
+	const [userInfos, setUserInfos] = useState<UserContextInfos>(initialInfos)
 
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 
@@ -55,12 +56,21 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 
 	const login = async (email: string, password: string) => {
 		try {
-			const response = await api.post("/auth/login", { email, password })
-			console.log(response)
+			await api.post("/auth/login", { email, password })
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
-			console.log(catchError(error, "Impossible de connecter l'utilisateur"))
 			return catchError(error, "Impossible de connecter l'utilisateur")
+		}
+	}
+
+	const logout = async () => {
+		try {
+			await api.get("/auth/logout")
+			setUserInfos(initialInfos)
+			setIsAuthenticated(false)
+			return { success: true, message: "Utilisateur déconnecté" }
+		} catch (error) {
+			return catchError(error, "Impossible de déconnecter l'utilisateur")
 		}
 	}
 
@@ -74,7 +84,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		isAuthenticated,
 		userInfos,
 		checkAuth,
-		login
+		login,
+		logout
 	}
 
 	return (

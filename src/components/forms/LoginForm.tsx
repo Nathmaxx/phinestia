@@ -4,6 +4,7 @@ import { LoginInfos } from "../../types/user"
 import { useState } from "react"
 import { useAuth } from "../../hooks/useAuthContext"
 import PasswordInput from "../Inputs/PasswordInput"
+import { useNavigate } from "react-router-dom"
 
 type LoginFormProps = {
 	className?: string
@@ -13,6 +14,7 @@ type LoginFormProps = {
 const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 
 	const { login } = useAuth()
+	const navigate = useNavigate()
 
 	const [userInfos, setUserInfos] = useState({
 		email: "",
@@ -26,9 +28,12 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 		})
 	}
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		login(userInfos.email, userInfos.password)
+		const response = await login(userInfos.email, userInfos.password)
+		if (response.success) {
+			navigate("/dashboard")
+		}
 	}
 
 	return (
