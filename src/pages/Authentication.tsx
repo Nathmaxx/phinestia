@@ -23,7 +23,6 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	const handleToggle = () => {
 		if (isAnimating || !contentRef.current || !panelRef.current) return;
 
-		console.log("Animation starting...");
 		setIsAnimating(true);
 
 		const newMethod = currentMethod === "signin" ? "login" : "signin";
@@ -62,6 +61,14 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 			}
 		}, 0.1);
 	};
+
+	useEffect(() => {
+		if (panelRef.current) {
+			gsap.set(panelRef.current, {
+				left: method === "login" ? "600px" : "0px"
+			});
+		}
+	}, [method]);
 
 	useEffect(() => {
 		const methodFromPath = location.pathname.includes("connexion") ? "login" : "signin";

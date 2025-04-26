@@ -1,7 +1,9 @@
 import { createContext, useContext } from "react"
 import { Operation } from "../types/context"
+import { UserContextInfos } from "../types/user"
 
 type AuthContextType = {
+	userInfos: UserContextInfos
 	checkAuth: () => Promise<Operation>
 	login: (email: string, password: string) => Promise<Operation>
 }

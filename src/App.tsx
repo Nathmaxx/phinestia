@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Layout from './components/Layout';
 import Authentication from './pages/Authentication';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoutes';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
@@ -15,6 +17,8 @@ function App() {
 						<Route path="connexion" element={<Authentication method="login" />} />
 						<Route path="inscription" element={<Authentication method="signin" />} />
 					</Route>
+
+					<Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
 
 					{/* Route 404 */}

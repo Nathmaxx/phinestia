@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react"
 import { AuthContext } from "../hooks/useAuthContext"
-import { UserContextInfos } from "../types/user"
+import { UserContextInfos, UserInfosResponse } from "../types/user"
 import { catchError } from "../utils/error"
 import api from "../utils/axios"
 
@@ -14,23 +14,34 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		id: "",
 		firstName: "",
 		email: "",
-		isVerified: false
+		isVerified: false,
+		createdAt: ""
 	})
 
-	const setUserInfo = (field: keyof UserContextInfos, value: string | boolean) => {
-		setUserInfos({
-			...userInfos,
-			[field]: value
-		})
-	}
+	// const setUserInfo = (field: keyof UserContextInfos, value: string | boolean) => {
+	// 	setUserInfos({
+	// 		...userInfos,
+	// 		[field]: value
+	// 	})
+	// }
 
 	const checkAuth = async () => {
 		try {
+
+			if (userInfos.id !== "") {
+				return { success: true, message: "Utilisateur déjà connecté" };
+			}
+
 			const response = await api.get("/auth/check-auth")
-			console.log(response)
 			if (response && response.data.user) {
-				const user = response.data.user as UserContextInfos
-				setUserInfos(user)
+				const user = response.data.user as UserInfosResponse
+				setUserInfos({
+					email: user.email,
+					id: user._id,
+					firstName: user.firstName,
+					isVerified: user.isVerified,
+					createdAt: user.createdAt
+				})
 			}
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
@@ -53,13 +64,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		checkAuth()
 	}, [])
 
-	// Fonction de connexion 
-
-	//Fonction de création de compte 
-
-	//...
-
 	const value = {
+		userInfos,
 		checkAuth,
 		login
 	}

@@ -34,7 +34,7 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 			className={`font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-figtree">Créer un compte</h2>
+			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-bricolage">Créer un compte</h2>
 
 			<p className="text-gray-700">Prénom</p>
 			<TextInput
