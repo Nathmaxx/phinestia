@@ -1,9 +1,10 @@
 
 //import LoginForm from "../components/forms/LoginForm"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import SignInForm from "../components/forms/SignInForm"
 import LoginForm from "../components/forms/LoginForm"
 import { useLocation, useNavigate } from "react-router-dom"
+import gsap from "gsap"
 
 type AuthenticationProps = {
 	method?: "signin" | "login"
@@ -15,24 +16,51 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
+	const panelRef = useRef<HTMLDivElement>(null)
+	const contentRef = useRef<HTMLDivElement>(null);
+
 
 	const handleToggle = () => {
-		if (isAnimating) return;
+		if (isAnimating || !contentRef.current || !panelRef.current) return;
 
+		console.log("Animation starting...");
 		setIsAnimating(true);
 
-		// Déterminer la nouvelle méthode et l'URL correspondante
 		const newMethod = currentMethod === "signin" ? "login" : "signin";
 		const newPath = `/authentification/${newMethod === "login" ? "connexion" : "inscription"}`;
 
-		setTimeout(() => {
-			setCurrentMethod(newMethod);
+		const tl = gsap.timeline();
 
-			setTimeout(() => {
+		tl.to(contentRef.current, {
+			opacity: 0,
+			y: 15,
+			duration: 0.3,
+			ease: "power1.in",
+		}, 0);
+
+		tl.to(panelRef.current, {
+			left: newMethod === "login" ? "600px" : "0px",
+			duration: 0.9,
+			ease: "power2.inOut",
+			onComplete: () => {
+				setCurrentMethod(newMethod);
 				navigate(newPath, { replace: true });
-				setIsAnimating(false);
-			}, 500);
-		}, 500);
+
+				gsap.fromTo(
+					contentRef.current,
+					{ opacity: 0, y: -15 },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.3,
+						ease: "power1.out",
+						onComplete: () => {
+							setIsAnimating(false);
+						}
+					}
+				);
+			}
+		}, 0.1);
 	};
 
 	useEffect(() => {
@@ -46,17 +74,12 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 		<div className="w-full h-screen flex items-center justify-center bg-sky-semiviolet/10">
 			<div className="bg-[url('/login-form.jpg')] w-[1200px] h-4/5 bg-cover rounded-4xl shadow-xl relative overflow-hidden">
 				<div
-					className={`absolute bg-white w-[600px] h-full flex flex-col items-center justify-center transition-all duration-500 ease-in-out
-						${currentMethod === "signin"
-							? "left-0 rounded-l-4xl"
-							: "left-[600px] rounded-r-4xl"
-						}
-					`}
+					ref={panelRef}
+					className={`absolute bg-white w-[600px] h-full flex flex-col items-center justify-center overflow-hidden`}
 				>
 					<div
-						className={`w-[400px] mx-auto transition-all duration-500 
-							${isAnimating ? "opacity-0" : "opacity-100"}
-						`}
+						ref={contentRef}
+						className="w-[400px] mx-auto"
 					>
 						{currentMethod === "signin" ? (
 							<>
@@ -68,7 +91,7 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 						) : (
 							<>
 								<LoginForm className="w-full" />
-								<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle} >
+								<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
 									Pas encore de compte ? <span className="underline">S'inscrire</span>
 								</p>
 							</>

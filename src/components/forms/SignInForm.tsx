@@ -2,6 +2,7 @@ import { useState } from "react"
 import { SignInInfos } from "../../types/user"
 import TextInput from "../Inputs/TextInput"
 import SubmitButton from "../SubmitButton"
+import PasswordInput from "../Inputs/PasswordInput"
 
 type SignInFormProps = {
 	className?: string
@@ -33,7 +34,7 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 			className={`font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-gabarito">Créer un compte</h2>
+			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-figtree">Créer un compte</h2>
 
 			<p className="text-gray-700">Prénom</p>
 			<TextInput
@@ -52,19 +53,19 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
-			<TextInput
+			<PasswordInput
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
-				placeholder="motdepasse123"
-				className={gap}
+				placeholder="************"
+				className={`${gap}`}
 			/>
 
 			<p className="text-gray-700">Confirmer le mot de passe</p>
-			<TextInput
+			<PasswordInput
 				value={userInfos.confirmPassword}
 				setValue={(value: string) => setInfo("confirmPassword", value)}
-				placeholder="motdepasse123"
-				className={gap}
+				placeholder="************"
+				className={`${gap}`}
 			/>
 
 			<SubmitButton className="flex items-center justify-center group mt-2">

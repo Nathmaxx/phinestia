@@ -3,6 +3,7 @@ import SubmitButton from "../SubmitButton"
 import { LoginInfos } from "../../types/user"
 import { useState } from "react"
 import { useAuth } from "../../hooks/useAuthContext"
+import PasswordInput from "../Inputs/PasswordInput"
 
 type LoginFormProps = {
 	className?: string
@@ -35,7 +36,7 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 			className={`w-[300px] font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-gabarito">Se connecter</h2>
+			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-figtree">Se connecter</h2>
 
 			<p className="text-gray-700">Adresse mail</p>
 			<TextInput
@@ -46,11 +47,10 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
-			<TextInput
+			<PasswordInput
 				value={userInfos.password}
 				setValue={(value: string) => setInfo("password", value)}
 				placeholder="************"
-				password
 			/>
 			<p className={`${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
 
