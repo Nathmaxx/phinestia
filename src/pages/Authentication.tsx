@@ -5,6 +5,7 @@ import SignInForm from "../components/forms/SignInForm"
 import LoginForm from "../components/forms/LoginForm"
 import { useLocation, useNavigate } from "react-router-dom"
 import gsap from "gsap"
+import { useAuth } from "../hooks/useAuthContext"
 
 type AuthenticationProps = {
 	method?: "signin" | "login"
@@ -15,6 +16,8 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	const [isAnimating, setIsAnimating] = useState(false)
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	const { isAuthenticated } = useAuth()
 
 	const panelRef = useRef<HTMLDivElement>(null)
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -69,6 +72,12 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 			});
 		}
 	}, [method]);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate("/dashboard")
+		}
+	}, [isAuthenticated, navigate])
 
 	useEffect(() => {
 		const methodFromPath = location.pathname.includes("connexion") ? "login" : "signin";

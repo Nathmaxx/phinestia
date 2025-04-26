@@ -18,6 +18,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		createdAt: ""
 	})
 
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
+
 	// const setUserInfo = (field: keyof UserContextInfos, value: string | boolean) => {
 	// 	setUserInfos({
 	// 		...userInfos,
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		try {
 
 			if (userInfos.id !== "") {
+				setIsAuthenticated(true)
 				return { success: true, message: "Utilisateur déjà connecté" };
 			}
 
@@ -43,6 +46,7 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 					createdAt: user.createdAt
 				})
 			}
+			setIsAuthenticated(true)
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
 			return catchError(error, "Imporrible de vérifier l'authentification")
@@ -60,11 +64,14 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
+
 	useEffect(() => {
 		checkAuth()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const value = {
+		isAuthenticated,
 		userInfos,
 		checkAuth,
 		login

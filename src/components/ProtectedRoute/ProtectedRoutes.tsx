@@ -29,12 +29,7 @@ const ProtectedRoute = ({ children, redirectPath = "/authentification/connexion"
 
 	if (isChecking) {
 		return (
-			<div className="w-full h-screen flex items-center justify-center bg-sky-semiviolet/10">
-				<div className="flex flex-col items-center">
-					<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-dark-violet"></div>
-					<p className="mt-4 text-sky-dark-violet font-bricolage">Vérification de l'authentification...</p>
-				</div>
-			</div>
+			<div className="w-full h-screen"></div>
 		);
 	}
 
