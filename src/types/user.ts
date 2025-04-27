@@ -21,3 +21,15 @@ export type UserInfosResponse = {
 	isVerified: boolean
 	createdAt: string
 }
+
+export type PasswordValidationType = {
+	isValid: boolean;
+	numberOfValidations: number
+	validations: {
+		minLength: boolean;
+		hasUpperCase: boolean;
+		hasLowerCase: boolean;
+		hasDigit: boolean;
+		hasSpecialChar: boolean;
+	};
+}

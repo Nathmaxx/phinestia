@@ -41,13 +41,14 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 			className={`w-[300px] font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center text-4xl text-sky-violet my-4 font-medium font-bricolage">Se connecter</h2>
+			<h2 className="text-center text-4xl text-sky-violet mb-4 font-medium font-bricolage">Se connecter</h2>
 
 			<p className="text-gray-700">Adresse mail</p>
 			<TextInput
 				value={userInfos.email}
 				setValue={(value: string) => setInfo("email", value)}
 				placeholder="jeandupont@mail.com"
+				type="email"
 				className={gap}
 			/>
 
