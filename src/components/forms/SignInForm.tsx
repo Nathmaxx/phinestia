@@ -6,20 +6,19 @@ import gsap from "gsap"
 
 type SignInFormProps = {
 	className?: string
+	handleToggle: () => void
 }
 
-const SignInForm = ({ className }: SignInFormProps) => {
+const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
 
 	const [userInfos, setUserInfos] = useState({
-		firstName: "",
-		email: "",
+		firstName: "Nath",
+		email: "nath@email.com",
 		password: "",
 		confirmPassword: ""
 	})
 
 	const [step, setStep] = useState(1)
-
-	const [isValidPassword, setIsValidPassword] = useState(false)
 
 	const signInFirstRef = useRef<HTMLDivElement>(null)
 	const signInSecondRef = useRef<HTMLDivElement>(null)
@@ -33,20 +32,7 @@ const SignInForm = ({ className }: SignInFormProps) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-	}
-
-	const verifyInputs = () => {
-
-
-		if (userInfos.password !== userInfos.confirmPassword) {
-			return "Les mots de passes ne correspondent pas"
-		}
-
-		if (!isValidPassword) {
-			return "Le mot de passe ne correspond pas aux critères"
-		}
-
-		return ""
+		console.log("Form")
 	}
 
 	const handleMove = (fromStep: number, direction: "next" | "previous") => {
@@ -54,19 +40,15 @@ const SignInForm = ({ className }: SignInFormProps) => {
 			return;
 		}
 
-		const steps = { 1: signInFirstRef, 2: signInSecondRef };
+		const steps: { [value: number]: React.RefObject<HTMLDivElement | null> } = { 1: signInFirstRef, 2: signInSecondRef };
 		const initialStepRef = steps[fromStep];
 		const endStep = direction === "next" ? fromStep + 1 : fromStep - 1;
 		const endStepRef = steps[endStep];
 
 		const move = direction === 'next' ? -20 : 20;
 
-		// Créer une timeline unifiée
-		const tl = gsap.timeline({
-			onComplete: () => console.log("Animation completed")
-		});
+		const tl = gsap.timeline();
 
-		// 1. Cacher le composant actuel
 		tl.to(initialStepRef.current, {
 			opacity: 0,
 			x: move,
@@ -74,17 +56,15 @@ const SignInForm = ({ className }: SignInFormProps) => {
 			ease: "power1.in"
 		});
 
-		// 2. Mettre à jour l'état (entre les animations)
 		tl.call(() => {
 			setStep(endStep);
 		});
 
-		// 3. Afficher le nouveau composant 
 		tl.fromTo(
 			endStepRef.current,
-			{ opacity: 0, x: move, visibility: "visible" },
+			{ opacity: 0, x: -move, visibility: "visible" },
 			{ opacity: 1, x: 0, duration: 0.3, ease: "power1.out" },
-			"+=0.05" // Petit délai pour laisser React mettre à jour le DOM
+			"+=0.05" // Délai pour que React mette à jour le DOM
 		);
 	};
 
@@ -99,21 +79,19 @@ const SignInForm = ({ className }: SignInFormProps) => {
 				setStep={setStep}
 				userInfos={userInfos}
 				handleMove={handleMove}
+				handleToggle={handleToggle}
 				ref={signInFirstRef}
 				className={`${step === 1 ? "opacity-100 visible" : "opacity-0 hidden"}`}
 			/>
 
-
-
 			<SignInSecond
 				setInfo={setInfo}
-				setIsValidPassword={setIsValidPassword}
 				userInfos={userInfos}
 				handleMove={handleMove}
+				handleToggle={handleToggle}
 				ref={signInSecondRef}
 				className={`${step === 2 ? "opacity-100 visible" : "opacity-0 hidden"}`}
 			/>
-
 		</form>
 	);
 }

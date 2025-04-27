@@ -11,9 +11,10 @@ type SignInFirstProps = {
 	ref?: React.RefObject<HTMLDivElement | null>
 	handleMove: (fromStep: number, direction: "next" | "previous") => void
 	className?: string
+	handleToggle: () => void
 }
 
-const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className }: SignInFirstProps) => {
+const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleToggle }: SignInFirstProps) => {
 
 	const [message, setMessage] = useState("")
 
@@ -74,6 +75,10 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className }: SignInF
 			</Button>
 
 			<Message message={message} className="mt-3" />
+
+			<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
+				Vous avez déjà un compte ? <span className="underline">Se connecter</span>
+			</p>
 		</div >
 	)
 }

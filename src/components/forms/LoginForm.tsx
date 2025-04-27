@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom"
 
 type LoginFormProps = {
 	className?: string
-	gap?: string
+	handleToggle: () => void
 }
 
-const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
+const LoginForm = ({ className, handleToggle }: LoginFormProps) => {
 
 	const { login } = useAuth()
 	const navigate = useNavigate()
@@ -49,7 +49,7 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 				setValue={(value: string) => setInfo("email", value)}
 				placeholder="jeandupont@mail.com"
 				type="email"
-				className={gap}
+				className="mb-4"
 			/>
 
 			<p className="text-gray-700">Mot de passe</p>
@@ -58,12 +58,16 @@ const LoginForm = ({ className, gap = "mb-4" }: LoginFormProps) => {
 				setValue={(value: string) => setInfo("password", value)}
 				placeholder="************"
 			/>
-			<p className={`${gap} text-sm mt-1.5 cursor-pointer hover:underline`}>Mot de passe oublié ?</p>
+			<p className='mb-4 text-sm mt-1.5 cursor-pointer hover:underline'>Mot de passe oublié ?</p>
 
 
 			<SubmitButton className="flex items-center justify-center mt-2">
 				<span>Connexion</span>
 			</SubmitButton>
+
+			<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
+				Pas encore de compte ? <span className="underline">S'inscrire</span>
+			</p>
 		</form>
 	)
 }

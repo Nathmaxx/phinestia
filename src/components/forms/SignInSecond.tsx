@@ -3,21 +3,31 @@ import { SignInInfos } from "../../types/user"
 import SubmitButton from "../buttons/SubmitButton"
 import PasswordInput from "../Inputs/PasswordInput"
 import PasswordValidator from "../PasswordValidator"
+import Message from "../Message"
 
 type SignInSecondProps = {
 	userInfos: SignInInfos
 	setInfo: (type: keyof SignInInfos, value: string) => void
-	setIsValidPassword: (value: boolean) => void
 	ref?: React.RefObject<HTMLDivElement | null>
 	handleMove: (fromStep: number, direction: "next" | "previous") => void
 	className?: string
+	handleToggle: () => void
 }
 
-const SignInSecond = ({ userInfos, setInfo, setIsValidPassword, ref, handleMove, className }: SignInSecondProps) => {
+const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle }: SignInSecondProps) => {
 
 	const [message, setMessage] = useState("")
+	const [isValidPassword, setIsValidPassword] = useState(false)
 
 	const verifyInputs = () => {
+
+		if (!isValidPassword) {
+			return "Tous les critères ne sont pas validés"
+		}
+
+		if (userInfos.confirmPassword !== userInfos.password) {
+			return "Les mots de passes ne correspondent pas"
+		}
 
 		return ""
 	}
@@ -30,8 +40,6 @@ const SignInSecond = ({ userInfos, setInfo, setIsValidPassword, ref, handleMove,
 			setMessage(inputsErrors)
 			return
 		}
-
-		//setStep(2)
 	}
 
 	return (
@@ -55,9 +63,18 @@ const SignInSecond = ({ userInfos, setInfo, setIsValidPassword, ref, handleMove,
 				className='mb-4'
 			/>
 
-			<SubmitButton className="flex items-center justify-center group mt-2">
+			<SubmitButton
+				className="flex items-center justify-center group mt-2"
+				onClick={handleClick}
+			>
 				<span>Valider</span>
 			</SubmitButton>
+
+			<Message message={message} className="mt-3" />
+
+			<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
+				Vous avez déjà un compte ? <span className="underline">Se connecter</span>
+			</p>
 		</div>
 	)
 }
