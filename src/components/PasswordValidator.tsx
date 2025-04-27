@@ -4,9 +4,10 @@ import { PasswordValidationType } from "../types/user"
 type PasswordValidatorProps = {
 	password: string
 	setIsValidPassword: (value: boolean) => void
+	className?: string
 }
 
-const PasswordValidator = ({ password, setIsValidPassword }: PasswordValidatorProps) => {
+const PasswordValidator = ({ password, setIsValidPassword, className }: PasswordValidatorProps) => {
 
 	const [passwordValidation, setPasswordValidation] = useState<PasswordValidationType>({
 		isValid: false,
@@ -42,13 +43,13 @@ const PasswordValidator = ({ password, setIsValidPassword }: PasswordValidatorPr
 	}, [password, setIsValidPassword])
 
 	return (
-		<div className="text-xs">
+		<div className={`text-xs ${className}`}>
 			<p className={`${passwordValidation.validations.minLength ? "text-green-700" : ""}`}>8 Caractères</p>
 			<p className={`${passwordValidation.validations.hasUpperCase ? "text-green-700" : ""}`}>1 Majuscule</p>
 			<p className={`${passwordValidation.validations.hasLowerCase ? "text-green-700" : ""}`}>1 Minuscule</p>
 			<p className={`${passwordValidation.validations.hasDigit ? "text-green-700" : ""}`}>1 Chiffre</p>
 			<p className={`${passwordValidation.validations.hasSpecialChar ? "text-green-700" : ""}`}>1 Caractère spécial</p>
-			<div className="flex gap-1">
+			<div className="flex gap-1 mt-1.5">
 				<span className={`h-1.5 w-10 ${passwordValidation.numberOfValidations > 0 ? "bg-green-500" : "bg-slate-200"} rounded-full`}></span>
 				<span className={`h-1.5 w-10 ${passwordValidation.numberOfValidations > 1 ? "bg-green-500" : "bg-slate-200"} rounded-full`}></span>
 				<span className={`h-1.5 w-10 ${passwordValidation.numberOfValidations > 2 ? "bg-green-500" : "bg-slate-200"} rounded-full`}></span >
