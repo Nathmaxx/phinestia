@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { SignInInfos } from "../../types/user"
-import TextInput from "../Inputs/TextInput"
-import SubmitButton from "../SubmitButton"
+import SubmitButton from "../buttons/SubmitButton"
 import PasswordInput from "../Inputs/PasswordInput"
 import PasswordValidator from "../PasswordValidator"
+import SignInFirst from "./SignInFirst"
 
 type SignInFormProps = {
 	className?: string
 	gap?: string
 }
 
-const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
+const SignInForm = ({ className }: SignInFormProps) => {
 
 	const [userInfos, setUserInfos] = useState({
 		firstName: "",
@@ -19,7 +19,7 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 		confirmPassword: ""
 	})
 
-	const [message, setMessage] = useState("")
+	const [step, setStep] = useState(1)
 
 	const [isValidPassword, setIsValidPassword] = useState(false)
 
@@ -32,13 +32,6 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-
-		const areInputsValid = verifyInputs()
-
-		if (areInputsValid !== "") {
-			setMessage(areInputsValid)
-			return
-		}
 	}
 
 	const verifyInputs = () => {
@@ -62,50 +55,40 @@ const SignInForm = ({ className, gap = "mb-4" }: SignInFormProps) => {
 			className={`font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
 		>
-			<h2 className="text-center text-4xl text-sky-violet mb-4 font-medium font-bricolage">Créer un compte</h2>
-
-			<p className="text-gray-700">Prénom</p>
-			<TextInput
-				value={userInfos.firstName}
-				setValue={(value: string) => setInfo("firstName", value)}
-				placeholder="Jean"
-				className={gap}
-			/>
-
-			<p className="text-gray-700">Adresse mail</p>
-			<TextInput
-				value={userInfos.email}
-				type="email"
-				setValue={(value: string) => setInfo("email", value)}
-				placeholder="jeandupont@mail.com"
-				className={gap}
-			/>
-
-			<p className="text-gray-700">Mot de passe</p>
-			<PasswordInput
-				value={userInfos.password}
-				setValue={(value: string) => setInfo("password", value)}
-				placeholder="************"
-				className={`${gap}`}
-			/>
-
-			<PasswordValidator password={userInfos.password} setIsValidPassword={setIsValidPassword} />
-
-			<p className="text-gray-700">Confirmer le mot de passe</p>
-			<PasswordInput
-				value={userInfos.confirmPassword}
-				setValue={(value: string) => setInfo("confirmPassword", value)}
-				placeholder="************"
-				className={`${gap}`}
-			/>
-
-			<SubmitButton className="flex items-center justify-center group mt-2">
-				<span>Valider</span>
-			</SubmitButton>
-
-			{message && (
-				<p>{message}</p>
+			{step === 1 && (
+				<SignInFirst
+					setInfo={setInfo}
+					setStep={setStep}
+					userInfos={userInfos}
+				/>
 			)}
+
+			{step === 2 && (
+				<>
+					<p className="text-gray-700">Mot de passe</p>
+					<PasswordInput
+						value={userInfos.password}
+						setValue={(value: string) => setInfo("password", value)}
+						placeholder="************"
+						className='mb-4'
+					/>
+
+					<PasswordValidator password={userInfos.password} setIsValidPassword={setIsValidPassword} />
+
+					<p className="text-gray-700">Confirmer le mot de passe</p>
+					<PasswordInput
+						value={userInfos.confirmPassword}
+						setValue={(value: string) => setInfo("confirmPassword", value)}
+						placeholder="************"
+						className='mb-4'
+					/>
+
+					<SubmitButton className="flex items-center justify-center group mt-2">
+						<span>Valider</span>
+					</SubmitButton>
+				</>
+			)}
+
 		</form>
 	)
 }

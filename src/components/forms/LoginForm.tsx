@@ -1,5 +1,5 @@
 import TextInput from "../Inputs/TextInput"
-import SubmitButton from "../SubmitButton"
+import SubmitButton from "../buttons/SubmitButton"
 import { LoginInfos } from "../../types/user"
 import { useState } from "react"
 import { useAuth } from "../../hooks/useAuthContext"
