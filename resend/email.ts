@@ -2,15 +2,19 @@ import { resend } from "./config"
 
 export const sendVerificationEmail = async (email: string, verificationToken: string) => {
 	try {
-		await resend.emails.send({
+		const { error } = await resend.emails.send({
 			from: "Acme <onboarding@resend.dev>",
 			to: [email],
 			subject: "Vérifier votre adresse email",
 			html: `Finalisez la création de votre compte financia avec le code suivant : ${verificationToken}`
 		})
 
+		if (error) {
+			return { success: false, message: "Impossible d'envoyer l'e-mail de vérification" }
+		}
+		return { success: true, message: "Email envoyé" }
 	} catch (error) {
-		console.log("Error sending verification email", error)
+		return { success: false, message: "Impossible d'envoyer l'e-mail de vérification" }
 	}
 }
 

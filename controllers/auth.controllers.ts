@@ -12,13 +12,14 @@ export const signup = async (req: Request, res: Response) => {
 
 	try {
 		if (!email || !password || !firstName) {
-			res.status(400).json({ message: "All fields are required" })
+			res.status(400).json({ message: "Tous les champs sont requis" })
 			return
 		}
 
 		const userAlreadyExists = await User.findOne({ email });
+
 		if (userAlreadyExists) {
-			res.status(400).json({ success: false, message: "User already exists" });
+			res.status(400).json({ success: false, message: "Un utilisateur possède déjà cet e-mail" });
 			return
 		}
 
@@ -37,10 +38,15 @@ export const signup = async (req: Request, res: Response) => {
 
 		generateJWTToken(res, user._id.toString());
 
-		await sendVerificationEmail(user.email, verificationToken)
+		const response = await sendVerificationEmail(user.email, verificationToken)
+		console.log(response)
+		if (!response.success) {
+			res.status(400).json(response)
+			return
+		}
 
 		const userObject = user.toJSON()
-		res.status(201).json({ success: true, message: "User created successfully", user: { ...userObject, password: undefined } })
+		res.status(201).json({ success: true, message: "Utilisateur crée avec succès", user: { ...userObject, password: undefined } })
 		return
 	} catch (error) {
 		catchError(res, error)
@@ -93,16 +99,17 @@ export const logout = async (_: Request, res: Response) => {
 }
 
 export const verifyEmail = async (req: Request, res: Response) => {
-	const { code } = req.body
+	const { code, email } = req.body
 
 	try {
 		const user = await User.findOne({
 			verificationToken: code,
+			email,
 			verificationTokenExpiresAt: { $gt: Date.now() }
 		})
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Invalid or expired" })
+			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
 			return
 		}
 
