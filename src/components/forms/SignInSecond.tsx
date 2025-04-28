@@ -5,6 +5,7 @@ import PasswordValidator from "../PasswordValidator"
 import Message from "../Message"
 import Button from "../buttons/Button"
 import { ArrowLeft } from "lucide-react"
+import { useAuth } from "../../hooks/useAuthContext"
 
 type SignInSecondProps = {
 	userInfos: SignInInfos
@@ -13,14 +14,16 @@ type SignInSecondProps = {
 	handleMove: (direction: "next" | "previous") => void
 	className?: string
 	handleToggle: () => void
-	requestForSubmit: () => void
 	message: string
 	setMessage: (value: string) => void
 }
 
-const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, requestForSubmit, message, setMessage }: SignInSecondProps) => {
+const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, message, setMessage }: SignInSecondProps) => {
+
+	const { signUp } = useAuth()
 
 	const [isValidPassword, setIsValidPassword] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const verifyInputs = () => {
 
@@ -39,17 +42,25 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 		return ""
 	}
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		setMessage("")
 		const errorMessage = verifyInputs()
 		if (errorMessage !== "") {
 			setMessage(errorMessage)
-			console.log("Vérifications non validées")
 			return
 		}
 
-		console.log("vérifications effectées, envoi")
-		requestForSubmit()
+		setIsLoading(true)
+
+		const response = await signUp(userInfos.firstName, userInfos.email, userInfos.password)
+
+		if (!response.success) {
+			setMessage(response.message)
+			return
+		}
+
+		setIsLoading(false)
+		handleMove("next")
 	}
 
 	const handleArrowClick = () => {
@@ -84,6 +95,7 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 			<Button
 				className="w-full bg-sky-violet hover:bg-sky-dark-violet transition font-semibold text-white rounded-md"
 				onClick={handleClick}
+				isLoading={isLoading}
 			>
 				Valider
 			</Button>

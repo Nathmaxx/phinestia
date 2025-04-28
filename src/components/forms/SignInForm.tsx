@@ -3,7 +3,7 @@ import { SignInInfos } from "../../types/user"
 import SignInFirst from "./SignInFirst"
 import SignInSecond from "./SignInSecond"
 import gsap from "gsap"
-import { useAuth } from "../../hooks/useAuthContext"
+import SignInThird from "./SignInThird"
 
 type SignInFormProps = {
 	className?: string
@@ -12,21 +12,19 @@ type SignInFormProps = {
 
 const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 
-	const { signUp } = useAuth()
 
 	const [userInfos, setUserInfos] = useState({
 		firstName: "",
-		email: "",
+		email: "nathan.grdi@gmail.com",
 		password: "",
 		confirmPassword: ""
 	})
 
-	const [step, setStep] = useState(1)
+	const [step, setStep] = useState(3)
 	const [message, setMessage] = useState("")
 
 	const signInFirstRef = useRef<HTMLDivElement>(null)
 	const signInSecondRef = useRef<HTMLDivElement>(null)
-	const formRef = useRef<HTMLFormElement>(null)
 
 	const setInfo = (type: keyof SignInInfos, value: string) => {
 		setUserInfos({
@@ -35,23 +33,8 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 		})
 	}
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-
-		const response = await signUp(userInfos.firstName, userInfos.email, userInfos.password)
-
-		if (!response.success) {
-			setMessage(response.message)
-		}
-	}
-
-	const requestForSubmit = () => {
-		formRef.current?.requestSubmit()
-	}
-
-
 	const handleMove = (direction: "next" | "previous") => {
-		if ((step === 1 && direction === "previous") || (step === 2 && direction === "next")) {
+		if ((step === 1 && direction === "previous") || (step === 3 && direction === "next")) {
 			return;
 		}
 
@@ -86,8 +69,6 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 	return (
 		<form
 			className={`font-bricolage flex flex-col ${className}`}
-			onSubmit={handleSubmit}
-			ref={formRef}
 			autoComplete="off"
 		>
 
@@ -112,7 +93,13 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 				message={message}
 				setMessage={setMessage}
 				className={`${step === 2 ? "opacity-100 visible" : "opacity-0 hidden"}`}
-				requestForSubmit={requestForSubmit}
+			/>
+
+			<SignInThird
+				userInfos={userInfos}
+				message={message}
+				setMessage={setMessage}
+				className={`${step === 3 ? "opacity-100 visible" : "opacity-0 hidden"}`}
 			/>
 		</form>
 	);
