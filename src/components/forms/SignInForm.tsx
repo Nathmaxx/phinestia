@@ -9,7 +9,8 @@ type SignInFormProps = {
 	handleToggle: () => void
 }
 
-const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
+const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
+
 
 	const [userInfos, setUserInfos] = useState({
 		firstName: "Nath",
@@ -20,8 +21,10 @@ const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
 
 	const [step, setStep] = useState(1)
 
+
 	const signInFirstRef = useRef<HTMLDivElement>(null)
 	const signInSecondRef = useRef<HTMLDivElement>(null)
+	const formRef = useRef<HTMLFormElement>(null)
 
 	const setInfo = (type: keyof SignInInfos, value: string) => {
 		setUserInfos({
@@ -32,17 +35,23 @@ const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		console.log("Form")
+
+		console.log("formulaire envoyé")
 	}
 
-	const handleMove = (fromStep: number, direction: "next" | "previous") => {
-		if ((fromStep === 1 && direction === "previous") || (fromStep === 2 && direction === "next")) {
+	const requestForSubmit = () => {
+		formRef.current?.requestSubmit()
+	}
+
+
+	const handleMove = (direction: "next" | "previous") => {
+		if ((step === 1 && direction === "previous") || (step === 2 && direction === "next")) {
 			return;
 		}
 
 		const steps: { [value: number]: React.RefObject<HTMLDivElement | null> } = { 1: signInFirstRef, 2: signInSecondRef };
-		const initialStepRef = steps[fromStep];
-		const endStep = direction === "next" ? fromStep + 1 : fromStep - 1;
+		const initialStepRef = steps[step];
+		const endStep = direction === "next" ? step + 1 : step - 1;
 		const endStepRef = steps[endStep];
 
 		const move = direction === 'next' ? -20 : 20;
@@ -72,6 +81,8 @@ const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
 		<form
 			className={`font-bricolage flex flex-col ${className}`}
 			onSubmit={handleSubmit}
+			ref={formRef}
+			autoComplete="off"
 		>
 
 			<SignInFirst
@@ -91,6 +102,7 @@ const SignInForm = ({ className, handleToggle }: SignInFormProps) => {
 				handleToggle={handleToggle}
 				ref={signInSecondRef}
 				className={`${step === 2 ? "opacity-100 visible" : "opacity-0 hidden"}`}
+				requestForSubmit={requestForSubmit}
 			/>
 		</form>
 	);

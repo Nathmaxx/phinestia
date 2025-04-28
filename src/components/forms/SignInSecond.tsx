@@ -1,20 +1,22 @@
 import { useState } from "react"
 import { SignInInfos } from "../../types/user"
-import SubmitButton from "../buttons/SubmitButton"
 import PasswordInput from "../Inputs/PasswordInput"
 import PasswordValidator from "../PasswordValidator"
 import Message from "../Message"
+import Button from "../buttons/Button"
+import { ArrowLeft } from "lucide-react"
 
 type SignInSecondProps = {
 	userInfos: SignInInfos
 	setInfo: (type: keyof SignInInfos, value: string) => void
 	ref?: React.RefObject<HTMLDivElement | null>
-	handleMove: (fromStep: number, direction: "next" | "previous") => void
+	handleMove: (direction: "next" | "previous") => void
 	className?: string
 	handleToggle: () => void
+	requestForSubmit: () => void
 }
 
-const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle }: SignInSecondProps) => {
+const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, requestForSubmit }: SignInSecondProps) => {
 
 	const [message, setMessage] = useState("")
 	const [isValidPassword, setIsValidPassword] = useState(false)
@@ -33,17 +35,20 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 	}
 
 	const handleClick = () => {
-
-		const inputsErrors = verifyInputs()
-
-		if (inputsErrors !== "") {
-			setMessage(inputsErrors)
+		const errorMessage = verifyInputs()
+		if (errorMessage !== "") {
+			setMessage(errorMessage)
+			console.log("Vérifications non validées")
 			return
 		}
+
+		console.log("vérifications effectées, envoi")
+		requestForSubmit()
 	}
 
 	return (
 		<div ref={ref} className={`${className}`}>
+			<ArrowLeft className="cursor-pointer" onClick={() => handleMove("previous")} />
 			<h2 className="text-center text-4xl text-sky-violet mb-4 font-medium font-bricolage">Bienvenue {userInfos.firstName}</h2>
 
 			<p className="text-gray-700">Mot de passe</p>
@@ -63,12 +68,12 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 				className='mb-4'
 			/>
 
-			<SubmitButton
-				className="flex items-center justify-center group mt-2"
+			<Button
+				className="w-full bg-sky-violet hover:bg-sky-dark-violet transition font-semibold text-white rounded-md"
 				onClick={handleClick}
 			>
-				<span>Valider</span>
-			</SubmitButton>
+				Valider
+			</Button>
 
 			<Message message={message} className="mt-3" />
 

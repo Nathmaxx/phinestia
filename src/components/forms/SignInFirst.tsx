@@ -9,7 +9,7 @@ type SignInFirstProps = {
 	setInfo: (type: keyof SignInInfos, value: string) => void
 	setStep: (value: number) => void
 	ref?: React.RefObject<HTMLDivElement | null>
-	handleMove: (fromStep: number, direction: "next" | "previous") => void
+	handleMove: (direction: "next" | "previous") => void
 	className?: string
 	handleToggle: () => void
 }
@@ -43,7 +43,7 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleTog
 			return
 		}
 
-		handleMove(1, "next")
+		handleMove("next")
 	}
 
 	return (
