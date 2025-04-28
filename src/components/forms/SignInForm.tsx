@@ -3,6 +3,7 @@ import { SignInInfos } from "../../types/user"
 import SignInFirst from "./SignInFirst"
 import SignInSecond from "./SignInSecond"
 import gsap from "gsap"
+import { useAuth } from "../../hooks/useAuthContext"
 
 type SignInFormProps = {
 	className?: string
@@ -11,16 +12,17 @@ type SignInFormProps = {
 
 const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 
+	const { signUp } = useAuth()
 
 	const [userInfos, setUserInfos] = useState({
-		firstName: "Nath",
-		email: "nath@email.com",
+		firstName: "",
+		email: "",
 		password: "",
 		confirmPassword: ""
 	})
 
 	const [step, setStep] = useState(1)
-
+	const [message, setMessage] = useState("")
 
 	const signInFirstRef = useRef<HTMLDivElement>(null)
 	const signInSecondRef = useRef<HTMLDivElement>(null)
@@ -33,10 +35,14 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 		})
 	}
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		console.log("formulaire envoyé")
+		const response = await signUp(userInfos.firstName, userInfos.email, userInfos.password)
+
+		if (!response.success) {
+			setMessage(response.message)
+		}
 	}
 
 	const requestForSubmit = () => {
@@ -91,6 +97,8 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 				userInfos={userInfos}
 				handleMove={handleMove}
 				handleToggle={handleToggle}
+				setMessage={setMessage}
+				message={message}
 				ref={signInFirstRef}
 				className={`${step === 1 ? "opacity-100 visible" : "opacity-0 hidden"}`}
 			/>
@@ -101,6 +109,8 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 				handleMove={handleMove}
 				handleToggle={handleToggle}
 				ref={signInSecondRef}
+				message={message}
+				setMessage={setMessage}
 				className={`${step === 2 ? "opacity-100 visible" : "opacity-0 hidden"}`}
 				requestForSubmit={requestForSubmit}
 			/>

@@ -74,6 +74,15 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
+	const signUp = async (firstName: string, email: string, password: string) => {
+		try {
+			await api.post("/auth/signup", { firstName, email, password })
+			return { success: true, message: "Utilisateur crée" }
+		} catch (error) {
+			return catchError(error, "Impossible de créer l'utilisateur")
+		}
+	}
+
 
 	useEffect(() => {
 		checkAuth()
@@ -85,7 +94,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		userInfos,
 		checkAuth,
 		login,
-		logout
+		logout,
+		signUp
 	}
 
 	return (

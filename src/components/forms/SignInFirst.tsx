@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { SignInInfos } from "../../types/user"
 import Button from "../buttons/Button"
 import TextInput from "../Inputs/TextInput"
@@ -12,11 +11,12 @@ type SignInFirstProps = {
 	handleMove: (direction: "next" | "previous") => void
 	className?: string
 	handleToggle: () => void
+	message: string
+	setMessage: (value: string) => void
 }
 
-const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleToggle }: SignInFirstProps) => {
+const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, message, setMessage }: SignInFirstProps) => {
 
-	const [message, setMessage] = useState("")
 
 	const verifyInputs = () => {
 		if (userInfos.firstName.length < 2) {
@@ -31,11 +31,15 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleTog
 			return "Veuillez entrer un email valide"
 		}
 
+		if (userInfos.email.length > 60) {
+			return "Veuillez entrer un email plus court"
+		}
+
 		return ""
 	}
 
 	const handleClick = () => {
-
+		setMessage("")
 		const inputsErrors = verifyInputs()
 
 		if (inputsErrors !== "") {

@@ -14,17 +14,22 @@ type SignInSecondProps = {
 	className?: string
 	handleToggle: () => void
 	requestForSubmit: () => void
+	message: string
+	setMessage: (value: string) => void
 }
 
-const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, requestForSubmit }: SignInSecondProps) => {
+const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, requestForSubmit, message, setMessage }: SignInSecondProps) => {
 
-	const [message, setMessage] = useState("")
 	const [isValidPassword, setIsValidPassword] = useState(false)
 
 	const verifyInputs = () => {
 
 		if (!isValidPassword) {
 			return "Tous les critères ne sont pas validés"
+		}
+
+		if (userInfos.confirmPassword.length > 30 || userInfos.password.length > 30) {
+			return "Veuillez entrer un mot de passe plus court"
 		}
 
 		if (userInfos.confirmPassword !== userInfos.password) {
@@ -35,6 +40,7 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 	}
 
 	const handleClick = () => {
+		setMessage("")
 		const errorMessage = verifyInputs()
 		if (errorMessage !== "") {
 			setMessage(errorMessage)
@@ -46,9 +52,16 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 		requestForSubmit()
 	}
 
+	const handleArrowClick = () => {
+		handleMove("previous")
+		setTimeout(() => {
+			setMessage("")
+		}, 300)
+	}
+
 	return (
-		<div ref={ref} className={`${className}`}>
-			<ArrowLeft className="cursor-pointer" onClick={() => handleMove("previous")} />
+		<div ref={ref} className={`${className} relative`}>
+			<ArrowLeft className="cursor-pointer absolute -translate-full text-sky-dark-violet" onClick={() => handleArrowClick()} />
 			<h2 className="text-center text-4xl text-sky-violet mb-4 font-medium font-bricolage">Bienvenue {userInfos.firstName}</h2>
 
 			<p className="text-gray-700">Mot de passe</p>
