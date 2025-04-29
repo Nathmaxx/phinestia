@@ -111,10 +111,11 @@ export const verifyEmail = async (req: Request, res: Response) => {
 		}
 
 		const tokenExpiration = user.verificationTokenExpiresAt
-		if (tokenExpiration && tokenExpiration > new Date(Date.now())) {
+		if (tokenExpiration && tokenExpiration < new Date(Date.now())) {
 			const verificationToken = generateVerificationToken()
 
 			user.verificationToken = verificationToken
+			user.verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 			await user.save()
 
 			await sendVerificationEmail(user.email, verificationToken)
@@ -123,17 +124,23 @@ export const verifyEmail = async (req: Request, res: Response) => {
 			return
 		}
 
-		user.isVerified = true
-		user.verificationToken = undefined
-		user.verificationTokenExpiresAt = undefined
+		if (tokenExpiration && code === user.verificationToken) {
 
-		await user.save()
+			user.isVerified = true
+			user.verificationToken = undefined
+			user.verificationTokenExpiresAt = undefined
 
-		generateJWTToken(res, user._id.toString());
+			await user.save()
+
+			generateJWTToken(res, user._id.toString());
+		} else {
+			res.status(400).json({ success: false, message: "Code de vérification invalide" })
+			return
+		}
 
 		// Possibilité d'envoyer un mail de bienvenue
 
-		res.status(200).json({ success: true, message: 'Email verified successfully' })
+		res.status(200).json({ success: true, message: 'Email vérifié avec succès' })
 	} catch (error) {
 		catchError(res, error)
 	}
@@ -189,6 +196,14 @@ export const resetPassword = async (req: Request, res: Response) => {
 		await sendResetSuccessEmail(user.email)
 
 		res.status(200).json({ success: true, message: "Password reset successfully" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
+export const resendVerificationToken = (_: Request, res: Response) => {
+	try {
+
 	} catch (error) {
 		catchError(res, error)
 	}
