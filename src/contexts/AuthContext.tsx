@@ -88,8 +88,16 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 			await api.post('/auth/verify-email', { email, code })
 			return { success: true, message: "Utilisateur vérifié" }
 		} catch (error) {
-			console.log(error)
 			return catchError(error, "Impossible de vérifier l'utilisateur. Veuillez réessayer plus tard")
+		}
+	}
+
+	const resendVerificationEmail = async (email: string) => {
+		try {
+			await api.post("/auth/resend-verification-email", { email })
+			return { success: true, message: "Nouvel e-mail de vérification envoyé" }
+		} catch (error) {
+			return catchError(error, "Impossible de renvoyer l'email de vérification")
 		}
 	}
 
@@ -106,7 +114,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		login,
 		logout,
 		signUp,
-		verifyEmail
+		verifyEmail,
+		resendVerificationEmail
 	}
 
 	return (
