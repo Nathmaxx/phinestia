@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Authentication from './pages/Authentication';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoutes';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
 					</Route>
 
 					<Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+					<Route path='/profil' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
 
 					{/* Route 404 */}
