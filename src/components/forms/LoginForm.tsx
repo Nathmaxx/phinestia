@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useAuth } from "../../hooks/useAuthContext"
 import PasswordInput from "../Inputs/PasswordInput"
 import { useNavigate } from "react-router-dom"
+import Message from "../Message"
 
 type LoginFormProps = {
 	className?: string
@@ -21,6 +22,9 @@ const LoginForm = ({ className, handleToggle }: LoginFormProps) => {
 		password: ""
 	})
 
+	const [verifyEmail, setVerifyEmail] = useState(false)
+	const [message, setMessage] = useState("")
+
 	const setInfo = (type: keyof LoginInfos, value: string) => {
 		setUserInfos({
 			...userInfos,
@@ -30,16 +34,25 @@ const LoginForm = ({ className, handleToggle }: LoginFormProps) => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		setMessage("")
+		if (!userInfos.email || !userInfos.password) {
+			return
+		}
 		const response = await login(userInfos.email, userInfos.password)
 		if (response.success) {
 			navigate("/dashboard")
+		} else if (response.message === "E-mail non vérifié") {
+			setVerifyEmail(true)
+		} else {
+			setMessage(response.message)
 		}
 	}
 
-	return (
+	return !verifyEmail ? (
 		<form
-			className={`w-[300px] font-bricolage flex flex-col ${className}`}
+			className={`w-[300px] font-bricolage flex flex-col ${className || ""}`}
 			onSubmit={handleSubmit}
+			autoComplete="off"
 		>
 			<h2 className="text-center text-4xl text-sky-violet mb-4 font-medium font-bricolage">Se connecter</h2>
 
@@ -61,15 +74,22 @@ const LoginForm = ({ className, handleToggle }: LoginFormProps) => {
 			<p className='mb-4 text-sm mt-1.5 cursor-pointer hover:underline'>Mot de passe oublié ?</p>
 
 
-			<SubmitButton className="flex items-center justify-center mt-2">
+			<SubmitButton className="flex items-center justify-center mt-2 font-figtree">
 				<span>Connexion</span>
 			</SubmitButton>
+
+			<Message message={message} className="mt-3" />
 
 			<p className="mt-2 text-sm font-bricolage cursor-pointer" onClick={handleToggle}>
 				Pas encore de compte ? <span className="underline">S'inscrire</span>
 			</p>
 		</form>
+	) : (
+		<div>
+
+		</div>
 	)
 }
+
 
 export default LoginForm
