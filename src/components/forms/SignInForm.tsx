@@ -15,12 +15,12 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 
 	const [userInfos, setUserInfos] = useState({
 		firstName: "",
-		email: "nathan.grdi@gmail.com",
+		email: "",
 		password: "",
 		confirmPassword: ""
 	})
 
-	const [step, setStep] = useState(3)
+	const [step, setStep] = useState(1)
 	const [message, setMessage] = useState("")
 
 	const signInFirstRef = useRef<HTMLDivElement>(null)
@@ -86,6 +86,7 @@ const SignInForm = ({ className = "", handleToggle }: SignInFormProps) => {
 
 			<SignInSecond
 				setInfo={setInfo}
+				setUserInfos={setUserInfos}
 				userInfos={userInfos}
 				handleMove={handleMove}
 				handleToggle={handleToggle}

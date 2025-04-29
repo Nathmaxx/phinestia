@@ -19,7 +19,7 @@ const SignInThird = ({ className, userInfos, message, setMessage }: SignInThirdP
 
 	useEffect(() => {
 		setMessage("")
-		if (code[CODE_LENGTH - 1] !== '') {
+		if (code.every(value => value !== '')) {
 			setMessage("Complété")
 		}
 	}, [code, setMessage])

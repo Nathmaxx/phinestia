@@ -9,6 +9,7 @@ import { useAuth } from "../../hooks/useAuthContext"
 
 type SignInSecondProps = {
 	userInfos: SignInInfos
+	setUserInfos: (value: SignInInfos) => void
 	setInfo: (type: keyof SignInInfos, value: string) => void
 	ref?: React.RefObject<HTMLDivElement | null>
 	handleMove: (direction: "next" | "previous") => void
@@ -18,7 +19,7 @@ type SignInSecondProps = {
 	setMessage: (value: string) => void
 }
 
-const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, message, setMessage }: SignInSecondProps) => {
+const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleToggle, message, setMessage, setUserInfos }: SignInSecondProps) => {
 
 	const { signUp } = useAuth()
 
@@ -55,7 +56,18 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 		const response = await signUp(userInfos.firstName, userInfos.email, userInfos.password)
 
 		if (!response.success) {
+			if (response.message === "Impossible d'envoyer l'e-mail de vérification") {
+				setUserInfos({
+					email: "",
+					firstName: "",
+					password: "",
+					confirmPassword: ""
+				})
+
+				handleMove("previous")
+			}
 			setMessage(response.message)
+			setIsLoading(false)
 			return
 		}
 

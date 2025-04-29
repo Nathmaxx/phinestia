@@ -83,6 +83,14 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
+	// const verifyEmail = async () => {
+	// 	try {
+	// 		await api.post('verify-email', {})
+	// 	} catch (error) {
+
+	// 	}
+	// }
+
 
 	useEffect(() => {
 		checkAuth()
