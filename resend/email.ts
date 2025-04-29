@@ -14,7 +14,7 @@ export const sendVerificationEmail = async (email: string, verificationToken: st
 		}
 		return { success: true, message: "Email envoyé" }
 	} catch (error) {
-		return { success: false, message: "Impossible d'envoyer l'e-mail de vérification" }
+		return { success: false, message: "Impossible d'envoyer l'e-mail de vérification. Veuillez réessayer dans quelques minutes" }
 	}
 }
 

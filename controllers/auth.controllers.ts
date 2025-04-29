@@ -36,11 +36,9 @@ export const signup = async (req: Request, res: Response) => {
 
 		await user.save();
 
-		generateJWTToken(res, user._id.toString());
-
 		const response = await sendVerificationEmail(user.email, verificationToken)
-		console.log(response)
-		if (!response.success) {
+		if (!response.success && response.message === "Impossible d'envoyer l'e-mail de vérification") {
+			await User.deleteOne({ _id: user._id })
 			res.status(400).json(response)
 			return
 		}
@@ -105,11 +103,23 @@ export const verifyEmail = async (req: Request, res: Response) => {
 		const user = await User.findOne({
 			verificationToken: code,
 			email,
-			verificationTokenExpiresAt: { $gt: Date.now() }
 		})
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
+			res.status(400).json({ success: false, message: "Code invalide" })
+			return
+		}
+
+		const tokenExpiration = user.verificationTokenExpiresAt
+		if (tokenExpiration && tokenExpiration > new Date(Date.now())) {
+			const verificationToken = generateVerificationToken()
+
+			user.verificationToken = verificationToken
+			await user.save()
+
+			await sendVerificationEmail(user.email, verificationToken)
+
+			res.status(400).json({ success: false, message: "Code expiré, un nouveau code de vérification a été envoyé" })
 			return
 		}
 
@@ -118,6 +128,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
 		user.verificationTokenExpiresAt = undefined
 
 		await user.save()
+
+		generateJWTToken(res, user._id.toString());
 
 		// Possibilité d'envoyer un mail de bienvenue
 
@@ -194,5 +206,13 @@ export const checkAuth = async (req: Request, res: Response) => {
 		res.status(200).json({ success: true, user: { ...user.toObject(), password: undefined } })
 	} catch (error) {
 		catchError(res, error)
+	}
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+	try {
+
+	} catch (error) {
+
 	}
 }
