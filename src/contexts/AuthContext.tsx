@@ -83,13 +83,15 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
-	// const verifyEmail = async () => {
-	// 	try {
-	// 		await api.post('verify-email', {})
-	// 	} catch (error) {
-
-	// 	}
-	// }
+	const verifyEmail = async (code: string, email: string) => {
+		try {
+			await api.post('/auth/verify-email', { email, code })
+			return { success: true, message: "Utilisateur vérifié" }
+		} catch (error) {
+			console.log(error)
+			return catchError(error, "Impossible de vérifier l'utilisateur. Veuillez réessayer plus tard")
+		}
+	}
 
 
 	useEffect(() => {
@@ -103,7 +105,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		checkAuth,
 		login,
 		logout,
-		signUp
+		signUp,
+		verifyEmail
 	}
 
 	return (

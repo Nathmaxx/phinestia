@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { SignInInfos } from "../../types/user"
 import Message from "../Message"
 import CodeInput from "../Inputs/CodeInput"
+import { useAuth } from "../../hooks/useAuthContext"
 
 type SignInThirdProps = {
 	className?: string
@@ -12,17 +13,27 @@ type SignInThirdProps = {
 
 const SignInThird = ({ className, userInfos, message, setMessage }: SignInThirdProps) => {
 
-	// const { verifyEmail } = useAuth()
+	const { verifyEmail } = useAuth()
 
 	const CODE_LENGTH = 6
 	const [code, setCode] = useState(Array(CODE_LENGTH).fill(''))
 
 	useEffect(() => {
-		setMessage("")
-		if (code.every(value => value !== '')) {
-			setMessage("Complété")
+		const sendCode = async () => {
+			setMessage("")
+			if (code.every(value => value !== '')) {
+				const codeString = code.join('')
+				const response = await verifyEmail(codeString, userInfos.email)
+				if (!response.success) {
+					setMessage(response.message)
+				} else {
+					setMessage("E-mail vérifié avec succès")
+				}
+			}
 		}
-	}, [code, setMessage])
+
+		sendCode()
+	}, [code, setMessage, userInfos.email, verifyEmail])
 
 	return (
 		<div
