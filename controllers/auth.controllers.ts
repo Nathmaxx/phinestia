@@ -53,22 +53,22 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
 	const { email, password } = req.body
+
 	try {
 		const user = await User.findOne({ email })
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Invalid credentials" })
+			res.status(400).json({ success: false, message: "Adresse mail ou mot de passe incorrect" })
 			return
 		}
-
 		const isPasswordValid = await bcrypt.compare(password, user.password)
 		if (!isPasswordValid) {
-			res.status(400).json({ success: false, message: "Invalid credentials" })
+			res.status(400).json({ success: false, message: "Adresse mail ou mot de passe incorrect" })
 			return
 		}
 
 		if (!user.isVerified) {
-			res.status(400).json({ success: false, message: "Email not verified" })
+			res.status(400).json({ success: false, message: "E-mail non vérifié" })
 			return
 		}
 
@@ -84,7 +84,6 @@ export const login = async (req: Request, res: Response) => {
 			firstName: user.firstName,
 			isVerified: user.isVerified
 		}
-
 		res.status(200).json({ success: true, message: "Login successful", user: userInfos })
 	} catch (error) {
 		catchError(res, error)
@@ -182,7 +181,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 		})
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Invalid or expired reset token" })
+			res.status(400).json({ success: false, message: "Token invalide ou expiré" })
 			return
 		}
 
@@ -201,9 +200,27 @@ export const resetPassword = async (req: Request, res: Response) => {
 	}
 }
 
-export const resendVerificationToken = (_: Request, res: Response) => {
+export const resendVerificationEmail = async (req: Request, res: Response) => {
 	try {
+		const { email } = req.body
 
+		const verificationToken = generateVerificationToken()
+		const verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
+
+		const user = await User.findOne({ email })
+
+		if (!user) {
+			res.status(400).json({ success: false, message: "L'utilisateur n'existe pas" })
+			return
+		}
+
+		user.verificationToken = verificationToken
+		user.verificationTokenExpiresAt = verificationTokenExpiresAt
+
+		await user.save()
+		await sendVerificationEmail(user.email, verificationToken)
+
+		res.status(200).json({ success: true, message: "Email de vérification envoyé" })
 	} catch (error) {
 		catchError(res, error)
 	}
