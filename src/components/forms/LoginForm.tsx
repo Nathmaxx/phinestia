@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuthContext"
 import PasswordInput from "../Inputs/PasswordInput"
 import { useNavigate } from "react-router-dom"
 import Message from "../Message"
+import EmailVerification from "../EmailVerification"
 
 type LoginFormProps = {
 	className?: string
@@ -86,7 +87,12 @@ const LoginForm = ({ className, handleToggle }: LoginFormProps) => {
 		</form>
 	) : (
 		<div>
+			<EmailVerification
+				email={userInfos.email}
+				setMessage={setMessage}
+			/>
 
+			<Message message={message} className="mt-3" />
 		</div>
 	)
 }
