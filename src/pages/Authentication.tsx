@@ -94,7 +94,7 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 				>
 					<div
 						ref={contentRef}
-						className="w-[400px] mx-auto"
+						className="w-[450px] mx-auto"
 					>
 						{currentMethod === "signin" ? (
 							<>

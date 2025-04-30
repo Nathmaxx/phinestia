@@ -77,7 +77,7 @@ const EmailVerification = ({ setMessage, email }: EmailVerificationProps) => {
 	}
 
 	return (
-		<>
+		<div className="w-full flex flex-col items-center">
 			<CodeInput
 				code={code}
 				setCode={setCode}
@@ -93,7 +93,7 @@ const EmailVerification = ({ setMessage, email }: EmailVerificationProps) => {
 			>
 				Renvoyer {countdown !== 0 ? "(" + countdown + "s)" : ""}
 			</button>
-		</>
+		</div>
 	)
 }
 
