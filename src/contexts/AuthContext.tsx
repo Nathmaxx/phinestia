@@ -101,6 +101,15 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
+	const forgotPassword = async (email: string) => {
+		try {
+			await api.post("/auth/forgot-password", { email })
+			return { success: true, message: "Email envoyé" }
+		} catch (error) {
+			return catchError(error, "Impossible d'envoyer l'email de reinitialisation")
+		}
+	}
+
 
 	useEffect(() => {
 		checkAuth()
@@ -115,7 +124,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		logout,
 		signUp,
 		verifyEmail,
-		resendVerificationEmail
+		resendVerificationEmail,
+		forgotPassword
 	}
 
 	return (

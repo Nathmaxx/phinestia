@@ -11,6 +11,7 @@ type AuthContextType = {
 	signUp: (firstName: string, email: string, password: string) => Promise<Operation>
 	verifyEmail: (code: string, email: string) => Promise<Operation>
 	resendVerificationEmail: (email: string) => Promise<Operation>
+	forgotPassword: (email: string) => Promise<Operation>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

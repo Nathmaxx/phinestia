@@ -4,6 +4,7 @@ import Message from "../Message"
 import { LoginPages } from "../../types/pages"
 import { ArrowLeft } from "lucide-react"
 import TimerButton from "../buttons/TimerButton"
+import { useAuth } from "../../hooks/useAuthContext"
 
 type ForgotPasswordProps = {
 	forgotRef: React.RefObject<HTMLDivElement | null>
@@ -15,13 +16,13 @@ const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
 	const [email, setEmail] = useState("")
 	const [message, setMessage] = useState("")
 
+	const { forgotPassword } = useAuth()
 
-	const handleClick = () => {
+	const handleClick = async () => {
+
 		setMessage("")
-
-		setTimeout(() => {
-			setMessage("Veuillez consulter votre boite mail")
-		}, 1000)
+		await forgotPassword(email)
+		setMessage("Veuillez consulter votre boite mail")
 	}
 
 	return (
@@ -41,7 +42,6 @@ const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
 			/>
 
 			<p className="font-figtree mb-3 px-4 text-justify">Si cette adresse mail est reliée à un compte, vous recevrez un e-mail permettant de réinitialiser votre mot de passe</p>
-
 
 			<TimerButton
 				duration={60}
