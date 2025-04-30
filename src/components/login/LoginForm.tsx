@@ -6,11 +6,10 @@ import TextInput from "../Inputs/TextInput"
 import Message from "../Message"
 import { LoginInfos } from "../../types/user"
 import { LoginPages } from "../../types/pages"
+import { useState } from "react"
 
 type LoginFormProps = {
 	className?: string
-	message: string
-	setMessage: (value: string) => void
 	userInfos: LoginInfos
 	formRef: React.RefObject<HTMLFormElement | null>
 	move: (value: LoginPages) => void
@@ -18,12 +17,12 @@ type LoginFormProps = {
 	handleToggle: () => void
 }
 
-const LoginForm = ({ className, message, setMessage, userInfos, formRef, move, setInfo, handleToggle }: LoginFormProps) => {
+const LoginForm = ({ className, userInfos, formRef, move, setInfo, handleToggle }: LoginFormProps) => {
 
 	const { login } = useAuth()
 	const navigate = useNavigate()
 
-
+	const [message, setMessage] = useState("")
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()

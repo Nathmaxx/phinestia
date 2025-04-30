@@ -102,7 +102,7 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 							</>
 						) : (
 							<>
-								<LoginForm className="w-full" handleToggle={handleToggle} />
+								<LoginForm handleToggle={handleToggle} />
 							</>
 						)}
 					</div>

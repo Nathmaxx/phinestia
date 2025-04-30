@@ -19,7 +19,6 @@ const LoginFormParent = ({ handleToggle }: LoginFormParentProps) => {
 	})
 
 	const [page, setPage] = useState<LoginPages>("login")
-	const [message, setMessage] = useState("")
 
 	const formRef = useRef<HTMLFormElement>(null)
 	const verifyRef = useRef<HTMLDivElement>(null)
@@ -32,10 +31,10 @@ const LoginFormParent = ({ handleToggle }: LoginFormParentProps) => {
 		})
 	}
 
-	const move = (nextPage: LoginPages) => {
+	const move = (nextPage: LoginPages, direction: "next" | "previous" = "next") => {
 
 		const pages = { "login": formRef, "verify-email": verifyRef, "forgot-password": forgotRef }
-		const move = -20
+		const move = direction === "next" ? -20 : 20
 
 		gsap.to(pages[page].current, {
 			opacity: 0,
@@ -73,8 +72,6 @@ const LoginFormParent = ({ handleToggle }: LoginFormParentProps) => {
 				<LoginForm
 					formRef={formRef}
 					handleToggle={handleToggle}
-					message={message}
-					setMessage={setMessage}
 					move={move}
 					setInfo={setInfo}
 					userInfos={userInfos}
@@ -84,14 +81,15 @@ const LoginFormParent = ({ handleToggle }: LoginFormParentProps) => {
 			{page === "verify-email" && (
 				<LoginVerifyEmail
 					email={userInfos.email}
-					message={message}
-					setMessage={setMessage}
 					verifyRef={verifyRef}
 				/>
 			)}
 
 			{page === "forgot-password" && (
-				<ForgotPassword forgotRef={forgotRef} />
+				<ForgotPassword
+					forgotRef={forgotRef}
+					move={move}
+				/>
 			)}
 		</>
 	)

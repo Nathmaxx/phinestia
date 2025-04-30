@@ -1,14 +1,16 @@
+import { useState } from "react"
 import EmailVerification from "../EmailVerification"
 import Message from "../Message"
 
 type LoginVerifyEmailProps = {
 	verifyRef: React.RefObject<HTMLDivElement | null>
 	email: string
-	message: string
-	setMessage: (value: string) => void
 }
 
-const LoginVerifyEmail = ({ verifyRef, email, message, setMessage }: LoginVerifyEmailProps) => {
+const LoginVerifyEmail = ({ verifyRef, email }: LoginVerifyEmailProps) => {
+
+	const [message, setMessage] = useState("")
+
 	return (
 		<div
 			ref={verifyRef}
