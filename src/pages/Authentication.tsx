@@ -1,8 +1,8 @@
 
 //import LoginForm from "../components/forms/LoginForm"
 import { useEffect, useRef, useState } from "react"
-import SignInForm from "../components/forms/SignInForm"
-import LoginForm from "../components/forms/LoginForm"
+import SignInForm from "../components/signin/SignInForm"
+import LoginForm from "../components/login/LoginFormParent"
 import { useLocation, useNavigate } from "react-router-dom"
 import gsap from "gsap"
 import { useAuth } from "../hooks/useAuthContext"
