@@ -35,8 +35,8 @@ const SecurityTab = () => {
 	}
 
 	return (
-		<div className="max-w-lg">
-			<h2 className="text-xl font-semibold text-gray-800 mb-4 font-bricolage">
+		<div className="w-[400px]">
+			<h2 className="text-xl font-semibold text-gray-800 mb-4 font-figtree">
 				Changer votre mot de passe
 			</h2>
 
