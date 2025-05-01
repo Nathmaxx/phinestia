@@ -156,7 +156,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 		}
 
 		const resetPasswordToken = crypto.randomBytes(32).toString("hex")
-		const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000) // 1h
+		const resetPasswordExpiresAt = new Date(Date.now() + 20 * 60 * 1000) // 20m
 
 		user.resetPasswordToken = resetPasswordToken
 		user.resetPasswordExpiresAt = resetPasswordExpiresAt
@@ -185,7 +185,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 		})
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Token invalide ou expiré" })
+			res.status(400).json({ success: false, message: "Lien invalide ou expiré" })
 			return
 		}
 
@@ -198,7 +198,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
 		await sendResetSuccessEmail(user.email)
 
-		res.status(200).json({ success: true, message: "Password reset successfully" })
+		res.status(200).json({ success: true, message: "Mot de passe rinitialisé avec succès" })
 	} catch (error) {
 		catchError(res, error)
 	}
