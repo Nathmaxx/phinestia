@@ -5,6 +5,7 @@ import Authentication from './pages/Authentication';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoutes';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Layout />}>
 					<Route index element={<Home />} />
+					<Route path='reset-password/:id' element={<ResetPassword />} />
 					<Route path="authentification">
 						<Route index element={<Navigate to="/authentification/connexion" replace />} />
 						<Route path="connexion" element={<Authentication method="login" />} />

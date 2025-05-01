@@ -110,6 +110,15 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		}
 	}
 
+	const resetPassword = async (param: string, newPassword: string) => {
+		try {
+			await api.post(`/auth/reset-password/${param}`, { password: newPassword })
+			return { success: true, message: "Mot de passe modifié avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible de reinitialiser le mot de passe")
+		}
+	}
+
 
 	useEffect(() => {
 		checkAuth()
@@ -125,7 +134,8 @@ export const AuthProvider = ({ children }: ExpenseProviderProps) => {
 		signUp,
 		verifyEmail,
 		resendVerificationEmail,
-		forgotPassword
+		forgotPassword,
+		resetPassword
 	}
 
 	return (

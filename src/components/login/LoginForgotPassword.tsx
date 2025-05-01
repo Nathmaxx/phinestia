@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuthContext"
 
 type ForgotPasswordProps = {
 	forgotRef: React.RefObject<HTMLDivElement | null>
-	move: (page: LoginPages, direction: "next" | "previous") => void
+	move: (page: LoginPages, direction?: "next" | "previous") => void
 }
 
 const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
@@ -23,6 +23,11 @@ const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
 		setMessage("")
 		await forgotPassword(email)
 		setMessage("Veuillez consulter votre boite mail")
+
+		setTimeout(() => {
+			setEmail("")
+			move("login", "previous")
+		}, 2500)
 	}
 
 	return (
