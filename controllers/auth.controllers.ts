@@ -235,7 +235,7 @@ export const checkAuth = async (req: Request, res: Response) => {
 		const user = await User.findById(req.userId)
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "" })
+			res.status(400).json({ success: false, message: "Aucun utilisateur trouvé" })
 			return
 		}
 
@@ -247,8 +247,71 @@ export const checkAuth = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
 	try {
-
+		const deleteUser = await User.deleteOne({ _id: req.params })
+		console.log(deleteUser)
+		res.status(200).json({ success: true, message: "Utilisateur supprimé" })
 	} catch (error) {
-
+		catchError(res, error)
 	}
 }
+
+export const updatePersonalInfos = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params)
+		const { firstName, email } = req.body
+		if (!user) {
+			res.status(400).json({ success: false, message: "Aucun utilisateur trouvé" })
+			return
+		}
+
+		if (!email || !firstName) {
+			res.status(400).json({ success: false, message: "Données manquantes" })
+			return
+		}
+
+		if (user.firstName !== firstName) {
+			user.firstName = firstName
+		}
+
+		if (user.email !== email) {
+			user.email = email
+		}
+
+		user.save()
+		res.status(200).json({ success: true, message: "Données modifiées" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
+export const updatePassword = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params)
+		const { ancientPassword, newPassword } = req.body
+
+		if (!user) {
+			res.status(400).json({ success: false, message: "Aucun utilisateur trouvé" })
+			return
+		}
+
+		if (!ancientPassword || !newPassword) {
+			res.status(400).json({ success: false, message: "Données manquantes" })
+		}
+
+		const isPasswordValid = await bcrypt.compare(ancientPassword, user.password)
+
+		if (!isPasswordValid) {
+			res.status(400).json({ success: false, message: "Ancien mot de passe incorrect" })
+			return
+		}
+
+		const hashedPassword = await bcrypt.hash(newPassword, 10)
+		user.password = hashedPassword
+		await user.save()
+
+		res.status(400).json({ success: true, message: "Mot de passe modifié" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
