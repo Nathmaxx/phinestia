@@ -3,6 +3,9 @@ import dotenv from "dotenv"
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import authRoutes from './routes/auth.routes'
+import categoryRoutes from './routes/category.routes'
+import accountRoutes from './routes/account.routes'
+import transactionRoutes from './routes/transaction.routes'
 import { databaseConnection } from './database/dbConnection'
 
 
@@ -20,6 +23,9 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRoutes)
+app.use('/api/category', categoryRoutes)
+app.use('/api/account', accountRoutes)
+app.use('/api/transaction', transactionRoutes)
 
 databaseConnection()
 
