@@ -3,8 +3,9 @@ import TextInput from "../Inputs/TextInput"
 import Message from "../Message"
 import { LoginPages } from "../../types/pages"
 import { ArrowLeft } from "lucide-react"
-import TimerButton from "../buttons/TimerButton"
 import { useAuth } from "../../hooks/useAuthContext"
+import Button from "../buttons/Button"
+import { validateEmail } from "../../utils/validation"
 
 type ForgotPasswordProps = {
 	forgotRef: React.RefObject<HTMLDivElement | null>
@@ -21,6 +22,12 @@ const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
 	const handleClick = async () => {
 
 		setMessage("")
+
+		if (!validateEmail(email)) {
+			setMessage("L'e-mail n'est pas valide")
+			return
+		}
+
 		await forgotPassword(email)
 		setMessage("Veuillez consulter votre boite mail")
 
@@ -48,14 +55,12 @@ const LoginForgotPassword = ({ forgotRef, move }: ForgotPasswordProps) => {
 
 			<p className="font-figtree mb-3 px-4 text-justify">Si cette adresse mail est reliée à un compte, vous recevrez un e-mail permettant de réinitialiser votre mot de passe</p>
 
-			<TimerButton
-				duration={60}
+			<Button
 				onClick={handleClick}
-				initialState="active"
-				className="w-full"
+				className="w-full bg-sky-violet hover:bg-sky-dark-violet transition duration-300 rounded-md font-figtree text-white font-medium"
 			>
 				Envoyer
-			</TimerButton>
+			</Button>
 
 			<Message message={message} className="mt-4" />
 		</div>

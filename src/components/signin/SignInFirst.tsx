@@ -1,4 +1,5 @@
 import { SignInInfos } from "../../types/user"
+import { validateEmail } from "../../utils/validation"
 import Button from "../buttons/Button"
 import TextInput from "../Inputs/TextInput"
 import Message from "../Message"
@@ -27,12 +28,8 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleTog
 			return "Veuillez entrer un prénom plus court"
 		}
 
-		if (userInfos.email.length < 4) {
-			return "Veuillez entrer un email valide"
-		}
-
-		if (userInfos.email.length > 60) {
-			return "Veuillez entrer un email plus court"
+		if (!validateEmail(userInfos.email)) {
+			return "L'e-mail n'est pas valide"
 		}
 
 		return ""
