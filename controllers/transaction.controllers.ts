@@ -1,4 +1,6 @@
 
+import { Request, Response } from "express"
+
 export const addTransaction = async (req: Request, res: Response) => {
 
 }

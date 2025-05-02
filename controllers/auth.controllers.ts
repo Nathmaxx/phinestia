@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from "bcrypt"
 import { generateVerificationToken } from '../utils/generateVerificationToken'
 import { generateJWTToken } from '../utils/generateJWTToken'
-import { User } from '../model/user'
+import { User } from '../models/user'
 import { sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } from '../resend/email'
 import crypto from 'crypto'
 import { catchError } from '../utils/error'
