@@ -21,13 +21,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-	// const setUserInfo = (field: keyof UserContextInfos, value: string | boolean) => {
-	// 	setUserInfos({
-	// 		...userInfos,
-	// 		[field]: value
-	// 	})
-	// }
-
 	const checkAuth = async () => {
 		try {
 
@@ -119,6 +112,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 	}
 
+	const deleteUser = async () => {
+		try {
+			await api.delete(`/auth/${userInfos.id}`)
+			await logout()
+			return { success: true, message: "utilisateur supprimmé avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible de supprimer l'utilisateur")
+		}
+	}
 
 	useEffect(() => {
 		checkAuth()
@@ -135,7 +137,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		verifyEmail,
 		resendVerificationEmail,
 		forgotPassword,
-		resetPassword
+		resetPassword,
+		deleteUser
 	}
 
 	return (

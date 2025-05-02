@@ -13,6 +13,7 @@ type AuthContextType = {
 	resendVerificationEmail: (email: string) => Promise<Operation>
 	forgotPassword: (email: string) => Promise<Operation>
 	resetPassword: (param: string, newPassword: string) => Promise<Operation>
+	deleteUser: () => Promise<Operation>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
