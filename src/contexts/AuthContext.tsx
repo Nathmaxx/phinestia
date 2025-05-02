@@ -4,11 +4,11 @@ import { UserContextInfos, UserInfosResponse } from "../types/user"
 import { catchError } from "../utils/error"
 import api from "../utils/axios"
 
-type ExpenseProviderProps = {
+type AuthProviderProps = {
 	children: ReactNode
 }
 
-export const AuthProvider = ({ children }: ExpenseProviderProps) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const initialInfos = {
 		id: "",
