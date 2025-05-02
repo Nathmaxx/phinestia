@@ -247,8 +247,7 @@ export const checkAuth = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
 	try {
-		const deleteUser = await User.deleteOne({ _id: req.params })
-		console.log(deleteUser)
+		await User.findByIdAndDelete(req.params.userid)
 		res.status(200).json({ success: true, message: "Utilisateur supprimé" })
 	} catch (error) {
 		catchError(res, error)
