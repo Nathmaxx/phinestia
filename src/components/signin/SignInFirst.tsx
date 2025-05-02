@@ -1,5 +1,5 @@
 import { SignInInfos } from "../../types/user"
-import { validateEmail } from "../../utils/validation"
+import { validateEmail, validateFirstName } from "../../utils/validation"
 import Button from "../buttons/Button"
 import TextInput from "../Inputs/TextInput"
 import Message from "../Message"
@@ -20,12 +20,10 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleTog
 
 
 	const verifyInputs = () => {
-		if (userInfos.firstName.length < 2) {
-			return "veuillez entrer un prénom plus long"
-		}
 
-		if (userInfos.firstName.length > 20) {
-			return "Veuillez entrer un prénom plus court"
+		const verifyFirstName = validateFirstName(userInfos.firstName)
+		if (verifyFirstName !== "") {
+			return verifyFirstName
 		}
 
 		if (!validateEmail(userInfos.email)) {

@@ -113,12 +113,50 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	}
 
 	const deleteUser = async () => {
+
+		if (!userInfos.id) {
+			return { success: false, message: "Impossible de supprimer l'itilisateur" }
+		}
+
 		try {
 			await api.delete(`/auth/${userInfos.id}`)
 			await logout()
 			return { success: true, message: "utilisateur supprimmé avec succès" }
 		} catch (error) {
 			return catchError(error, "Impossible de supprimer l'utilisateur")
+		}
+	}
+
+	const updatePersonalInfos = async (firstName: string, email: string) => {
+
+		if (!userInfos.id) {
+			return { success: false, message: "Impossible de modifier les données" }
+		}
+
+		try {
+			await api.put(`/auth/infos/${userInfos.id}`, { firstName, email })
+			setUserInfos({
+				...userInfos,
+				firstName,
+				email
+			})
+			return { success: true, message: "Données modifiées" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier les données")
+		}
+	}
+
+	const updatePassword = async (password: string) => {
+
+		if (!userInfos.id) {
+			return { success: false, message: "Impossible de modifier le mot de passe" }
+		}
+
+		try {
+			await api.put(`/auth/password/${userInfos.id}`, { password })
+			return { success: true, message: "Mot de passe modifié" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier le mot de passe")
 		}
 	}
 
@@ -138,7 +176,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		resendVerificationEmail,
 		forgotPassword,
 		resetPassword,
-		deleteUser
+		deleteUser,
+		updatePersonalInfos,
+		updatePassword
 	}
 
 	return (

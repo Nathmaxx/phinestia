@@ -3,15 +3,41 @@ import TextInput from "../Inputs/TextInput"
 import Button from "../buttons/Button"
 import Message from "../Message"
 import { useAuth } from "../../hooks/useAuthContext"
+import { validateEmail, validateFirstName } from "../../utils/validation"
 
 const PersonalInfoTab = () => {
 
-	const { userInfos } = useAuth()
+	const { userInfos, updatePersonalInfos } = useAuth()
 	const [firstName, setFirstName] = useState(userInfos.firstName)
 	const [email, setEmail] = useState(userInfos.email)
 	const [message, setMessage] = useState("")
 
-	const handleSave = () => {
+	const handleSave = async () => {
+		setMessage("")
+
+		const verifyFirstName = validateFirstName(firstName)
+		if (verifyFirstName !== "") {
+			setMessage(verifyFirstName)
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
+
+		const verifyEmail = validateEmail(email)
+		if (!verifyEmail) {
+			setMessage("L'adresse e-mail est incorrecte")
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
+
+		const response = await updatePersonalInfos(firstName, email)
+		if (!response.success) {
+			setEmail(userInfos.email)
+			setFirstName(userInfos.firstName)
+			setMessage(response.message)
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
+
 		setMessage("Les modifications ont été enregistrées")
 		setTimeout(() => setMessage(""), 3000)
 	}
