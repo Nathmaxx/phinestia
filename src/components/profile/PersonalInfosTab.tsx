@@ -3,11 +3,11 @@ import TextInput from "../Inputs/TextInput"
 import Button from "../buttons/Button"
 import Message from "../Message"
 import { useAuth } from "../../hooks/useAuthContext"
-import { validateFirstName } from "../../utils/validation"
+import { validateEmail, validateFirstName } from "../../utils/validation"
 
 const PersonalInfoTab = () => {
 
-	const { userInfos, updateFirstName } = useAuth()
+	const { userInfos, updateFirstName, updateEmail } = useAuth()
 	const [firstName, setFirstName] = useState(userInfos.firstName)
 	const [email, setEmail] = useState(userInfos.email)
 	const [message, setMessage] = useState("")
@@ -37,8 +37,26 @@ const PersonalInfoTab = () => {
 		setTimeout(() => setMessage(""), 3000)
 	}
 
-	const handleUpdateEmail = () => {
+	const handleUpdateEmail = async () => {
+		setMessage("")
+		const verifyEmail = validateEmail(email)
+		if (!verifyEmail) {
+			setMessage("L'e-mail est incorrect")
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
 
+		const response = await updateEmail(email)
+		if (!response.success) {
+			setEmail(userInfos.email)
+			setMessage(response.message)
+			setIsUpdateEmail(false)
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
+
+		setMessage("L'e-mail de vérification a été envoyé, veuillez consulter votre boîte mail")
+		setTimeout(() => setMessage(""), 3000)
 	}
 
 	// const handleSave = async () => {

@@ -16,6 +16,7 @@ type AuthContextType = {
 	deleteUser: () => Promise<Operation>
 	updateFirstName: (firstName: string) => Promise<Operation>
 	updatePassword: (password: string) => Promise<Operation>
+	updateEmail: (email: string) => Promise<Operation>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

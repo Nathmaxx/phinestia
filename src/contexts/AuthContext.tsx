@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const updateFirstName = async (firstName: string) => {
 
 		if (!userInfos.id) {
-			return { success: false, message: "Impossible de modifier les données" }
+			return { success: false, message: "Impossible de modifier le prénom" }
 		}
 
 		try {
@@ -139,9 +139,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				...userInfos,
 				firstName
 			})
-			return { success: true, message: "Données modifiées" }
+			return { success: true, message: "Prénom modifié" }
 		} catch (error) {
-			return catchError(error, "Impossible de modifier les données")
+			return catchError(error, "Impossible de modifier le prénom")
 		}
 	}
 
@@ -156,6 +156,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			return { success: true, message: "Mot de passe modifié" }
 		} catch (error) {
 			return catchError(error, "Impossible de modifier le mot de passe")
+		}
+	}
+
+	const updateEmail = async (email: string) => {
+		if (!userInfos.id) {
+			return { success: false, message: "Impossible de modifier l'e-mail" }
+		}
+
+		try {
+			await api.put(`/auth/email/${userInfos.id}`, { email })
+			setUserInfos({
+				...userInfos,
+				email
+			})
+			return { success: true, message: "E-mail modifié" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier l'e-mail")
 		}
 	}
 
@@ -177,7 +194,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		resetPassword,
 		deleteUser,
 		updateFirstName,
-		updatePassword
+		updatePassword,
+		updateEmail
 	}
 
 	return (
