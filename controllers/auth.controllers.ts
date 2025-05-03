@@ -6,6 +6,7 @@ import { User } from '../models/user'
 import { sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } from '../resend/email'
 import crypto from 'crypto'
 import { catchError } from '../utils/error'
+import mongoose from 'mongoose'
 
 export const signup = async (req: Request, res: Response) => {
 	const { firstName, email, password } = req.body
@@ -247,36 +248,45 @@ export const checkAuth = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
 	try {
-		await User.findByIdAndDelete(req.params.userid)
+		const { userid } = req.params
+
+		if (!mongoose.Types.ObjectId.isValid(userid)) {
+			res.status(400).json({ success: false, message: "Format d'identifiant utilisateur invalide" });
+			return
+		}
+
+		const deleteUser = await User.findByIdAndDelete(userid)
+
+		if (!deleteUser) {
+			res.status(404).json({ success: false, message: "Aucun utilisateur trouvé" })
+			return
+		}
 		res.status(200).json({ success: true, message: "Utilisateur supprimé" })
 	} catch (error) {
 		catchError(res, error)
 	}
 }
 
-export const updatePersonalInfos = async (req: Request, res: Response) => {
+export const updateFirstName = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params)
-		const { firstName, email } = req.body
+		const { userid } = req.params
+		const user = await User.findById(userid)
+		const { firstName } = req.body
 		if (!user) {
 			res.status(400).json({ success: false, message: "Aucun utilisateur trouvé" })
 			return
 		}
 
-		if (!email || !firstName) {
+		if (!firstName) {
 			res.status(400).json({ success: false, message: "Données manquantes" })
 			return
 		}
 
 		if (user.firstName !== firstName) {
 			user.firstName = firstName
+			user.save()
 		}
 
-		if (user.email !== email) {
-			user.email = email
-		}
-
-		user.save()
 		res.status(200).json({ success: true, message: "Données modifiées" })
 	} catch (error) {
 		catchError(res, error)
@@ -285,7 +295,8 @@ export const updatePersonalInfos = async (req: Request, res: Response) => {
 
 export const updatePassword = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params)
+		const { userid } = req.params
+		const user = await User.findById(userid)
 		const { ancientPassword, newPassword } = req.body
 
 		if (!user) {

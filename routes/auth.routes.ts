@@ -1,5 +1,5 @@
 import express from "express"
-import { signup, login, logout, verifyEmail, forgotPassword, resetPassword, checkAuth, resendVerificationEmail, deleteUser, updatePassword, updatePersonalInfos } from "../controllers/auth.controllers"
+import { signup, login, logout, verifyEmail, forgotPassword, resetPassword, checkAuth, resendVerificationEmail, deleteUser, updatePassword, updateFirstName } from "../controllers/auth.controllers"
 import { verifyToken } from "../middlewares/verifyToken"
 
 const router = express.Router()
@@ -12,7 +12,7 @@ router.post('/reset-password/:token', resetPassword)
 router.post('/resend-verification-email', resendVerificationEmail)
 router.delete('/:userid', deleteUser)
 router.put('/password/:userid', updatePassword)
-router.put('/infos/:userid', updatePersonalInfos)
+router.put('/firstname/:userid', updateFirstName)
 router.get('/logout', logout)
 router.get('/check-auth', verifyToken, checkAuth)
 
