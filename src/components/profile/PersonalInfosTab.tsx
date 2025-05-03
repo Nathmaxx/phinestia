@@ -17,6 +17,12 @@ const PersonalInfoTab = () => {
 
 	const handleUpdateFirstName = async () => {
 		setMessage("")
+
+		if (firstName === userInfos.firstName) {
+			setIsUpdateFirstName(false)
+			return
+		}
+
 		const verifyFirstName = validateFirstName(firstName)
 		if (verifyFirstName !== "") {
 			setMessage(verifyFirstName)
@@ -39,6 +45,12 @@ const PersonalInfoTab = () => {
 
 	const handleUpdateEmail = async () => {
 		setMessage("")
+
+		if (email === userInfos.email) {
+			setIsUpdateEmail(false)
+			return
+		}
+
 		const verifyEmail = validateEmail(email)
 		if (!verifyEmail) {
 			setMessage("L'e-mail est incorrect")
