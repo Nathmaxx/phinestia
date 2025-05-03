@@ -17,13 +17,14 @@ const changeEmailRequest = new mongoose.Schema({
 		unique: true,
 		required: true
 	},
-	varificationToken: {
+	verificationToken: {
 		type: String,
 		required: true
 	},
 	verificationTokenExpiresAt: {
 		type: Date,
-		required: true
+		required: true,
+		index: { expires: 0 }
 	}
 })
 

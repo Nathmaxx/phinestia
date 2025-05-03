@@ -7,6 +7,7 @@ import { sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } 
 import crypto from 'crypto'
 import { catchError } from '../utils/error'
 import mongoose from 'mongoose'
+import { ChangeEmailRequest } from '../models/changeEmailRequest'
 
 export const signup = async (req: Request, res: Response) => {
 	const { firstName, email, password } = req.body
@@ -288,6 +289,57 @@ export const updateFirstName = async (req: Request, res: Response) => {
 		}
 
 		res.status(200).json({ success: true, message: "Données modifiées" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
+export const updateEmail = async (req: Request, res: Response) => {
+	try {
+		const { userid } = req.params
+		const { email } = req.body
+
+		if (!email || !userid) {
+			res.status(400).json({ message: "Données manquantes" })
+			return
+		}
+
+		const emailAlreadyExists = await User.findOne({ email });
+		if (emailAlreadyExists) {
+			res.status(400).json({ success: false, message: "Cet email est déjà utilisé" });
+			return
+		}
+
+		let changingEmail = await ChangeEmailRequest.findOne({ email })
+		const verificationToken = generateVerificationToken()
+		if (changingEmail) {
+			if (changingEmail.userId.toString() === userid) {
+				changingEmail.verificationToken = verificationToken
+				changingEmail.verificationTokenExpiresAt = new Date(Date.now() + 20 * 60 * 1000)
+			} else {
+				res.status(400).json({ success: false, message: "Cet email est déjà utilisé" })
+				return
+			}
+		} else {
+			changingEmail = new ChangeEmailRequest({
+				userId: userid,
+				email,
+				verificationToken,
+				verificationTokenExpiresAt: new Date(Date.now() + 20 * 60 * 1000)
+			});
+		}
+
+		await changingEmail.save()
+
+		const response = await sendVerificationEmail(email, verificationToken)
+		if (!response.success && response.message === "Impossible d'envoyer l'e-mail de vérification") {
+			await changingEmail.deleteOne({ _id: changingEmail._id })
+			res.status(400).json(response)
+			return
+		}
+
+		res.status(200).json({ success: true, message: "E-mail de vérification envoyé à la nouvelle adresse e-mail" })
+
 	} catch (error) {
 		catchError(res, error)
 	}
