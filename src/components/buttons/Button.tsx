@@ -9,7 +9,7 @@ type ButtonProps = {
 const Button = ({ children, className, onClick, isLoading = false }: ButtonProps) => {
 	return (
 		<button
-			className={`${className} cursor-pointer px-2.5 py-1.5 flex items-center justify-center gap-2`}
+			className={`${className} cursor-pointer flex items-center justify-center gap-2`}
 			onClick={onClick}
 			type="button"
 			disabled={isLoading}

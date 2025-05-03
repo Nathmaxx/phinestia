@@ -127,18 +127,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 	}
 
-	const updatePersonalInfos = async (firstName: string, email: string) => {
+	const updateFirstName = async (firstName: string) => {
 
 		if (!userInfos.id) {
 			return { success: false, message: "Impossible de modifier les données" }
 		}
 
 		try {
-			await api.put(`/auth/infos/${userInfos.id}`, { firstName, email })
+			await api.put(`/auth/firstname/${userInfos.id}`, { firstName })
 			setUserInfos({
 				...userInfos,
-				firstName,
-				email
+				firstName
 			})
 			return { success: true, message: "Données modifiées" }
 		} catch (error) {
@@ -177,7 +176,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		forgotPassword,
 		resetPassword,
 		deleteUser,
-		updatePersonalInfos,
+		updateFirstName,
 		updatePassword
 	}
 

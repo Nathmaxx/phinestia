@@ -89,7 +89,7 @@ const SecurityTab = () => {
 
 				<Button
 					onClick={handleChangePassword}
-					className="bg-sky-violet hover:bg-sky-dark-violet transition duration-300 font-semibold text-white rounded-md"
+					className="bg-sky-violet hover:bg-sky-dark-violet transition duration-300 font-semibold text-white rounded-md px-2 py-1"
 				>
 					Mettre à jour le mot de passe
 				</Button>
@@ -101,7 +101,7 @@ const SecurityTab = () => {
 				</h2>
 				<Button
 					onClick={handleDeleteUser}
-					className="bg-red-700 rounded-md text-white font-figtree font-medium"
+					className="bg-red-700 rounded-md text-white font-figtree font-medium px-2 py-1"
 				>
 					Supprimer le compte
 				</Button>
