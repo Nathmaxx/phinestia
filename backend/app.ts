@@ -24,10 +24,7 @@ if (missingVars.length > 0) {
 const app = express()
 
 app.use(cors({
-	origin: [
-		'http://localhost:5173',
-		process.env.CLIENT_URL || ''
-	],
+	origin: [process.env.CLIENT_URL],
 	credentials: true, // Important pour les cookies/authentification
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	allowedHeaders: ['Content-Type', 'Authorization']
