@@ -71,36 +71,6 @@ const PersonalInfoTab = () => {
 		setTimeout(() => setMessage(""), 3000)
 	}
 
-	// const handleSave = async () => {
-	// 	setMessage("")
-
-	// 	const verifyFirstName = validateFirstName(firstName)
-	// 	if (verifyFirstName !== "") {
-	// 		setMessage(verifyFirstName)
-	// 		setTimeout(() => setMessage(""), 3000)
-	// 		return
-	// 	}
-
-	// 	const verifyEmail = validateEmail(email)
-	// 	if (!verifyEmail) {
-	// 		setMessage("L'adresse e-mail est incorrecte")
-	// 		setTimeout(() => setMessage(""), 3000)
-	// 		return
-	// 	}
-
-	// 	const response = await updatePersonalInfos(firstName, email)
-	// 	if (!response.success) {
-	// 		setEmail(userInfos.email)
-	// 		setFirstName(userInfos.firstName)
-	// 		setMessage(response.message)
-	// 		setTimeout(() => setMessage(""), 3000)
-	// 		return
-	// 	}
-
-	// 	setMessage("Les modifications ont été enregistrées")
-	// 	setTimeout(() => setMessage(""), 3000)
-	// }
-
 	return (
 		<div className="w-full">
 			<div>
@@ -122,7 +92,7 @@ const PersonalInfoTab = () => {
 					/>}
 					{!isUpdateFirstName &&
 						< Button
-							className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 font-light text-violet-50 font-figtree"
+							className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 font-light text-white font-figtree"
 							onClick={() => setIsUpdateFirstName(true)}
 						>
 							Modifier
@@ -138,7 +108,7 @@ const PersonalInfoTab = () => {
 						{isUpdateFirstName &&
 							<Button
 								onClick={handleUpdateFirstName}
-								className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 text-violet-50 font-light font-figtree"
+								className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 text-white font-light font-figtree"
 							>
 								Valider
 							</Button>}
@@ -159,7 +129,7 @@ const PersonalInfoTab = () => {
 					/>}
 					{!isUpdateEmail &&
 						<Button
-							className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 text-violet-50 font-light font-figtree"
+							className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 text-white font-light font-figtree"
 							onClick={() => setIsUpdateEmail(true)}
 						>
 							Modifier
