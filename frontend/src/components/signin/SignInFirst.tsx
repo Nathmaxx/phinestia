@@ -68,7 +68,7 @@ const SignInFirst = ({ userInfos, setInfo, ref, handleMove, className, handleTog
 
 			<Button
 				onClick={handleClick}
-				className="w-full bg-sky-violet rounded-md text-white font-semibold hover:bg-sky-dark-violet transition"
+				className="w-full bg-sky-violet rounded-md text-white font-semibold hover:bg-sky-dark-violet transition py-1"
 			>
 				Continuer
 			</Button>

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
 import Layout from './components/Layout';
 import Authentication from './pages/Authentication';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoutes';
@@ -13,7 +12,7 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" element={<Layout />}>
-					<Route index element={<Home />} />
+					<Route index element={<Navigate to="/authentification/connexion" replace />} />
 					<Route path='reset-password/:id' element={<ResetPassword />} />
 					<Route path="authentification">
 						<Route index element={<Navigate to="/authentification/connexion" replace />} />

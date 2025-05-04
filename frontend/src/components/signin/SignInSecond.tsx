@@ -56,7 +56,7 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 		const response = await signUp(userInfos.firstName, userInfos.email, userInfos.password)
 
 		if (!response.success) {
-			if (response.message === "Impossible d'envoyer l'e-mail de vérification") {
+			if (response.message === "Impossible d'envoyer l'e-mail de vérification" || response.message === "Un utilisateur possède déjà cet e-mail") {
 				setUserInfos({
 					email: "",
 					firstName: "",
@@ -66,8 +66,10 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 
 				handleMove("previous")
 			}
-			setMessage(response.message)
-			setIsLoading(false)
+			setTimeout(() => {
+				setMessage(response.message)
+				setIsLoading(false)
+			}, 300)
 			return
 		}
 
@@ -105,7 +107,7 @@ const SignInSecond = ({ userInfos, setInfo, ref, handleMove, className, handleTo
 			/>
 
 			<Button
-				className="w-full bg-sky-violet hover:bg-sky-dark-violet transition font-semibold text-white rounded-md"
+				className="w-full bg-sky-violet hover:bg-sky-dark-violet transition font-semibold text-white rounded-md py-1"
 				onClick={handleClick}
 				isLoading={isLoading}
 			>
