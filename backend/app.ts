@@ -25,7 +25,7 @@ const app = express()
 
 app.use(cors({
 	origin: [
-		'https://financia-nine.vercel.app',
+		'http://localhost:5173',
 		process.env.CLIENT_URL || ''
 	],
 	credentials: true, // Important pour les cookies/authentification
