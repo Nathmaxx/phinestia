@@ -6,7 +6,7 @@ export const sendVerificationEmail = async (email: string, verificationToken: st
 			from: "Phinestia <no-reply@phinestia.fr>",
 			to: [email],
 			subject: "Vérifier votre adresse email",
-			html: `Finalisez la création de votre compte financia avec le code suivant : ${verificationToken}`
+			html: `Finalisez la création de votre compte Phinestia avec le code suivant : ${verificationToken}`
 		})
 
 		if (error) {
