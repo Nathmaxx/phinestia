@@ -23,6 +23,8 @@ if (missingVars.length > 0) {
 
 const app = express()
 
+app.set('trust proxy', 1);
+
 app.use(cors({
 	origin: [process.env.CLIENT_URL],
 	credentials: true, // Important pour les cookies/authentification
