@@ -1,9 +1,8 @@
 import { createContext, useContext } from "react"
-import { Operation } from "../types/context"
 
 
 type CategoryContextType = {
-	addAccount: (name: string, amount: string) => Promise<Operation>
+	addCategory: () => void
 }
 
 export const CategoryContext = createContext<CategoryContextType | undefined>(undefined)
