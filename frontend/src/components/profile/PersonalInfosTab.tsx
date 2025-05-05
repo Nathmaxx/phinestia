@@ -92,6 +92,7 @@ const PersonalInfoTab = () => {
 					setCode(Array(CODE_LENGTH).fill(''))
 					setMessage("E-mail modifié avec succès")
 					setShowCodeVerification(false)
+					setIsUpdateEmail(false)
 					setTimeout(() => setMessage(""), 3000)
 				}
 			}
@@ -187,7 +188,8 @@ const PersonalInfoTab = () => {
 						{isUpdateEmail &&
 							<Button
 								onClick={handleUpdateEmail}
-								className="rounded-md px-1.5 py-0.5 bg-sky-semiviolet text-white font-thin"
+								className={`rounded-md px-1.5 py-0.5 bg-sky-semiviolet text-white font-thin ${showCodeVerification ? "cursor-not-allowed" : ""}`}
+								disabled={showCodeVerification}
 							>
 								Valider
 							</Button>}
