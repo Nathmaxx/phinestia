@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 import { generateVerificationToken } from '../utils/generateVerificationToken'
 import { generateJWTToken } from '../utils/generateJWTToken'
 import { User } from '../models/user'
-import { sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } from '../resend/email'
+import { sendChangeEmailCode, sendResetPasswordEmail, sendResetSuccessEmail, sendVerificationEmail } from '../resend/email'
 import crypto from 'crypto'
 import { catchError } from '../utils/error'
 import mongoose from 'mongoose'
@@ -331,7 +331,7 @@ export const updateEmail = async (req: Request, res: Response) => {
 
 		await changingEmail.save()
 
-		const response = await sendVerificationEmail(email, verificationToken)
+		const response = await sendChangeEmailCode(email, verificationToken)
 		if (!response.success && response.message === "Impossible d'envoyer l'e-mail de vérification") {
 			await changingEmail.deleteOne({ _id: changingEmail._id })
 			res.status(400).json(response)
@@ -345,11 +345,44 @@ export const updateEmail = async (req: Request, res: Response) => {
 	}
 }
 
+export const verifyNewEmail = async (req: Request, res: Response) => {
+	try {
+		const { userid } = req.params
+		const { code } = req.body
+
+		const changeEmailRequest = await ChangeEmailRequest.findOne({ userid, verificationToken: code })
+		if (!changeEmailRequest) {
+			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
+			return
+		}
+
+		if (changeEmailRequest.verificationTokenExpiresAt > new Date(Date.now())) {
+			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
+			return
+		}
+
+		const user = await User.findById(userid)
+		if (!user) {
+			res.status(400).json({ success: false, message: "Utilisateur introuvable" })
+			return
+		}
+
+		user.email = changeEmailRequest.email
+		await user.save()
+
+		await ChangeEmailRequest.deleteOne({ _id: changeEmailRequest._id })
+
+		res.status(200).json({ success: true, message: "E-mail modifié" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}
+
 export const updatePassword = async (req: Request, res: Response) => {
 	try {
 		const { userid } = req.params
-		const user = await User.findById(userid)
 		const { ancientPassword, newPassword } = req.body
+		const user = await User.findById(userid)
 
 		if (!user) {
 			res.status(400).json({ success: false, message: "Aucun utilisateur trouvé" })

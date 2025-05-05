@@ -57,3 +57,21 @@ export const sendResetSuccessEmail = async (email: string) => {
 		return { success: false, message: "Erreur durant l'envoi du mail" }
 	}
 }
+
+export const sendChangeEmailCode = async (email: string, verificationToken: string) => {
+	try {
+		const { error } = await resend.emails.send({
+			from: "Phinestia <no-reply@phinestia.fr>",
+			to: [email],
+			subject: "Vérifier votre nouvelle adresse email",
+			html: `Validez votre nouvelle adresse e-mail avec le code suivant : ${verificationToken}`
+		})
+
+		if (error) {
+			return { success: false, message: "Impossible d'envoyer l'e-mail de vérification" }
+		}
+		return { success: true, message: "Email envoyé" }
+	} catch (error) {
+		return { success: false, message: "Impossible d'envoyer l'e-mail de vérification. Veuillez réessayer dans quelques minutes" }
+	}
+}
