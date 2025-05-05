@@ -5,9 +5,9 @@ const Layout = () => {
 	return (
 		<div>
 			<nav className="flex gap-5 absolute">
-				<Link to={'/authentification/connexion'}>Login</Link>
 				<Link to={'/dashboard'}>Dashboard</Link>
 				<Link to={'/profil'}>Profil</Link>
+				<Link to={'/comptes'}>Comptes</Link>
 			</nav>
 
 			<main>

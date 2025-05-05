@@ -3,7 +3,7 @@ import { Operation } from "../types/context"
 
 
 type CategoryContextType = {
-	addAccount: (name: string, amount: string, userId: string, budget: number, allocation: number) => Promise<Operation>
+	addAccount: (name: string, amount: string) => Promise<Operation>
 }
 
 export const CategoryContext = createContext<CategoryContextType | undefined>(undefined)

@@ -2,6 +2,7 @@ import { ReactNode } from "react"
 import { CategoryContext } from "../hooks/useCategoryContext"
 import api from "../utils/axios"
 import { catchError } from "../utils/error"
+import { useAuth } from "../hooks/useAuthContext"
 
 
 type CategoryProviderProps = {
@@ -10,9 +11,11 @@ type CategoryProviderProps = {
 
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
-	const addAccount = async (name: string, amount: string, userId: string, budget: number, allocation: number) => {
+	const { userInfos } = useAuth()
+
+	const addAccount = async (name: string, amount: string) => {
 		try {
-			await api.post("/category/add", { name, amount, userId, budget, allocation })
+			await api.post(`/category/add/${userInfos.id}`, { name, amount })
 			return { success: true, message: "Catégorie ajoutée" }
 		} catch (error) {
 			return catchError(error, "Impossible d'ajouter la catégorie, veuillez réessayer plus tard")

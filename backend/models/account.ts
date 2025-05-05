@@ -13,6 +13,11 @@ const accountSchema = new mongoose.Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true
+	},
+	allocationUpdated: {
+		type: Boolean,
+		default: false,
+		required: true
 	}
 })
 
