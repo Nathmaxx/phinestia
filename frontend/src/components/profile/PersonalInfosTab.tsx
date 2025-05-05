@@ -1,19 +1,26 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TextInput from "../Inputs/TextInput"
 import Button from "../buttons/Button"
 import Message from "../Message"
 import { useAuth } from "../../hooks/useAuthContext"
 import { validateEmail, validateFirstName } from "../../utils/validation"
+import CodeInput from "../Inputs/CodeInput"
+import TimerButton from "../buttons/TimerButton"
 
 const PersonalInfoTab = () => {
 
-	const { userInfos, updateFirstName, updateEmail } = useAuth()
+	const { userInfos, updateFirstName, updateEmail, verifyNewEmail } = useAuth()
 	const [firstName, setFirstName] = useState(userInfos.firstName)
 	const [email, setEmail] = useState(userInfos.email)
 	const [message, setMessage] = useState("")
 
 	const [isUpdateFirstName, setIsUpdateFirstName] = useState(false)
 	const [isUpdateEmail, setIsUpdateEmail] = useState(false)
+
+	const [showCodeVerification, setShowCodeVerification] = useState(false)
+
+	const CODE_LENGTH = 6
+	const [code, setCode] = useState(Array(CODE_LENGTH).fill(''))
 
 	const handleUpdateFirstName = async () => {
 		setMessage("")
@@ -68,6 +75,35 @@ const PersonalInfoTab = () => {
 		}
 
 		setMessage("L'e-mail de vérification a été envoyé, veuillez consulter votre boîte mail")
+		setShowCodeVerification(true)
+		setTimeout(() => setMessage(""), 3000)
+	}
+
+	useEffect(() => {
+		const sendCode = async () => {
+			if (code.every(value => value !== '')) {
+				setMessage("")
+				const codeString = code.join('')
+				const response = await verifyNewEmail(codeString, email)
+				if (!response.success) {
+					setTimeout(() => setMessage(""), 3000)
+					setMessage(response.message)
+				} else {
+					setCode(Array(CODE_LENGTH).fill(''))
+					setMessage("E-mail modifié avec succès")
+					setShowCodeVerification(false)
+					setTimeout(() => setMessage(""), 3000)
+				}
+			}
+		}
+
+		sendCode()
+	}, [code, setMessage, email, verifyNewEmail])
+
+	const handleResend = async () => {
+		setMessage("")
+		const response = await updateEmail(email)
+		setMessage(response.message)
 		setTimeout(() => setMessage(""), 3000)
 	}
 
@@ -100,7 +136,10 @@ const PersonalInfoTab = () => {
 					<div className="flex gap-3">
 						{isUpdateFirstName &&
 							<Button
-								onClick={() => setIsUpdateFirstName(false)}
+								onClick={() => {
+									setIsUpdateFirstName(false)
+									setFirstName(userInfos.firstName)
+								}}
 								className="rounded-md px-1.5 py-0.5 bg-sky-salmon/80 text-white font-thin"
 							>
 								Annuler
@@ -137,7 +176,10 @@ const PersonalInfoTab = () => {
 					<div className="flex gap-3">
 						{isUpdateEmail &&
 							<Button
-								onClick={() => setIsUpdateEmail(false)}
+								onClick={() => {
+									setIsUpdateEmail(false)
+									setEmail(userInfos.email)
+								}}
 								className="rounded-md px-1.5 py-0.5 bg-sky-salmon/80 text-white font-thin"
 							>
 								Annuler
@@ -156,7 +198,22 @@ const PersonalInfoTab = () => {
 					Cette adresse email est utilisée pour vous connecter
 				</p>
 			</section>
+			{showCodeVerification && <section>
+				<CodeInput
+					code={code}
+					setCode={setCode}
+					codeLength={CODE_LENGTH}
+				/>
 
+				<p className="font-figtree mt-2">Vous n'avez pas reçu l'e-mail de confirmation ?</p>
+				<TimerButton
+					duration={60}
+					onClick={handleResend}
+					className="mb-3"
+				>
+					Renvoyer
+				</TimerButton>
+			</section>}
 			<Message message={message} className="mt-4" />
 		</div >
 	)

@@ -5,9 +5,10 @@ type CodeInputProps = {
 	code: string[]
 	setCode: (value: string[]) => void
 	codeLength: number
+	className?: string
 }
 
-const CodeInput = ({ code, setCode, codeLength }: CodeInputProps) => {
+const CodeInput = ({ code, setCode, codeLength, className }: CodeInputProps) => {
 
 	const inputsRef = useRef<(HTMLInputElement | null)[]>([])
 
@@ -53,7 +54,7 @@ const CodeInput = ({ code, setCode, codeLength }: CodeInputProps) => {
 	}, [])
 
 	return (
-		<div className="flex gap-2.5 justify-center">
+		<div className={`flex gap-2.5 ${className}`}>
 			{code.map((value, index) => (
 				<input
 					key={index}

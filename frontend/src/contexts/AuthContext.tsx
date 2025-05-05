@@ -165,12 +165,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		try {
-			await api.put(`/auth/email/${userInfos.id}`, { email })
+			await api.post(`/auth/update-email/${userInfos.id}`, { email })
+			return { success: true, message: "Un code de vérification a été envoyé à votre nouvelle adresse e-mail" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier l'e-mail")
+		}
+	}
+
+	const verifyNewEmail = async (code: string, email: string) => {
+		if (!userInfos.id) {
+			return { success: false, message: "Impossible de modifier l'e-mail" }
+		}
+
+		try {
+			await api.post(`/auth/verify-new-email/${userInfos.id}`, { code })
 			setUserInfos({
 				...userInfos,
 				email
 			})
-			return { success: true, message: "E-mail modifié" }
+			return { success: true, message: "E-mail modifié avec succès" }
 		} catch (error) {
 			return catchError(error, "Impossible de modifier l'e-mail")
 		}
@@ -195,7 +208,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		deleteUser,
 		updateFirstName,
 		updatePassword,
-		updateEmail
+		updateEmail,
+		verifyNewEmail
 	}
 
 	return (

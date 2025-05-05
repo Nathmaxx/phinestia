@@ -107,7 +107,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
 		})
 
 		if (!user) {
-			res.status(400).json({ success: false, message: "Code invalide" })
+			res.status(400).json({ success: false, message: "Code invalide ou exipiré" })
 			return
 		}
 
@@ -337,9 +337,7 @@ export const updateEmail = async (req: Request, res: Response) => {
 			res.status(400).json(response)
 			return
 		}
-
 		res.status(200).json({ success: true, message: "E-mail de vérification envoyé à la nouvelle adresse e-mail" })
-
 	} catch (error) {
 		catchError(res, error)
 	}
@@ -349,14 +347,13 @@ export const verifyNewEmail = async (req: Request, res: Response) => {
 	try {
 		const { userid } = req.params
 		const { code } = req.body
-
-		const changeEmailRequest = await ChangeEmailRequest.findOne({ userid, verificationToken: code })
+		const changeEmailRequest = await ChangeEmailRequest.findOne({ userId: userid, verificationToken: code })
 		if (!changeEmailRequest) {
 			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
 			return
 		}
 
-		if (changeEmailRequest.verificationTokenExpiresAt > new Date(Date.now())) {
+		if (changeEmailRequest.verificationTokenExpiresAt < new Date(Date.now())) {
 			res.status(400).json({ success: false, message: "Code invalide ou expiré" })
 			return
 		}

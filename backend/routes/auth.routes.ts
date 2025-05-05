@@ -11,7 +11,8 @@ import {
 	deleteUser,
 	updatePassword,
 	updateFirstName,
-	updateEmail
+	updateEmail,
+	verifyNewEmail
 } from "../controllers/auth.controllers"
 import { verifyToken } from "../middlewares/verifyToken"
 
@@ -23,10 +24,11 @@ router.post('/verify-email', verifyEmail)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:token', resetPassword)
 router.post('/resend-verification-email', resendVerificationEmail)
+router.post('/update-email/:userid', updateEmail)
+router.post('/verify-new-email/:userid', verifyNewEmail)
 router.delete('/:userid', deleteUser)
 router.put('/password/:userid', updatePassword)
 router.put('/firstname/:userid', updateFirstName)
-router.put('/email/:userid', updateEmail)
 router.get('/logout', logout)
 router.get('/check-auth', verifyToken, checkAuth)
 

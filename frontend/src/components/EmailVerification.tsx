@@ -46,6 +46,7 @@ const EmailVerification = ({ setMessage, email }: EmailVerificationProps) => {
 				code={code}
 				setCode={setCode}
 				codeLength={CODE_LENGTH}
+				className="justify-center"
 			/>
 
 			<p className="font-figtree text-center mt-10">Vous n'avez pas reçu l'e-mail de confirmation ?</p>

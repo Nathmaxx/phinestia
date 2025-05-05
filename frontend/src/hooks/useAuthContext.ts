@@ -17,6 +17,7 @@ type AuthContextType = {
 	updateFirstName: (firstName: string) => Promise<Operation>
 	updatePassword: (password: string) => Promise<Operation>
 	updateEmail: (email: string) => Promise<Operation>
+	verifyNewEmail: (email: string, code: string) => Promise<Operation>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
