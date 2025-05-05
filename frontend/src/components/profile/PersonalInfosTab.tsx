@@ -17,22 +17,28 @@ const PersonalInfoTab = () => {
 	const [isUpdateFirstName, setIsUpdateFirstName] = useState(false)
 	const [isUpdateEmail, setIsUpdateEmail] = useState(false)
 
+	const [isFirstNameLoading, setIsFirstNameLoading] = useState(false)
+	const [isEmailLoading, setIsEmailLoading] = useState(false)
+
 	const [showCodeVerification, setShowCodeVerification] = useState(false)
 
 	const CODE_LENGTH = 6
 	const [code, setCode] = useState(Array(CODE_LENGTH).fill(''))
 
 	const handleUpdateFirstName = async () => {
+		setIsFirstNameLoading(true)
 		setMessage("")
 
 		if (firstName === userInfos.firstName) {
 			setIsUpdateFirstName(false)
+			setIsFirstNameLoading(false)
 			return
 		}
 
 		const verifyFirstName = validateFirstName(firstName)
 		if (verifyFirstName !== "") {
 			setMessage(verifyFirstName)
+			setIsFirstNameLoading(false)
 			setTimeout(() => setMessage(""), 3000)
 			return
 		}
@@ -41,26 +47,31 @@ const PersonalInfoTab = () => {
 		if (!response.success) {
 			setFirstName(userInfos.firstName)
 			setMessage(response.message)
+			setIsFirstNameLoading(false)
 			setTimeout(() => setMessage(""), 3000)
 			return
 		}
 
 		setMessage("Le prénom a été modifié")
 		setIsUpdateFirstName(false)
+		setIsFirstNameLoading(false)
 		setTimeout(() => setMessage(""), 3000)
 	}
 
 	const handleUpdateEmail = async () => {
+		setIsEmailLoading(true)
 		setMessage("")
 
 		if (email === userInfos.email) {
 			setIsUpdateEmail(false)
+			setIsEmailLoading(false)
 			return
 		}
 
 		const verifyEmail = validateEmail(email)
 		if (!verifyEmail) {
 			setMessage("L'e-mail est incorrect")
+			setIsEmailLoading(false)
 			setTimeout(() => setMessage(""), 3000)
 			return
 		}
@@ -70,12 +81,14 @@ const PersonalInfoTab = () => {
 			setEmail(userInfos.email)
 			setMessage(response.message)
 			setIsUpdateEmail(false)
+			setIsEmailLoading(false)
 			setTimeout(() => setMessage(""), 3000)
 			return
 		}
 
 		setMessage("L'e-mail de vérification a été envoyé, veuillez consulter votre boîte mail")
 		setShowCodeVerification(true)
+		setIsEmailLoading(false)
 		setTimeout(() => setMessage(""), 3000)
 	}
 
@@ -149,6 +162,7 @@ const PersonalInfoTab = () => {
 							<Button
 								onClick={handleUpdateFirstName}
 								className="bg-sky-semiviolet w-min rounded-md px-1.5 py-0.5 text-white font-light font-figtree"
+								isLoading={isFirstNameLoading}
 							>
 								Valider
 							</Button>}
@@ -190,6 +204,7 @@ const PersonalInfoTab = () => {
 								onClick={handleUpdateEmail}
 								className={`rounded-md px-1.5 py-0.5 bg-sky-semiviolet text-white font-thin ${showCodeVerification ? "cursor-not-allowed" : ""}`}
 								disabled={showCodeVerification}
+								isLoading={isEmailLoading}
 							>
 								Valider
 							</Button>}

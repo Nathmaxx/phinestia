@@ -401,7 +401,7 @@ export const updatePassword = async (req: Request, res: Response) => {
 		user.password = hashedPassword
 		await user.save()
 
-		res.status(400).json({ success: true, message: "Mot de passe modifié" })
+		res.status(200).json({ success: true, message: "Mot de passe modifié" })
 	} catch (error) {
 		catchError(res, error)
 	}

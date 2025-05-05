@@ -13,23 +13,39 @@ const SecurityTab = () => {
 	const [confirmPassword, setConfirmPassword] = useState("")
 	const [isValidPassword, setIsValidPassword] = useState(false)
 	const [message, setMessage] = useState("")
+	const [isUpdatingPassword, setIsUpdatingPassword] = useState(false)
 
-	const { deleteUser } = useAuth()
+	const { deleteUser, updatePassword } = useAuth()
 	const navigate = useNavigate()
 
-	const handleChangePassword = () => {
+	const handleChangePassword = async () => {
+		setIsUpdatingPassword(true)
 		if (!currentPassword) {
 			setMessage("Veuillez saisir votre mot de passe actuel")
+			setTimeout(() => setMessage(""), 3000)
+			setIsUpdatingPassword(false)
 			return
 		}
 
 		if (!isValidPassword) {
 			setMessage("Le nouveau mot de passe ne respecte pas les critères de sécurité")
+			setIsUpdatingPassword(false)
+			setTimeout(() => setMessage(""), 3000)
 			return
 		}
 
 		if (newPassword !== confirmPassword) {
 			setMessage("Les mots de passe ne correspondent pas")
+			setIsUpdatingPassword(false)
+			setTimeout(() => setMessage(""), 3000)
+			return
+		}
+
+		const response = await updatePassword(currentPassword, newPassword)
+		if (!response.success) {
+			setMessage(response.message)
+			setIsUpdatingPassword(false)
+			setTimeout(() => setMessage(""), 3000)
 			return
 		}
 
@@ -37,6 +53,7 @@ const SecurityTab = () => {
 		setCurrentPassword("")
 		setNewPassword("")
 		setConfirmPassword("")
+		setIsUpdatingPassword(false)
 		setTimeout(() => setMessage(""), 3000)
 	}
 
@@ -90,6 +107,7 @@ const SecurityTab = () => {
 				<Button
 					onClick={handleChangePassword}
 					className="bg-sky-violet hover:bg-sky-dark-violet transition duration-300 font-semibold text-white rounded-md px-2 py-1"
+					isLoading={isUpdatingPassword}
 				>
 					Mettre à jour le mot de passe
 				</Button>

@@ -145,14 +145,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 	}
 
-	const updatePassword = async (password: string) => {
+	const updatePassword = async (ancientPassword: string, newPassword: string) => {
 
 		if (!userInfos.id) {
 			return { success: false, message: "Impossible de modifier le mot de passe" }
 		}
 
 		try {
-			await api.put(`/auth/password/${userInfos.id}`, { password })
+			await api.put(`/auth/password/${userInfos.id}`, { ancientPassword, newPassword })
 			return { success: true, message: "Mot de passe modifié" }
 		} catch (error) {
 			return catchError(error, "Impossible de modifier le mot de passe")

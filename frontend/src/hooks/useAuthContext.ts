@@ -15,7 +15,7 @@ type AuthContextType = {
 	resetPassword: (param: string, newPassword: string) => Promise<Operation>
 	deleteUser: () => Promise<Operation>
 	updateFirstName: (firstName: string) => Promise<Operation>
-	updatePassword: (password: string) => Promise<Operation>
+	updatePassword: (ancientPassword: string, newPassword: string) => Promise<Operation>
 	updateEmail: (email: string) => Promise<Operation>
 	verifyNewEmail: (email: string, code: string) => Promise<Operation>
 }
