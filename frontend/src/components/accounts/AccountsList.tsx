@@ -5,7 +5,7 @@ import { useAccount } from '../../hooks/useAccountContext';
 
 const AccountsList = () => {
 	const [showActions, setShowActions] = useState<string | null>(null);
-	const { accounts } = useAccount()
+	const { accounts, deleteAccount } = useAccount()
 
 
 	// Formater les montants en EUR
@@ -90,7 +90,10 @@ const AccountsList = () => {
 										<Pencil size={14} />
 										Modifier
 									</button>
-									<button className="flex items-center gap-1 px-2 py-1 text-sm text-sky-salmon hover:bg-red-50 rounded transition-colors">
+									<button
+										className="flex items-center gap-1 px-2 py-1 text-sm text-sky-salmon hover:bg-red-50 rounded transition-colors"
+										onClick={() => deleteAccount(account.id)}
+									>
 										<Trash2 size={14} />
 										Supprimer
 									</button>
