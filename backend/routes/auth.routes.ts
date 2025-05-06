@@ -15,14 +15,21 @@ import {
 	verifyNewEmail
 } from "../controllers/auth.controllers"
 import { verifyToken } from "../middlewares/verifyToken"
+import rateLimit from "express-rate-limit";
 
 const router = express.Router()
 
-router.post('/signup', signup)
-router.post('/login', login)
+const limiter = rateLimit({
+	windowMs: 60 * 1000, // 1 minute
+	max: 15,
+});
+
+router.post('/signup', limiter, signup)
+router.post('/login', limiter, login)
+router.post('/forgot-password', limiter, forgotPassword)
+router.post('/reset-password/:token', limiter, resetPassword)
+
 router.post('/verify-email', verifyEmail)
-router.post('/forgot-password', forgotPassword)
-router.post('/reset-password/:token', resetPassword)
 router.post('/resend-verification-email', resendVerificationEmail)
 router.post('/update-email/:userid', updateEmail)
 router.post('/verify-new-email/:userid', verifyNewEmail)

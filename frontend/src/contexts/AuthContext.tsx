@@ -21,9 +21,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-	const checkAuth = async () => {
-		try {
+	const [isChecking, setIsChecking] = useState(true)
 
+	const checkAuth = async () => {
+		setIsChecking(true)
+		try {
+			console.log("check")
 			if (userInfos.id !== "") {
 				setIsAuthenticated(true)
 				return { success: true, message: "Utilisateur déjà connecté" };
@@ -43,7 +46,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			setIsAuthenticated(true)
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
+			setIsAuthenticated(false)
 			return catchError(error, "Imporrible de vérifier l'authentification")
+		} finally {
+			setIsChecking(false)
 		}
 	}
 
@@ -197,6 +203,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const value = {
 		isAuthenticated,
 		userInfos,
+		isChecking,
 		checkAuth,
 		login,
 		logout,

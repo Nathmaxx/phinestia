@@ -17,7 +17,7 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const { isAuthenticated } = useAuth()
+	const { isAuthenticated, isChecking } = useAuth()
 
 	const panelRef = useRef<HTMLDivElement>(null)
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -73,10 +73,10 @@ const Authentication = ({ method = "signin" }: AuthenticationProps) => {
 	}, [method]);
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (!isChecking && isAuthenticated) {
 			navigate("/dashboard")
 		}
-	}, [isAuthenticated, navigate])
+	}, [isAuthenticated, navigate, isChecking])
 
 	useEffect(() => {
 		const methodFromPath = location.pathname.includes("connexion") ? "login" : "signin";

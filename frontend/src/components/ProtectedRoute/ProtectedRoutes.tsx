@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children, redirectPath = "/authentification/connexion"
 		);
 	}
 
-	if (!userInfos.id) {
+	if (!isChecking && !userInfos.id) {
 		return <Navigate to={redirectPath} state={{ from: location.pathname }} replace />;
 	}
 

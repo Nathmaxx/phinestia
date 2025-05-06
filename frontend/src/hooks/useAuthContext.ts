@@ -5,6 +5,7 @@ import { UserContextInfos } from "../types/user"
 type AuthContextType = {
 	isAuthenticated: boolean
 	userInfos: UserContextInfos
+	isChecking: boolean
 	checkAuth: () => Promise<Operation>
 	login: (email: string, password: string) => Promise<Operation>
 	logout: () => Promise<Operation>

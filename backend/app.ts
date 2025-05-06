@@ -40,12 +40,6 @@ app.use(compression())
 
 app.use(express.json({ limit: '10kb' }))
 
-const limiter = rateLimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: 20,
-});
-app.use('/api/auth/', limiter);
-
 app.use('/api/auth', authRoutes)
 app.use('/api/category', categoryRoutes)
 app.use('/api/account', accountRoutes)
