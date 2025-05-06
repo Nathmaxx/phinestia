@@ -18,6 +18,11 @@ const accountSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 		required: true
+	},
+	updatedAt: {
+		type: Date,
+		default: new Date(Date.now()),
+		required: true
 	}
 })
 
