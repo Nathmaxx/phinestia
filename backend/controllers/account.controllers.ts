@@ -1,13 +1,13 @@
 import { Request, Response } from "express"
 import { catchError } from "../utils/error"
 import { Account } from "../models/account"
+import mongoose from "mongoose"
 
 export const addAccount = async (req: Request, res: Response) => {
 	try {
-		const { userid } = req.params
-		const { name, amount } = req.body
+		const { name, amount, userId } = req.body
 
-		const existingAccount = await Account.findOne({ userId: userid, name })
+		const existingAccount = await Account.findOne({ userId, name })
 		if (existingAccount) {
 			res.status(400).json({ success: false, message: "Un compte existe déjà sous le même nom" })
 			return
@@ -15,7 +15,7 @@ export const addAccount = async (req: Request, res: Response) => {
 
 		const account = new Account({
 			name,
-			userId: userid,
+			userId,
 			amount
 		});
 
@@ -28,7 +28,24 @@ export const addAccount = async (req: Request, res: Response) => {
 }
 
 export const deleteAccount = async (req: Request, res: Response) => {
+	try {
+		const { accountid } = req.params
 
+		if (!mongoose.Types.ObjectId.isValid(accountid)) {
+			res.status(400).json({ success: false, message: "Format d'identifiant de compte invalide" });
+			return
+		}
+
+		const deleteAccount = await Account.findByIdAndDelete(accountid)
+		if (!deleteAccount) {
+			res.status(400).json({ success: false, message: "Aucun compte trouvé" })
+			return
+		}
+
+		res.status(200).json({ success: true, message: "Compte supprimé avec succès" })
+	} catch (error) {
+		catchError(res, error)
+	}
 }
 
 export const updateAccount = async (req: Request, res: Response) => {

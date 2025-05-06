@@ -18,7 +18,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	const addAccount = async (name: string, amount: number) => {
 		try {
-			const response = await api.post(`/account/add/${userInfos.id}`, { name, amount })
+			const response = await api.post(`/account/add`, { name, amount, userId: userInfos.id })
 			const newAccount = response.data.account as DBAccount
 			setAccounts([
 				...accounts,
@@ -54,6 +54,17 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}, [userInfos.id])
 
+	const deleteAccount = async (idAccount: string) => {
+		try {
+			await api.delete(`/account/${idAccount}`)
+			const newAccounts = accounts.filter(account => account.id !== idAccount)
+			setAccounts(newAccounts)
+			return { success: true, message: "Compte supprimé" }
+		} catch (error) {
+			return catchError(error, "Impossible de supprimer le compte")
+		}
+	}
+
 	useEffect(() => {
 		fetchAccounts()
 	}, [fetchAccounts])
@@ -62,7 +73,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 	const value = {
 		accounts,
 		addAccount,
-		fetchAccounts
+		fetchAccounts,
+		deleteAccount
 	}
 
 	return (
