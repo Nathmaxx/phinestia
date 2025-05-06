@@ -1,9 +1,12 @@
 import { createContext, useContext } from "react"
 import { Operation } from "../types/context"
+import { Account } from "../types/accounts"
 
 
 type AccountContextType = {
+	accounts: Account[]
 	addAccount: (name: string, amount: number) => Promise<Operation>
+	fetchAccounts: () => Promise<Operation>
 }
 
 export const AccountContext = createContext<AccountContextType | undefined>(undefined)

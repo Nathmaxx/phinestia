@@ -21,7 +21,7 @@ export const addAccount = async (req: Request, res: Response) => {
 
 		await account.save()
 
-		res.status(201).json({ success: true, message: "Compte ajouté avec succès" })
+		res.status(201).json({ success: true, message: "Compte ajouté avec succès", account: account })
 	} catch (error) {
 		catchError(res, error)
 	}
@@ -36,5 +36,18 @@ export const updateAccount = async (req: Request, res: Response) => {
 }
 
 export const getAccounts = async (req: Request, res: Response) => {
+	try {
+		const { userid } = req.params
 
+		if (!userid) {
+			res.status(400).json({ success: false, message: "Données manquantes" })
+			return
+		}
+
+		const accounts = await Account.find({ userId: userid })
+
+		res.status(200).json({ success: true, message: "Comptes récupérés", accounts })
+	} catch (error) {
+		catchError(res, error)
+	}
 }

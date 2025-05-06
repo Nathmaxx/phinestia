@@ -1,24 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
+import { useAccount } from '../../hooks/useAccountContext';
 
-interface Account {
-	id: string;
-	name: string;
-	amount: number;
-	updatedAt: Date;
-}
 
 const AccountsList = () => {
 	const [showActions, setShowActions] = useState<string | null>(null);
+	const { accounts } = useAccount()
 
-	// Données de test (à remplacer par les vraies données plus tard)
-	const accounts: Account[] = [
-		{ id: '1', name: 'Compte Courant', amount: 1250.75, updatedAt: new Date('2023-04-15') },
-		{ id: '2', name: 'Livret A', amount: 8720.33, updatedAt: new Date('2023-04-10') },
-		{ id: '3', name: 'PEL', amount: 15000.00, updatedAt: new Date('2023-03-28') },
-		{ id: '4', name: 'Plan Épargne Actions', amount: 3240.18, updatedAt: new Date('2023-04-12') },
-		{ id: '5', name: 'Argent de poche', amount: 150.00, updatedAt: new Date('2023-04-17') },
-	];
 
 	// Formater les montants en EUR
 	const formatAmount = (amount: number) => {
@@ -66,16 +54,16 @@ const AccountsList = () => {
 					Vous n'avez pas encore ajouté de compte.
 				</div>
 			) : (
-				<div className="space-y-2">
+				<div className="space-y-1.5">
 					{accounts.map((account) => (
 						<div
 							key={account.id}
-							className="bg-sky-semiviolet/5 rounded-lg p-2 transition-all hover:shadow-sm"
+							className="bg-sky-semiviolet/5 rounded-lg p-1.5 transition-all hover:shadow-sm"
 						>
 							<div className="flex justify-between items-center">
 								<div>
 									<h3 className="font-medium text-gray-800">{account.name}</h3>
-									<p className="text-sm text-gray-500">
+									<p className="text-xs text-gray-500">
 										Mis à jour le {formatDate(account.updatedAt)}
 									</p>
 								</div>
