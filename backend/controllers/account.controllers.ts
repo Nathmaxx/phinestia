@@ -49,7 +49,25 @@ export const deleteAccount = async (req: Request, res: Response) => {
 }
 
 export const updateAccount = async (req: Request, res: Response) => {
+	const { accountid } = req.params
+	const { name, amount } = req.body
 
+	try {
+		const account = await Account.findByIdAndDelete(accountid)
+		if (!account) {
+			res.status(400).json({ success: false, message: "Aucun compte trouvé" })
+			return
+		}
+
+		account.name = name
+		account.amount = amount
+
+		await account.save()
+
+		res.status(200).json({ success: true, message: "Compte modifié avec succès" })
+	} catch (error) {
+		catchError(res, error)
+	}
 }
 
 export const getAccounts = async (req: Request, res: Response) => {

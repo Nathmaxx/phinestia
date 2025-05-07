@@ -1,28 +1,31 @@
 import { useState } from "react"
-import TextInput from "../Inputs/TextInput"
+import AccountInfos from "../accounts/AccountInfos"
 
-const UpdateAccountModal = () => {
+type UpdateAccountModalProps = {
+	initialName: string
+	initialAmount: number
+}
 
-	const [name, setName] = useState("")
-	const [amount, setAmount] = useState("")
+const UpdateAccountModal = ({ initialAmount, initialName }: UpdateAccountModalProps) => {
+
+	const [name, setName] = useState(initialName)
+	const [amount, setAmount] = useState(initialAmount.toString())
+	const [nameError, setNameError] = useState("")
+	const [amountError, setAmountError] = useState("")
 
 	return (
 		<>
-			<TextInput
-				setValue={setName}
-				value={name}
-				placeholder="Ex : Livret A, Compte commun"
-			/>
 			<div className="relative">
-				<TextInput
-					setValue={setAmount}
-					value={amount}
-					placeholder="2371.45"
-					className="pr-5"
+				<AccountInfos
+					amount={amount}
+					amountError={amountError}
+					name={name}
+					nameError={nameError}
+					setAmount={setAmount}
+					setAmountError={setAmountError}
+					setName={setName}
+					setNameError={setNameError}
 				/>
-				<span className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500">
-					€
-				</span>
 			</div>
 		</>
 	)

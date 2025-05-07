@@ -108,7 +108,10 @@ const AccountsList = () => {
 										}}
 										title={`Modification de "${account.name}"`}
 									>
-										<UpdateAccountModal />
+										<UpdateAccountModal
+											initialName={account.name}
+											initialAmount={account.amount}
+										/>
 									</Modal>
 									<button
 										className="flex items-center gap-1 px-2 py-1 text-sm text-sky-salmon hover:bg-red-50 rounded transition-colors"

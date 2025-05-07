@@ -1,3 +1,5 @@
+import Message from "../Message"
+
 type ModalProps = {
 	isOpen: boolean
 	onClose: () => void
@@ -5,9 +7,11 @@ type ModalProps = {
 	children: React.ReactNode
 	title: string
 	className?: string
+	message?: string
 }
 
-const Modal = ({ isOpen, onClose, children, title, onConfirm, className = "" }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, title, onConfirm, className = "", message = "" }: ModalProps) => {
+
 	if (!isOpen) return null
 
 	return (
@@ -39,6 +43,7 @@ const Modal = ({ isOpen, onClose, children, title, onConfirm, className = "" }: 
 							Annuler
 						</button>
 					</section>
+					<Message message={message} />
 				</div>
 			</div>
 		</div>
