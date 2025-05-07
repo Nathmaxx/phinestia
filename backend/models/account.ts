@@ -14,11 +14,12 @@ const accountSchema = new mongoose.Schema({
 		ref: 'User',
 		required: true
 	},
-	allocationUpdated: {
-		type: Boolean,
-		default: false,
-		required: true
-	},
+	categories: [{
+		name: { type: String, required: true },
+		budget: { type: Number, default: null },
+		amount: { type: Number, default: null },
+		allocation: { type: Number, default: null }
+	}],
 	updatedAt: {
 		type: Date,
 		default: new Date(Date.now()),

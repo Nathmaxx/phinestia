@@ -27,7 +27,12 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 					name: newAccount.name,
 					amount: newAccount.amount,
 					updatedAt: new Date(newAccount.updatedAt),
-					allocationUpdated: newAccount.allocationUpdated
+					categories: newAccount.categories ? newAccount.categories.map(cat => ({
+						name: cat.name,
+						budget: cat.budget,
+						amount: cat.amount,
+						allocation: cat.allocation
+					})) : []
 				}
 			])
 			return { success: true, message: "Compte ajouté" }
@@ -37,6 +42,11 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 	}
 
 	const fetchAccounts = useCallback(async () => {
+
+		if (!userInfos.id) {
+			return { success: false, message: "Données manquantes" }
+		}
+
 		try {
 			const response = await api.get(`/account/${userInfos.id}`)
 			const accounts = response.data.accounts as DBAccount[]
@@ -45,7 +55,12 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 				name: account.name,
 				amount: account.amount,
 				updatedAt: new Date(account.updatedAt),
-				allocationUpdated: account.allocationUpdated
+				categories: account.categories ? account.categories.map(cat => ({
+					name: cat.name,
+					budget: cat.budget,
+					amount: cat.amount,
+					allocation: cat.allocation
+				})) : []
 			}))
 			setAccounts(formattedAccounts)
 			return { success: true, message: "Comptes récupérés" }

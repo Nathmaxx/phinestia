@@ -1,15 +1,14 @@
 
 export type Category = {
-	id: string
-	amount: number
+	name: string
+	amount: number | null
 	allocation: number | null
 	budget: number | null
 }
 
 export type DBCategory = {
-	_id: string
-	amount: number
-	userId: string
+	name: string
+	amount: number | null
 	budget: number | null
 	allocation: number | null
 } 

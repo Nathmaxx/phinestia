@@ -1,10 +1,11 @@
+import { Category, DBCategory } from "./categories"
 
 export type Account = {
 	id: string,
 	name: string,
 	amount: number,
-	allocationUpdated: boolean
 	updatedAt: Date
+	categories: Category[]
 }
 
 export type DBAccount = {
@@ -13,5 +14,5 @@ export type DBAccount = {
 	amount: number,
 	userId: string,
 	updatedAt: string,
-	allocationUpdated: boolean
+	categories: DBCategory[]
 }

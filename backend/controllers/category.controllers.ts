@@ -1,30 +1,11 @@
 
 import { Request, Response } from "express"
-import { Category } from "../models/category"
 import { catchError } from "../utils/error"
 import mongoose from "mongoose"
 
 export const addCateogry = async (req: Request, res: Response) => {
 	try {
-		const { name, amount, userId } = req.body
-
-		const existingCategory = await Category.findOne({ userId, name })
-		if (existingCategory) {
-			res.status(400).json({ success: false, message: "Une catégorie existe déjà sous le même nom" })
-			return
-		}
-
-		const category = new Category({
-			name,
-			userId,
-			amount,
-			allocation: null,
-			budget: null
-		});
-
-		await category.save()
-
-		res.status(201).json({ success: true, message: "Compte ajouté avec succès", category })
+		res.status(201).json({ success: true, message: "Catégorie ajoutée avec succès" })
 	} catch (error) {
 		catchError(res, error)
 	}
@@ -32,19 +13,6 @@ export const addCateogry = async (req: Request, res: Response) => {
 
 export const deleteCateogry = async (req: Request, res: Response) => {
 	try {
-		const { categoryid } = req.params
-
-		if (!mongoose.Types.ObjectId.isValid(categoryid)) {
-			res.status(400).json({ success: false, message: "Format d'identifiant de catégorie invalide" });
-			return
-		}
-
-		const deleteCategory = await Category.findByIdAndDelete(categoryid)
-		if (!deleteCategory) {
-			res.status(400).json({ success: false, message: "Aucune catégorie trouvée" })
-			return
-		}
-
 		res.status(200).json({ success: true, message: "Catégorie supprimée avec succès" })
 	} catch (error) {
 		catchError(res, error)
@@ -56,16 +24,9 @@ export const updateCategory = async (req: Request, res: Response) => {
 
 export const getCategories = async (req: Request, res: Response) => {
 	try {
-		const { userid } = req.params
 
-		if (!userid) {
-			res.status(400).json({ success: false, message: "Données manquantes" })
-			return
-		}
 
-		const categories = await Category.find({ userId: userid })
-
-		res.status(200).json({ success: true, message: "Comptes récupérés", categories })
+		res.status(200).json({ success: true, message: "Catégories récupérées" })
 	} catch (error) {
 		catchError(res, error)
 	}

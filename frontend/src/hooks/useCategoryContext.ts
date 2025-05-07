@@ -3,9 +3,8 @@ import { Operation } from "../types/context"
 
 
 type CategoryContextType = {
-	addCategory: (name: string, amount: number) => Promise<Operation>
-	fetchCategories: () => Promise<Operation>
-	deleteCategory: (categoryId: string) => Promise<Operation>
+	addCategory: () => Promise<Operation>
+	deleteCategory: () => Promise<Operation>
 }
 
 export const CategoryContext = createContext<CategoryContextType | undefined>(undefined)
