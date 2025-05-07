@@ -65,6 +65,24 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const updateAccount = async (idAccount: string, name: string, amount: number) => {
+		try {
+			const response = await api.put(`/account/${idAccount}`, { name, amount })
+			console.log(response)
+			const accountsUpdated = accounts.map((account) => {
+				return account.id === idAccount ? {
+					...account,
+					name,
+					amount
+				} : account
+			})
+			setAccounts(accountsUpdated)
+			return { success: true, message: "Compte modifié avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier le compte")
+		}
+	}
+
 	useEffect(() => {
 		fetchAccounts()
 	}, [fetchAccounts])
@@ -74,7 +92,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		accounts,
 		addAccount,
 		fetchAccounts,
-		deleteAccount
+		deleteAccount,
+		updateAccount
 	}
 
 	return (

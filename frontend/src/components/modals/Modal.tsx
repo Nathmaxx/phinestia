@@ -3,14 +3,13 @@ import Message from "../Message"
 type ModalProps = {
 	isOpen: boolean
 	onClose: () => void
-	onConfirm: () => void
 	children: React.ReactNode
 	title: string
 	className?: string
 	message?: string
 }
 
-const Modal = ({ isOpen, onClose, children, title, onConfirm, className = "", message = "" }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, title, className = "", message = "" }: ModalProps) => {
 
 	if (!isOpen) return null
 
@@ -26,22 +25,8 @@ const Modal = ({ isOpen, onClose, children, title, onConfirm, className = "", me
 					<section>
 						<h2 className="text-lg font-bricolage pb-2 border-b border-gray-200 font-semibold">{title}</h2>
 					</section>
-					<section className="my-3">
+					<section className="mt-3">
 						{children}
-					</section>
-					<section className="flex justify-end">
-						<button
-							onClick={onConfirm}
-							className="px-3 py-0.5 bg-sky-violet text-white rounded hover:bg-sky-dark-violet transition-colors mr-2"
-						>
-							Confirmer
-						</button>
-						<button
-							onClick={onClose}
-							className="px-3 py-0.5 bg-white text-sky-violet rounded border border-sky-violet hover:text-sky-dark-violet hover:border-sky-dark-violet transition-all hover:bg-sky-violet/10"
-						>
-							Annuler
-						</button>
 					</section>
 					<Message message={message} />
 				</div>

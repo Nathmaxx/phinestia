@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
 import { useAccount } from '../../hooks/useAccountContext';
 import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
+import ModalButtons from '../modals/ModalButtons';
 
 
 const AccountsList = () => {
@@ -103,14 +104,13 @@ const AccountsList = () => {
 										isOpen={isUpdateModalOpen}
 										className='w-[450px] p-4'
 										onClose={() => setIsUpdateModalOpen(false)}
-										onConfirm={() => {
-											setIsUpdateModalOpen(false)
-										}}
 										title={`Modification de "${account.name}"`}
 									>
 										<UpdateAccountModal
 											initialName={account.name}
 											initialAmount={account.amount}
+											idAccount={account.id}
+											setIsOpen={setIsUpdateModalOpen}
 										/>
 									</Modal>
 									<button
@@ -124,13 +124,15 @@ const AccountsList = () => {
 										isOpen={isDeleteModalOpen}
 										className='w-[450px] p-4'
 										onClose={() => setIsDeleteModalOpen(false)}
-										onConfirm={() => {
-											deleteAccount(account.id)
-											setIsDeleteModalOpen(false)
-										}}
 										title={`Suppression de "${account.name}"`}
 									>
 										<p>En cliquant sur confirmer, le compte <span className='font-semibold'>"{account.name}"</span> sera supprimé si aucune dépense n'est liée à celui-ci</p>
+										<ModalButtons
+											onClose={() => setIsDeleteModalOpen(false)}
+											onConfirm={() => {
+												deleteAccount(account.id)
+												setIsDeleteModalOpen(false)
+											}} />
 									</Modal>
 								</div>
 							)}

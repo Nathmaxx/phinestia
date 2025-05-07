@@ -53,7 +53,7 @@ export const updateAccount = async (req: Request, res: Response) => {
 	const { name, amount } = req.body
 
 	try {
-		const account = await Account.findByIdAndDelete(accountid)
+		const account = await Account.findById(accountid)
 		if (!account) {
 			res.status(400).json({ success: false, message: "Aucun compte trouvé" })
 			return
@@ -61,6 +61,7 @@ export const updateAccount = async (req: Request, res: Response) => {
 
 		account.name = name
 		account.amount = amount
+		account.updatedAt = new Date(Date.now())
 
 		await account.save()
 

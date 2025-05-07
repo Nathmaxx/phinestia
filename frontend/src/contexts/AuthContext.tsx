@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const checkAuth = async () => {
 		setIsChecking(true)
 		try {
-			console.log("check")
 			if (userInfos.id !== "") {
 				setIsAuthenticated(true)
 				return { success: true, message: "Utilisateur déjà connecté" };

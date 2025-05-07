@@ -8,6 +8,7 @@ type AccountContextType = {
 	addAccount: (name: string, amount: number) => Promise<Operation>
 	fetchAccounts: () => Promise<Operation>
 	deleteAccount: (accountId: string) => Promise<Operation>
+	updateAccount: (accountId: string, name: string, amount: number) => Promise<Operation>
 }
 
 export const AccountContext = createContext<AccountContextType | undefined>(undefined)

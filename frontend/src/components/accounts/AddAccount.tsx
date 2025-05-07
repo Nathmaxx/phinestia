@@ -18,12 +18,12 @@ const AddAccount = () => {
 	const handleAddAccount = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setMessage("")
-
-		if (!nameError || !amountError) {
+		if (nameError || amountError) {
 			return
 		}
 		const parsedAmount = parseFloat(amount)
 
+		console.log("ok")
 		const response = await addAccount(name, parsedAmount)
 		if (!response.success) {
 			setMessage(response.message)

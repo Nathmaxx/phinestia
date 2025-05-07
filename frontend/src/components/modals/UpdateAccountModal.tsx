@@ -1,12 +1,18 @@
 import { useState } from "react"
 import AccountInfos from "../accounts/AccountInfos"
+import ModalButtons from "./ModalButtons"
+import { useAccount } from "../../hooks/useAccountContext"
 
 type UpdateAccountModalProps = {
 	initialName: string
 	initialAmount: number
+	idAccount: string
+	setIsOpen: (value: boolean) => void
 }
 
-const UpdateAccountModal = ({ initialAmount, initialName }: UpdateAccountModalProps) => {
+const UpdateAccountModal = ({ initialAmount, initialName, setIsOpen, idAccount }: UpdateAccountModalProps) => {
+
+	const { updateAccount } = useAccount()
 
 	const [name, setName] = useState(initialName)
 	const [amount, setAmount] = useState(initialAmount.toString())
@@ -27,6 +33,13 @@ const UpdateAccountModal = ({ initialAmount, initialName }: UpdateAccountModalPr
 					setNameError={setNameError}
 				/>
 			</div>
+			<ModalButtons
+				onClose={() => setIsOpen(false)}
+				onConfirm={() => {
+					updateAccount(idAccount, name, parseFloat(amount))
+					setIsOpen(false)
+				}}
+			/>
 		</>
 	)
 }
