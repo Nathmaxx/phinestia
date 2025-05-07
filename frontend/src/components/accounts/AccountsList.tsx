@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
 import { useAccount } from '../../hooks/useAccountContext';
+import Modal from '../modals/Modal';
+import UpdateAccountModal from '../modals/UpdateAccountModal';
 
 
 const AccountsList = () => {
 	const [showActions, setShowActions] = useState<string | null>(null);
 	const { accounts, deleteAccount } = useAccount()
 
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
 
 	// Formater les montants en EUR
 	const formatAmount = (amount: number) => {
@@ -60,10 +64,13 @@ const AccountsList = () => {
 							key={account.id}
 							className="bg-sky-semiviolet/5 rounded-lg p-1.5 transition-all hover:shadow-sm"
 						>
-							<div className="flex justify-between items-center">
+							<div
+								onClick={() => toggleActions(account.id)}
+								className="flex justify-between items-center cursor-pointer"
+							>
 								<div>
 									<h3 className="font-medium text-gray-800">{account.name}</h3>
-									<p className="text-xs text-gray-500">
+									<p className="text-xs text-gray-500 mt-1">
 										Mis à jour le {formatDate(account.updatedAt)}
 									</p>
 								</div>
@@ -72,8 +79,7 @@ const AccountsList = () => {
 										{formatAmount(account.amount)}
 									</p>
 									<button
-										onClick={() => toggleActions(account.id)}
-										className="p-1 rounded-full hover:bg-sky-semiviolet/10 transition-colors"
+										className="p-1 rounded-full hover:bg-sky-semiviolet/10 transition-colors cursor-pointer"
 									>
 										{showActions === account.id ? (
 											<ChevronUp size={18} className="text-gray-500" />
@@ -86,17 +92,43 @@ const AccountsList = () => {
 
 							{showActions === account.id && (
 								<div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
-									<button className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:bg-sky-semiviolet/10 rounded transition-colors">
+									<button
+										className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:bg-sky-semiviolet/10 rounded transition-colors"
+										onClick={() => setIsUpdateModalOpen(true)}
+									>
 										<Pencil size={14} />
 										Modifier
 									</button>
+									<Modal
+										isOpen={isUpdateModalOpen}
+										className='w-[450px] p-4'
+										onClose={() => setIsUpdateModalOpen(false)}
+										onConfirm={() => {
+											setIsUpdateModalOpen(false)
+										}}
+										title={`Modification de "${account.name}"`}
+									>
+										<UpdateAccountModal />
+									</Modal>
 									<button
 										className="flex items-center gap-1 px-2 py-1 text-sm text-sky-salmon hover:bg-red-50 rounded transition-colors"
-										onClick={() => deleteAccount(account.id)}
+										onClick={() => setIsDeleteModalOpen(true)}
 									>
 										<Trash2 size={14} />
 										Supprimer
 									</button>
+									<Modal
+										isOpen={isDeleteModalOpen}
+										className='w-[450px] p-4'
+										onClose={() => setIsDeleteModalOpen(false)}
+										onConfirm={() => {
+											deleteAccount(account.id)
+											setIsDeleteModalOpen(false)
+										}}
+										title={`Suppression de "${account.name}"`}
+									>
+										<p>En cliquant sur confirmer, le compte <span className='font-semibold'>"{account.name}"</span> sera supprimé si aucune dépense n'est liée à celui-ci</p>
+									</Modal>
 								</div>
 							)}
 						</div>
