@@ -67,8 +67,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	const updateAccount = async (idAccount: string, name: string, amount: number) => {
 		try {
-			const response = await api.put(`/account/${idAccount}`, { name, amount })
-			console.log(response)
+			await api.put(`/account/${idAccount}`, { name, amount })
 			const accountsUpdated = accounts.map((account) => {
 				return account.id === idAccount ? {
 					...account,

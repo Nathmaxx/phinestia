@@ -2,6 +2,7 @@
 import { Request, Response } from "express"
 import { Category } from "../models/category"
 import { catchError } from "../utils/error"
+import mongoose from "mongoose"
 
 export const addCateogry = async (req: Request, res: Response) => {
 	try {
@@ -30,11 +31,27 @@ export const addCateogry = async (req: Request, res: Response) => {
 }
 
 export const deleteCateogry = async (req: Request, res: Response) => {
+	try {
+		const { categoryid } = req.params
 
+		if (!mongoose.Types.ObjectId.isValid(categoryid)) {
+			res.status(400).json({ success: false, message: "Format d'identifiant de catégorie invalide" });
+			return
+		}
+
+		const deleteCategory = await Category.findByIdAndDelete(categoryid)
+		if (!deleteCategory) {
+			res.status(400).json({ success: false, message: "Aucune catégorie trouvée" })
+			return
+		}
+
+		res.status(200).json({ success: true, message: "Catégorie supprimée avec succès" })
+	} catch (error) {
+		catchError(res, error)
+	}
 }
 
-export const updateCateogry = async (req: Request, res: Response) => {
-
+export const updateCategory = async (req: Request, res: Response) => {
 }
 
 export const getCategories = async (req: Request, res: Response) => {

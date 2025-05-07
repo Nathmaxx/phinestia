@@ -8,6 +8,8 @@ const Layout = () => {
 				<Link to={'/dashboard'}>Dashboard</Link>
 				<Link to={'/profil'}>Profil</Link>
 				<Link to={'/comptes'}>Comptes</Link>
+				<Link to={'/categories'}>Catégories</Link>
+				<Link to={'/transactions'}>Transactions</Link>
 			</nav>
 
 			<main>
