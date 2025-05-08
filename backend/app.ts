@@ -3,13 +3,11 @@ import dotenv from "dotenv"
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import authRoutes from './routes/auth.routes'
-import categoryRoutes from './routes/category.routes'
 import accountRoutes from './routes/account.routes'
 import transactionRoutes from './routes/transaction.routes'
 import { databaseConnection } from './database/dbConnection'
 import compression from 'compression'
 import helmet from 'helmet'
-import rateLimit from 'express-rate-limit'
 import { Request, Response } from 'express'
 
 dotenv.config()
@@ -41,7 +39,6 @@ app.use(compression())
 app.use(express.json({ limit: '10kb' }))
 
 app.use('/api/auth', authRoutes)
-app.use('/api/category', categoryRoutes)
 app.use('/api/account', accountRoutes)
 app.use('/api/transaction', transactionRoutes)
 

@@ -1,7 +1,6 @@
 
 import { ReactNode } from "react";
 import { AuthProvider } from "./AuthContext";
-import { CategoryProvider } from "./CategoryContext";
 import { AccountProvider } from "./AccountContext";
 
 type AppProvidersProps = {
@@ -12,9 +11,7 @@ const AppProviders = ({ children }: AppProvidersProps) => {
 	return (
 		<AuthProvider>
 			<AccountProvider>
-				<CategoryProvider>
-					{children}
-				</CategoryProvider>
+				{children}
 			</AccountProvider>
 		</AuthProvider>
 	)

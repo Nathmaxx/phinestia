@@ -27,12 +27,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 					name: newAccount.name,
 					amount: newAccount.amount,
 					updatedAt: new Date(newAccount.updatedAt),
-					categories: newAccount.categories ? newAccount.categories.map(cat => ({
-						name: cat.name,
-						budget: cat.budget,
-						amount: cat.amount,
-						allocation: cat.allocation
-					})) : []
+					categories: []
 				}
 			])
 			return { success: true, message: "Compte ajouté" }

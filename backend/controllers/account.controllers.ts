@@ -87,3 +87,40 @@ export const getAccounts = async (req: Request, res: Response) => {
 		catchError(res, error)
 	}
 }
+
+export const addCategory = async (req: Request, res: Response) => {
+	try {
+		const { accountid } = req.params
+		const { name } = req.body
+
+		const account = await Account.findById(accountid)
+		if (!account) {
+			res.status(400).json({ success: false, message: "Aucoun compte trouvé" })
+			return
+		}
+
+		const validateName = account.categories.every(cat => cat.name.toLowerCase() !== name.toLowerCase())
+		if (!validateName) {
+			res.status(400).json({ message: "Une catégorie existe déjà sous le même nom" })
+			return
+		}
+
+		account.categories.push({
+			name,
+			allocation: null,
+			amount: null,
+			budget: null
+		})
+
+		account.updatedAt = new Date()
+		await account.save()
+
+		res.status(201).json({
+			success: true,
+			message: "Catégorie ajoutée avec succès",
+			category: account.categories[account.categories.length - 1]
+		})
+	} catch (error) {
+		catchError(res, error)
+	}
+}
