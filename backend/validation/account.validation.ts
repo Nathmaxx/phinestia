@@ -11,10 +11,6 @@ export const createAccountSchema = z.object({
 	userId: z.string()
 });
 
-export const deleteAccountSchema = z.object({
-	accountid: z.string()
-})
-
 export const updateAccountInfosSchema = z.object({
 	name: z.string()
 		.min(2, { message: "Le nom doit contenir au moins 2 caractères" })

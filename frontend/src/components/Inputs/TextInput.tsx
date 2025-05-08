@@ -5,9 +5,10 @@ type TextInputProps = {
 	placeholder?: string
 	className?: string
 	type?: "text" | "email"
+	id?: string
 }
 
-const TextInput = ({ value, setValue, placeholder, className, type = "text" }: TextInputProps) => {
+const TextInput = ({ value, setValue, placeholder, className, type = "text", id }: TextInputProps) => {
 
 	const handleChange = (value: string) => {
 		setValue(value)
@@ -16,6 +17,7 @@ const TextInput = ({ value, setValue, placeholder, className, type = "text" }: T
 	return (
 		<input
 			value={value}
+			id={id}
 			onChange={(e) => handleChange(e.target.value)}
 			type={type}
 			className={`w-full border border-gray-300 font-figtree rounded-md outline-none py-0.5 px-1.5 shadow-xs ${className}`}

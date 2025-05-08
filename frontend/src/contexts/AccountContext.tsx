@@ -16,6 +16,11 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	const [accounts, setAccounts] = useState<Account[]>([])
 
+	const accountNames = accounts.map(account => ({
+		name: account.name,
+		id: account.id
+	}))
+
 	const addAccount = async (name: string, amount: number) => {
 		try {
 			const response = await api.post(`/account/add`, { name, amount, userId: userInfos.id })
@@ -75,7 +80,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
-	const updateAccount = async (idAccount: string, name: string, amount: number) => {
+	const updateAccountInfos = async (idAccount: string, name: string, amount: number) => {
 		try {
 			await api.put(`/account/${idAccount}`, { name, amount })
 			const accountsUpdated = accounts.map((account) => {
@@ -92,6 +97,34 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const addCategory = async (accountId: string, name: string) => {
+		try {
+			const response = await api.post(`/account/category/${accountId}`, { name })
+			const newCategory = response.data.category
+			const updatedAccounts = accounts.map(account => {
+				if (account.id === accountId) {
+					return {
+						...account,
+						categories: [
+							...account.categories,
+							{
+								name: newCategory.name,
+								budget: null,
+								amount: null,
+								allocation: null
+							}
+						]
+					};
+				}
+				return account;
+			});
+			setAccounts(updatedAccounts);
+			return { success: true, message: "Catégorie ajoutée avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible d'ajouter la catégorie")
+		}
+	}
+
 	useEffect(() => {
 		fetchAccounts()
 	}, [fetchAccounts])
@@ -99,10 +132,12 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	const value = {
 		accounts,
+		accountNames,
 		addAccount,
 		fetchAccounts,
 		deleteAccount,
-		updateAccount
+		updateAccountInfos,
+		addCategory
 	}
 
 	return (

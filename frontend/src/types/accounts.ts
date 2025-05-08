@@ -16,3 +16,8 @@ export type DBAccount = {
 	updatedAt: string,
 	categories: DBCategory[]
 }
+
+export type AccountName = {
+	name: string,
+	id: string
+}

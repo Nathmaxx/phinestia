@@ -61,7 +61,7 @@ export const updateAccountInfos = async (req: Request, res: Response) => {
 
 		account.name = name
 		account.amount = amount
-		account.updatedAt = new Date(Date.now())
+		account.updatedAt = new Date()
 
 		await account.save()
 
@@ -95,7 +95,7 @@ export const addCategory = async (req: Request, res: Response) => {
 
 		const account = await Account.findById(accountid)
 		if (!account) {
-			res.status(400).json({ success: false, message: "Aucoun compte trouvé" })
+			res.status(400).json({ success: false, message: "Aucun compte trouvé" })
 			return
 		}
 

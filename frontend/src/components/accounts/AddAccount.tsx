@@ -23,7 +23,6 @@ const AddAccount = () => {
 		}
 		const parsedAmount = parseFloat(amount)
 
-		console.log("ok")
 		const response = await addAccount(name, parsedAmount)
 		if (!response.success) {
 			setMessage(response.message)
