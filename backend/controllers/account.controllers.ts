@@ -48,7 +48,7 @@ export const deleteAccount = async (req: Request, res: Response) => {
 	}
 }
 
-export const updateAccount = async (req: Request, res: Response) => {
+export const updateAccountInfos = async (req: Request, res: Response) => {
 	const { accountid } = req.params
 	const { name, amount } = req.body
 
