@@ -16,24 +16,34 @@ const transactionSchema = new mongoose.Schema({
 	},
 	date: {
 		type: Date,
-		required: true
+		required: true,
+		index: true
 	},
 	description: String,
 	accountId: {
 		type: Schema.Types.ObjectId,
 		ref: 'Account',
-		required: true
+		required: true,
+		index: true
 	},
 	categoryId: {
 		type: Schema.Types.ObjectId,
 		ref: 'Category',
-		required: true
+		required: true,
+		index: true
 	},
 	type: {
 		type: String,
 		enum: Object.values(TransactionType),
-		required: true
+		required: true,
+		index: true
 	}
 })
+
+// Index composé pour les requêtes filtrées par compte et triées par date
+transactionSchema.index({ accountId: 1, date: -1 });
+
+// Index composé pour les requêtes filtrées par catégorie et triées par date
+transactionSchema.index({ categoryId: 1, date: -1 });
 
 export const Transaction = mongoose.model("Transaction", transactionSchema);

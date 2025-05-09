@@ -98,7 +98,7 @@ const AddCategory = ({ className = "" }: AddCategoryProps) => {
 				</div>
 
 				<SubmitButton>
-					Créer la catégorie
+					Ajouter
 				</SubmitButton>
 
 

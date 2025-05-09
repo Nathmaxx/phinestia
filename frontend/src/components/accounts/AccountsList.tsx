@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Pencil, Trash2, WalletMinimal } from 'lucide-react';
 import { useAccount } from '../../hooks/useAccountContext';
 import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
 import ModalButtons from '../modals/ModalButtons';
+import { Link } from 'react-router-dom';
 
 
 const AccountsList = () => {
@@ -63,7 +64,7 @@ const AccountsList = () => {
 					{accounts.map((account) => (
 						<div
 							key={account.id}
-							className="bg-sky-semiviolet/5 rounded-lg p-1.5 transition-all hover:shadow-sm"
+							className="bg-sky-violet/5 rounded-lg p-1.5 transition-all hover:shadow-sm"
 						>
 							<div
 								onClick={() => toggleActions(account.id)}
@@ -93,8 +94,15 @@ const AccountsList = () => {
 
 							{showActions === account.id && (
 								<div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
+									<Link
+										className="flex items-center gap-1 px-2 py-1 text-sm text-sky-violet hover:bg-sky-semiviolet/10 rounded transition-colors"
+										to={`/comptes/${account.name}`}
+									>
+										<WalletMinimal size={14} />
+										Voir le compte
+									</Link>
 									<button
-										className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:bg-sky-semiviolet/10 rounded transition-colors"
+										className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:bg-gray-200/60 rounded transition-colors"
 										onClick={() => setIsUpdateModalOpen(true)}
 									>
 										<Pencil size={14} />
@@ -114,7 +122,7 @@ const AccountsList = () => {
 										/>
 									</Modal>
 									<button
-										className="flex items-center gap-1 px-2 py-1 text-sm text-sky-salmon hover:bg-red-50 rounded transition-colors"
+										className="flex items-center gap-1 px-2 py-1 text-sm text-red-400 hover:bg-red-50 rounded transition-colors"
 										onClick={() => setIsDeleteModalOpen(true)}
 									>
 										<Trash2 size={14} />

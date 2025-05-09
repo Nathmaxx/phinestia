@@ -1,19 +1,17 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Layout from './components/Layout';
 import Authentication from './pages/Authentication';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoutes';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ResetPassword from './pages/ResetPassword';
 import Accounts from './pages/Accounts';
 import Transactions from './pages/Transactions';
+import ProtectedLayout from './components/protected-layout/ProtectedLayout';
 
 function App() {
 
 	return (
 		<Router>
 			<Routes>
-				<Route index element={<Navigate to="/authentification/connexion" replace />} />
 				<Route path='reset-password/:id' element={<ResetPassword />} />
 				<Route path="authentification">
 					<Route index element={<Navigate to="/authentification/connexion" replace />} />
@@ -21,11 +19,15 @@ function App() {
 					<Route path="inscription" element={<Authentication method="signin" />} />
 				</Route>
 
-				<Route element={<Layout />}>
-					<Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-					<Route path='/profil' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-					<Route path='/comptes' element={<ProtectedRoute><Accounts /></ProtectedRoute>} />
-					<Route path='/transactions' element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+				<Route element={<ProtectedLayout />}>
+					<Route index element={<Navigate to="dashboard" replace />} />
+					<Route path='dashboard' element={<Dashboard />} />
+					<Route path='profil' element={<Profile />} />
+					<Route path='comptes'>
+						<Route index element={<Accounts />} />
+						<Route path=':compte' element={<Accounts />} />
+					</Route>
+					<Route path='transactions' element={<Transactions />} />
 				</Route>
 
 				{/* Route 404 */}
