@@ -159,3 +159,24 @@ export const updateCategoryName = async (req: Request, res: Response) => {
 		catchError(res, error)
 	}
 }
+
+export const deleteCategory = async (req: Request, res: Response) => {
+	try {
+		const { accountid, categoryid } = req.params
+
+		const account = await Account.findById(accountid)
+		if (!account) {
+			res.status(404).json({ success: false, message: "Identifiant invalide" })
+			return
+		}
+
+		account.categories.pull({ _id: categoryid })
+		account.updatedAt = new Date()
+
+		await account.save()
+
+		res.status(200).json({ success: true, message: "Catégorie supprimée avec succès" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}

@@ -21,9 +21,13 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		id: account.id
 	}))
 
+	// +-------------------------------------+
+	// | Fonctions pour les comptes          | 
+	// +-------------------------------------+
+
 	const addAccount = async (name: string, amount: number) => {
 		try {
-			const response = await api.post(`/account/add`, { name, amount, userId: userInfos.id })
+			const response = await api.post(`/account/`, { name, amount, userId: userInfos.id })
 			const newAccount = response.data.account as DBAccount
 			setAccounts([
 				...accounts,
@@ -106,13 +110,21 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const findAccount = (accountName: string) => {
+		return accounts.find((account) => account.name === accountName) || null
+	}
+
+	// +-------------------------------------+
+	// | Fonctions pour les catégories       | 
+	// +-------------------------------------+
+
 	const addCategory = async (accountId: string, name: string) => {
 		try {
 			if (!accountId) {
 				return { success: false, message: "Données manquantes" }
 			}
 
-			const response = await api.post(`/account/category/${accountId}`, { name })
+			const response = await api.post(`/account/${accountId}/category`, { name })
 			const newCategory = response.data.category
 			const updatedAccounts = accounts.map(account => {
 				if (account.id === accountId) {
@@ -138,9 +150,59 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
-	const findAccount = (accountName: string) => {
-		return accounts.find((account) => account.name === accountName) || null
+	const updateCategoryName = async (accountId: string, categoryId: string, name: string) => {
+
+		if (!accountId || !categoryId) {
+			return { success: false, message: "Données manquantes" };
+		}
+
+		try {
+			await api.put(`/account/${accountId}/category/${categoryId}`, { name })
+			const updatedAccounts = accounts.map((account) => {
+				if (account.id === accountId) {
+					return {
+						...account,
+						categories: account.categories.map((category) => {
+							if (category.id === categoryId) {
+								return { ...category, name }
+							}
+							return category
+						})
+					}
+				}
+				return account
+			})
+			setAccounts(updatedAccounts)
+			return { success: true, message: "Catégorie modifiée avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible de modifier la catégorie")
+		}
 	}
+
+	const deleteCategory = async (accountId: string, categoryId: string) => {
+
+		if (!accountId || !categoryId) {
+			return { success: false, message: "Données manquantes" };
+		}
+
+		try {
+			await api.delete(`/account/${accountId}/category/${categoryId}`)
+			const updatedAccounts = accounts.map((account) => {
+				if (account.id === accountId) {
+					return {
+						...account,
+						categories: account.categories.filter((category) => category.id !== categoryId)
+					}
+				}
+				return account
+			})
+			setAccounts(updatedAccounts)
+			return { success: true, message: "Catégorie supprimée avec succès" }
+		} catch (error) {
+			return catchError(error, "Impossible de supprimer la catégorie")
+		}
+	}
+
 
 	useEffect(() => {
 		fetchAccounts()
@@ -155,7 +217,9 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		deleteAccount,
 		updateAccountInfos,
 		addCategory,
-		findAccount
+		findAccount,
+		updateCategoryName,
+		deleteCategory
 	}
 
 	return (
