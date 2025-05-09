@@ -26,7 +26,7 @@ const AccountDetails = () => {
 			className="flex items-center justify-center w-full h-screen gap-8"
 		>
 			<AccountInfos account={account} />
-			<CategoryList categories={account.categories} />
+			<CategoryList account={account} />
 			<UpdateAmount account={account} />
 		</div>
 	)

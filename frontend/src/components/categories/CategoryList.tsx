@@ -1,18 +1,25 @@
 import { useState } from "react"
-import { Category } from "../../types/categories"
 import { formatEuro } from "../../utils/format"
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react"
+import { useAccount } from "../../hooks/useAccountContext"
+import Modal from "../modals/Modal"
+import { Account } from "../../types/accounts"
+import UpdateCategoryModal from "../modals/UpdateCategoryModal"
+import ModalButtons from "../modals/ModalButtons"
 
 type CategoryListProps = {
-	categories: Category[]
+	account: Account
 }
 
-const CategoryList = ({ categories }: CategoryListProps) => {
+const CategoryList = ({ account }: CategoryListProps) => {
 	const [showActions, setShowActions] = useState<string | null>(null);
+
+	const { deleteCategory } = useAccount()
 
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
 
+	const categories = account.categories
 
 	const toggleActions = (id: string) => {
 		if (showActions === id) {
@@ -38,11 +45,11 @@ const CategoryList = ({ categories }: CategoryListProps) => {
 				<div className="space-y-1.5">
 					{categories.map((category) => (
 						<div
-							key={category.name}
+							key={category.id}
 							className="bg-sky-violet/5 rounded-lg py-1 px-3 transition-all hover:shadow-sm"
 						>
 							<div
-								onClick={() => toggleActions(category.name)}
+								onClick={() => toggleActions(category.id)}
 								className="flex justify-between items-center cursor-pointer"
 							>
 								<div>
@@ -55,7 +62,7 @@ const CategoryList = ({ categories }: CategoryListProps) => {
 									<button
 										className="p-1 rounded-full hover:bg-sky-semiviolet/10 transition-colors cursor-pointer"
 									>
-										{showActions === category.name ? (
+										{showActions === category.id ? (
 											<ChevronUp size={18} className="text-gray-500" />
 										) : (
 											<ChevronDown size={18} className="text-gray-500" />
@@ -64,7 +71,7 @@ const CategoryList = ({ categories }: CategoryListProps) => {
 								</div>
 							</div>
 
-							{showActions === category.name && (
+							{showActions === category.id && (
 								<div className="flex justify-end gap-2 mt-2 pt-2 border-t border-gray-200">
 									<button
 										className="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:bg-gray-200/60 rounded transition-colors"
@@ -73,6 +80,19 @@ const CategoryList = ({ categories }: CategoryListProps) => {
 										<Pencil size={14} />
 										Modifier
 									</button>
+									<Modal
+										isOpen={isUpdateModalOpen}
+										className='w-[350px] p-4'
+										onClose={() => setIsUpdateModalOpen(false)}
+										title={`Modification de "${category.name}"`}
+									>
+										<UpdateCategoryModal
+											accountId={account.id}
+											categoryId={category.id}
+											initialName={category.name}
+											setIsOpen={setIsUpdateModalOpen}
+										/>
+									</Modal>
 
 									<button
 										className="flex items-center gap-1 px-2 py-1 text-sm text-red-400 hover:bg-red-50 rounded transition-colors"
@@ -81,6 +101,18 @@ const CategoryList = ({ categories }: CategoryListProps) => {
 										<Trash2 size={14} />
 										Supprimer
 									</button>
+									<Modal
+										isOpen={isDeleteModalOpen}
+										className='w-[350px] p-4'
+										onClose={() => setIsDeleteModalOpen(false)}
+										title={`Suppression de "${category.name}"`}
+									>
+										<p>En cliquant sur confirmer, la catégorie <span className='font-semibold'>"{category.name}"</span> sera supprimé si aucune dépense n'est liée à celle-ci</p>
+										<ModalButtons
+											onClose={() => setIsDeleteModalOpen(false)}
+											onConfirm={() => deleteCategory(account.id, category.id)}
+										/>
+									</Modal>
 								</div>
 							)}
 						</div>

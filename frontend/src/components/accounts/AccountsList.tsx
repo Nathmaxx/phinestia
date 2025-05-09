@@ -121,10 +121,8 @@ const AccountsList = () => {
 										<p>En cliquant sur confirmer, le compte <span className='font-semibold'>"{account.name}"</span> sera supprimé si aucune dépense n'est liée à celui-ci</p>
 										<ModalButtons
 											onClose={() => setIsDeleteModalOpen(false)}
-											onConfirm={() => {
-												deleteAccount(account.id)
-												setIsDeleteModalOpen(false)
-											}} />
+											onConfirm={() => deleteAccount(account.id)}
+										/>
 									</Modal>
 								</div>
 							)}
