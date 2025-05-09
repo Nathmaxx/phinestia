@@ -11,3 +11,12 @@ export const formatDate = (dateString: string) => {
 		return "Date invalide"
 	}
 }
+
+export const formatEuro = (value: number) => {
+	return value.toLocaleString('fr-FR', {
+		style: 'currency',
+		currency: 'EUR',
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
+	})
+}

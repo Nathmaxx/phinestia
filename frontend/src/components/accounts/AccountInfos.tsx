@@ -1,5 +1,5 @@
 import { Account } from "../../types/accounts"
-import { formatDate } from "../../utils/date"
+import { formatDate, formatEuro } from "../../utils/format"
 
 type AccountInfosProps = {
 	account: Account
@@ -7,14 +7,9 @@ type AccountInfosProps = {
 
 const AccountInfos = ({ account }: AccountInfosProps) => {
 	return (
-		<div>
+		<div className="w-[300px]">
 			<p className="font-figtree text-2xl font-semibold text-sky-dark-violet">{account.name}</p>
-			<p>Solde : {account.amount.toLocaleString('fr-FR', {
-				style: 'currency',
-				currency: 'EUR',
-				minimumFractionDigits: 2,
-				maximumFractionDigits: 2
-			})}</p>
+			<p>Solde : {formatEuro(account.amount)}</p>
 			<p className="text-gray-600">Dernière mise à jour : {formatDate(account.updatedAt)}</p>
 		</div>
 	)

@@ -5,7 +5,7 @@ import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
 import ModalButtons from '../modals/ModalButtons';
 import { Link } from 'react-router-dom';
-import { formatDate } from '../../utils/date';
+import { formatDate, formatEuro } from '../../utils/format';
 
 
 const AccountsList = () => {
@@ -14,14 +14,6 @@ const AccountsList = () => {
 
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
-
-	// Formater les montants en EUR
-	const formatAmount = (amount: number) => {
-		return new Intl.NumberFormat('fr-FR', {
-			style: 'currency',
-			currency: 'EUR',
-		}).format(amount);
-	};
 
 	const totalAmount = accounts.reduce((sum, account) => sum + account.amount, 0);
 
@@ -42,7 +34,7 @@ const AccountsList = () => {
 				<div className="text-right">
 					<p className="text-sm text-gray-500">Total</p>
 					<p className="text-2xl font-semibold text-sky-dark-violet">
-						{formatAmount(totalAmount)}
+						{formatEuro(totalAmount)}
 					</p>
 				</div>
 			</div>
@@ -70,7 +62,7 @@ const AccountsList = () => {
 								</div>
 								<div className="flex items-center gap-3">
 									<p className="text-lg font-semibold text-sky-dark-violet">
-										{formatAmount(account.amount)}
+										{formatEuro(account.amount)}
 									</p>
 									<button
 										className="p-1 rounded-full hover:bg-sky-semiviolet/10 transition-colors cursor-pointer"

@@ -1,6 +1,6 @@
 import { User } from "lucide-react"
 import LogoutButton from "../buttons/LogoutButton"
-import { formatDate } from "../../utils/date"
+import { formatDate } from "../../utils/format"
 
 
 type ProfileHeaderProps = {
