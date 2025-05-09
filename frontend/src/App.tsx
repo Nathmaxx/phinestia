@@ -6,6 +6,7 @@ import ResetPassword from './pages/ResetPassword';
 import Accounts from './pages/Accounts';
 import Transactions from './pages/Transactions';
 import ProtectedLayout from './components/protected-layout/ProtectedLayout';
+import AccountDetails from './pages/AccountDetails';
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
 					<Route path='profil' element={<Profile />} />
 					<Route path='comptes'>
 						<Route index element={<Accounts />} />
-						<Route path=':compte' element={<Accounts />} />
+						<Route path=':accountname' element={<AccountDetails />} />
 					</Route>
 					<Route path='transactions' element={<Transactions />} />
 				</Route>

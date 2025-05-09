@@ -1,5 +1,6 @@
 import { User } from "lucide-react"
 import LogoutButton from "../buttons/LogoutButton"
+import { formatDate } from "../../utils/date"
 
 
 type ProfileHeaderProps = {
@@ -9,19 +10,7 @@ type ProfileHeaderProps = {
 }
 
 const ProfileHeader = ({ firstName, email, createdAt }: ProfileHeaderProps) => {
-	const formatDate = (dateString: string) => {
-		if (!dateString) return "Date inconnue"
-		try {
-			const date = new Date(dateString)
-			return date.toLocaleDateString('fr-FR', {
-				day: 'numeric',
-				month: 'long',
-				year: 'numeric'
-			})
-		} catch {
-			return "Date invalide"
-		}
-	}
+
 
 	return (
 		<div className="bg-white px-10 py-6 rounded-2xl shadow-md flex items-center">

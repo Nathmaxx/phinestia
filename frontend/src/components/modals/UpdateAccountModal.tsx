@@ -1,5 +1,5 @@
 import { useState } from "react"
-import AccountInfos from "../accounts/AccountInfos"
+import AccountInfos from "../accounts/AccountInputs"
 import ModalButtons from "./ModalButtons"
 import { useAccount } from "../../hooks/useAccountContext"
 

@@ -31,7 +31,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 					id: newAccount._id,
 					name: newAccount.name,
 					amount: newAccount.amount,
-					updatedAt: new Date(newAccount.updatedAt),
+					updatedAt: newAccount.updatedAt,
 					categories: []
 				}
 			])
@@ -54,10 +54,9 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 				id: account._id,
 				name: account.name,
 				amount: account.amount,
-				updatedAt: new Date(account.updatedAt),
+				updatedAt: account.updatedAt,
 				categories: account.categories ? account.categories.map(cat => ({
 					name: cat.name,
-					budget: cat.budget,
 					amount: cat.amount,
 					allocation: cat.allocation
 				})) : []
@@ -122,7 +121,6 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 							...account.categories,
 							{
 								name: newCategory.name,
-								budget: null,
 								amount: null,
 								allocation: null
 							}
@@ -138,6 +136,10 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const findAccount = (accountName: string) => {
+		return accounts.find((account) => account.name === accountName) || null
+	}
+
 	useEffect(() => {
 		fetchAccounts()
 	}, [fetchAccounts])
@@ -150,7 +152,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		fetchAccounts,
 		deleteAccount,
 		updateAccountInfos,
-		addCategory
+		addCategory,
+		findAccount
 	}
 
 	return (

@@ -109,7 +109,6 @@ export const addCategory = async (req: Request, res: Response) => {
 			name,
 			allocation: null,
 			amount: null,
-			budget: null
 		})
 
 		account.updatedAt = new Date()

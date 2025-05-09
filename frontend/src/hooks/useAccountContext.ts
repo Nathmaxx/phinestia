@@ -11,6 +11,7 @@ type AccountContextType = {
 	deleteAccount: (accountId: string) => Promise<Operation>
 	updateAccountInfos: (accountId: string, name: string, amount: number) => Promise<Operation>
 	addCategory: (accountId: string, name: string) => Promise<Operation>
+	findAccount: (accountName: string) => Account | null
 }
 
 export const AccountContext = createContext<AccountContextType | undefined>(undefined)

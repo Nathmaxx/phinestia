@@ -5,6 +5,7 @@ import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
 import ModalButtons from '../modals/ModalButtons';
 import { Link } from 'react-router-dom';
+import { formatDate } from '../../utils/date';
 
 
 const AccountsList = () => {
@@ -20,15 +21,6 @@ const AccountsList = () => {
 			style: 'currency',
 			currency: 'EUR',
 		}).format(amount);
-	};
-
-	// Formater les dates
-	const formatDate = (date: Date) => {
-		return new Intl.DateTimeFormat('fr-FR', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric'
-		}).format(date);
 	};
 
 	const totalAmount = accounts.reduce((sum, account) => sum + account.amount, 0);

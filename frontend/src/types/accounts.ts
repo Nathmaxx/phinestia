@@ -4,7 +4,7 @@ export type Account = {
 	id: string,
 	name: string,
 	amount: number,
-	updatedAt: Date
+	updatedAt: string
 	categories: Category[]
 }
 
