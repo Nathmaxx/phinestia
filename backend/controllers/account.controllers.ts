@@ -123,3 +123,39 @@ export const addCategory = async (req: Request, res: Response) => {
 		catchError(res, error)
 	}
 }
+
+export const updateCategoryName = async (req: Request, res: Response) => {
+	try {
+		const { accountid, categoryid } = req.params
+		const { name } = req.body
+
+		const account = await Account.findById(accountid);
+		if (!account) {
+			res.status(404).json({ success: false, message: "Compte non trouvé" });
+			return
+		}
+
+		const nameExists = account.categories.some(
+			cat => cat._id.toString() !== categoryid && cat.name.toLowerCase() === name.toLowerCase()
+		)
+
+		if (nameExists) {
+			res.status(400).json({ success: false, message: "Une catégorie existe déjà sous ce nom" })
+		}
+
+		const category = account.categories.find(cat => cat._id.toString() === categoryid);
+
+		if (!category) {
+			res.status(404).json({ success: false, message: "Catégorie non trouvée" });
+			return;
+		}
+
+		category.name = name;
+		account.updatedAt = new Date();
+		await account.save();
+
+		res.status(200).json({ success: true, message: "Catégorie modifiée avec succès" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}

@@ -56,6 +56,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 				amount: account.amount,
 				updatedAt: account.updatedAt,
 				categories: account.categories ? account.categories.map(cat => ({
+					id: cat._id,
 					name: cat.name,
 					amount: cat.amount,
 					allocation: cat.allocation
@@ -120,6 +121,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 						categories: [
 							...account.categories,
 							{
+								id: newCategory._id,
 								name: newCategory.name,
 								amount: null,
 								allocation: null

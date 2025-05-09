@@ -25,3 +25,9 @@ export const createCategorySchema = z.object({
 		.min(2, { message: "Le nom doit contenir au moins 2 caractères" })
 		.max(30, { message: "Le nom ne peut pas dépasser 30 caractères" }),
 })
+
+export const updateCategoryNameSchema = z.object({
+	name: z.string()
+		.min(2, { message: "Le nom doit contenir au moins 2 caractères" })
+		.max(30, { message: "Le nom ne peut pas dépasser 30 caractères" }),
+})
