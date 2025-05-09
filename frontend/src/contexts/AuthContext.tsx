@@ -43,8 +43,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				})
 			}
 			setIsAuthenticated(true)
+			console.log("success")
 			return { success: true, message: "Utilisateur connecté" }
 		} catch (error) {
+			console.log("false")
 			setIsAuthenticated(false)
 			return catchError(error, "Imporrible de vérifier l'authentification")
 		} finally {
