@@ -4,7 +4,11 @@ import Message from "../Message"
 import { useAccount } from "../../hooks/useAccountContext"
 import AccountInfos from "./AccountInfos"
 
-const AddAccount = () => {
+type AddAccountProps = {
+	className?: string
+}
+
+const AddAccount = ({ className = "" }: AddAccountProps) => {
 
 	const [name, setName] = useState("")
 	const [amount, setAmount] = useState("")
@@ -40,9 +44,11 @@ const AddAccount = () => {
 	return (
 		<form
 			onSubmit={handleAddAccount}
-			className="w-[300px]"
+			className={`${className}`}
 		>
-			<p className="font-bricolage font-medium text-lg">Ajouter un compte</p>
+			<h2 className="text-2xl font-bricolage font-semibold text-sky-dark-violet mb-3 text-center">
+				Ajouter un compte
+			</h2>
 			<AccountInfos
 				amount={amount}
 				amountError={amountError}

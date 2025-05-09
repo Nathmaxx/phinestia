@@ -1,5 +1,6 @@
 import AccountsList from "../components/accounts/AccountsList"
 import AddAccount from "../components/accounts/AddAccount"
+import AddCategory from "../components/categories/AddCategory"
 
 
 const Accounts = () => {
@@ -8,7 +9,10 @@ const Accounts = () => {
 		<div
 			className="w-full h-screen flex items-center justify-center gap-10"
 		>
-			<AddAccount />
+			<div>
+				<AddAccount />
+				<AddCategory className="mt-4" />
+			</div>
 			<AccountsList />
 		</div>
 	)

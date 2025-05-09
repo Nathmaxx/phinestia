@@ -69,10 +69,15 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}, [userInfos.id])
 
-	const deleteAccount = async (idAccount: string) => {
+	const deleteAccount = async (accountId: string) => {
+
+		if (!accountId) {
+			return { success: false, message: "Données manquantes" }
+		}
+
 		try {
-			await api.delete(`/account/${idAccount}`)
-			const newAccounts = accounts.filter(account => account.id !== idAccount)
+			await api.delete(`/account/${accountId}`)
+			const newAccounts = accounts.filter(account => account.id !== accountId)
 			setAccounts(newAccounts)
 			return { success: true, message: "Compte supprimé" }
 		} catch (error) {
@@ -80,11 +85,15 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
-	const updateAccountInfos = async (idAccount: string, name: string, amount: number) => {
+	const updateAccountInfos = async (accountId: string, name: string, amount: number) => {
+		if (!accountId) {
+			return { success: false, message: "Données manquantes" }
+		}
+
 		try {
-			await api.put(`/account/${idAccount}`, { name, amount })
+			await api.put(`/account/${accountId}`, { name, amount })
 			const accountsUpdated = accounts.map((account) => {
-				return account.id === idAccount ? {
+				return account.id === accountId ? {
 					...account,
 					name,
 					amount
@@ -99,6 +108,10 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 	const addCategory = async (accountId: string, name: string) => {
 		try {
+			if (!accountId) {
+				return { success: false, message: "Données manquantes" }
+			}
+
 			const response = await api.post(`/account/category/${accountId}`, { name })
 			const newCategory = response.data.category
 			const updatedAccounts = accounts.map(account => {

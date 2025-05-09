@@ -6,7 +6,6 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ResetPassword from './pages/ResetPassword';
 import Accounts from './pages/Accounts';
-import Categories from './pages/Categories';
 import Transactions from './pages/Transactions';
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
 					<Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 					<Route path='/profil' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 					<Route path='/comptes' element={<ProtectedRoute><Accounts /></ProtectedRoute>} />
-					<Route path='/categories' element={<ProtectedRoute><Categories /></ProtectedRoute>} />
 					<Route path='/transactions' element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
 				</Route>
 
