@@ -93,9 +93,21 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const logout = async (_: Request, res: Response) => {
-	res.clearCookie('token')
-	res.status(200).json({ success: true, message: "Logged out successfully" })
-}
+	try {
+		// Suppression explicite du cookie avec tous les paramètres nécessaires
+		res.cookie('token', '', {
+			httpOnly: true,
+			secure: true,  // Important en production
+			sameSite: 'none',  // Important pour les requêtes cross-site en production
+			expires: new Date(0),  // Date dans le passé
+			path: '/'  // S'assurer que le path correspond à celui utilisé pour définir le cookie
+		});
+
+		res.status(200).json({ success: true, message: "Déconnexion réussie" });
+	} catch (error) {
+		catchError(res, error);
+	}
+};
 
 export const verifyEmail = async (req: Request, res: Response) => {
 	const { code, email } = req.body
