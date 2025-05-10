@@ -15,7 +15,7 @@ const LogoutButton = ({ className = "" }: LogoutButtonProps) => {
 	const handleClick = async () => {
 		const response = await logout()
 		if (response.success) {
-			navigate("/")
+			navigate("/authentification/connexion")
 		}
 	}
 
