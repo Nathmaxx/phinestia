@@ -94,13 +94,12 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (_: Request, res: Response) => {
 	try {
-		// Suppression explicite du cookie avec tous les paramètres nécessaires
 		res.cookie('token', '', {
 			httpOnly: true,
-			secure: true,  // Important en production
-			sameSite: 'none',  // Important pour les requêtes cross-site en production
-			expires: new Date(0),  // Date dans le passé
-			path: '/'  // S'assurer que le path correspond à celui utilisé pour définir le cookie
+			secure: true,
+			sameSite: 'none',
+			expires: new Date(0),
+			path: '/'
 		});
 
 		res.status(200).json({ success: true, message: "Déconnexion réussie" });

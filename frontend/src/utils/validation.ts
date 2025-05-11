@@ -60,3 +60,29 @@ export const validateFirstName = (firstName: string) => {
 
 	return "";
 };
+
+export const setValidateAmount = (value: string, setAmount: (amount: string) => void) => {
+	const sanitizedValue = value.replace(/[^\d.,]/g, '')
+
+	setAmount(sanitizedValue)
+
+	if (!sanitizedValue) {
+		return false
+	}
+
+	const numericValue = sanitizedValue.replace(',', '.')
+
+	if (isNaN(parseFloat(numericValue))) {
+		return "Le montant doit être un nombre valide"
+	}
+
+	if (numericValue.includes('.') && numericValue.split('.')[1].length > 2) {
+		return "Le montant ne doit pas avoir plus de 2 décimales"
+	}
+
+	if (parseFloat(numericValue) > 999999999.99) {
+		return "Le montant est trop élevé"
+	}
+
+	return ""
+}
