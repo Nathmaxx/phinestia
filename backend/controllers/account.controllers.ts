@@ -180,3 +180,18 @@ export const deleteCategory = async (req: Request, res: Response) => {
 		catchError(res, error)
 	}
 }
+
+export const updateCategoriesAmounts = async (req: Request, res: Response) => {
+	try {
+		const { accountid } = req.params
+		const account = await Account.findById(accountid)
+		if (!account) {
+			res.status(404).json({ success: false, message: "Identifiant invalide" })
+			return
+		}
+
+		res.status(200).json({ success: true, message: "Montants mis à jour" })
+	} catch (error) {
+		catchError(res, error)
+	}
+}

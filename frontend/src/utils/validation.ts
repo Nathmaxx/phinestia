@@ -60,20 +60,3 @@ export const validateFirstName = (firstName: string) => {
 
 	return "";
 };
-
-export const validateAmount = (value: string) => {
-
-	if (isNaN(parseFloat(value))) {
-		return "Le montant doit être un nombre valide"
-	}
-
-	if (value.includes('.') && value.split('.')[1].length > 2) {
-		return "Le montant ne doit pas avoir plus de 2 décimales"
-	}
-
-	if (parseFloat(value) > 999999999.99) {
-		return "Le montant est trop élevé"
-	}
-
-	return ""
-}
