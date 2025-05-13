@@ -212,7 +212,7 @@ export const updateCategoriesAmounts = async (req: Request, res: Response) => {
 
 		await account.save()
 
-		res.status(200).json({ success: true, message: "Montants mis à jour" })
+		res.status(200).json({ success: true, message: "Montants mis à jour", newCategories: account.categories })
 	} catch (error) {
 		catchError(res, error)
 	}

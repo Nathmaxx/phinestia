@@ -1,5 +1,6 @@
 
 import { Link, Outlet } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
 
 const Layout = () => {
 	return (
@@ -14,6 +15,7 @@ const Layout = () => {
 			<main>
 				<Outlet />
 			</main>
+			<ToastContainer aria-label="Notifications" />
 		</div>
 	)
 }

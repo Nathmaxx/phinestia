@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { formatEuro } from "../../utils/format"
 import TextInput from "../Inputs/TextInput"
 import { useAccount } from "../../hooks/useAccountContext"
+import { successToastMessage } from "../../utils/toastify"
 
 type UpdateAmountProps = {
 	account: Account
@@ -90,8 +91,8 @@ const UpdateAmount = ({ account }: UpdateAmountProps) => {
 					amount: isNaN(parsedAmount) ? 0 : parsedAmount,
 				}
 			})
-			const response = await updateCategoriesAmounts(account.id, updatedCategories)
-			console.log(response)
+			await updateCategoriesAmounts(account.id, updatedCategories)
+			successToastMessage("Montants mis à jour")
 			return { success: true, message: "Montants mis à jour" }
 		}
 		return { success: false, message: "Le montant restant doit être nul" }

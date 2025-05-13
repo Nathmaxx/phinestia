@@ -211,7 +211,19 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 
 		try {
-			await api.put(`/account/${accountid}/category`, { updatedCategories })
+			const response = await api.put(`/account/${accountid}/category`, { updatedCategories })
+			const newCategories = response.data.newCategories
+			const updatedAccounts = accounts.map((account) => {
+				if (account.id === accountid) {
+					return {
+						...account,
+						categories: newCategories
+					}
+				}
+				return { ...account }
+			})
+			setAccounts(updatedAccounts)
+
 			return { success: true, message: "Montants mis à jour" }
 		} catch (error) {
 			return catchError(error, "Impossible de mettre à jour les montants")
