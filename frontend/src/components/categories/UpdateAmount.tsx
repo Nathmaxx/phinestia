@@ -32,6 +32,7 @@ const UpdateAmount = ({ account }: UpdateAmountProps) => {
 		}
 	))
 
+	/** Met appel le backend pour mettre à jour les nouveaux montants dans la base de données */
 	const { updateCategoriesAmounts } = useAccount()
 
 	/** Gestion de l'ouverture de la modale */

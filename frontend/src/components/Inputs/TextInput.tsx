@@ -20,7 +20,7 @@ const TextInput = ({ value, setValue, placeholder, className, type = "text", id 
 			id={id}
 			onChange={(e) => handleChange(e.target.value)}
 			type={type}
-			className={`w-full border border-gray-300 font-figtree rounded-md outline-none py-0.5 px-1.5 shadow-xs ${className}`}
+			className={`w-full border border-gray-300 font-figtree rounded-md outline-none px-1.5 py-0.5 ${className}`}
 			placeholder={placeholder}
 		/>
 	)

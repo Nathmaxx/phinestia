@@ -60,3 +60,38 @@ export const validateFirstName = (firstName: string) => {
 
 	return "";
 };
+
+export const updateAmount = (value: string, setValue: (value: string) => void) => {
+	const sanitizedValue = value.replace(/[^\d.,]/g, '')
+	let numericValue = sanitizedValue.replace(',', '.')
+
+	if (numericValue.startsWith('.')) {
+		numericValue = '0' + numericValue
+	}
+
+	const parts = numericValue.split('.');
+
+	if (parts[0].length > 9 || (parts[1] && parts[1].length > 2) || parts.length === 3) {
+		return
+	}
+
+	setValue(numericValue)
+}
+
+export const validateAmount = (value: string) => {
+	const parts = value.split('.');
+	if (parts[0].length > 9 || (parts[1] && parts[1].length > 2) || parts.length === 3) {
+		return false
+	}
+	if (value.endsWith('.')) {
+		return false
+	}
+	if (isNaN(parseFloat(value))) {
+		return false;
+	}
+	if (!value) {
+		return false;
+	}
+
+	return true
+}
