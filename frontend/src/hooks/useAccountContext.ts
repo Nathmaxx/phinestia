@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 import { Operation } from "../types/context"
 import { Account, AccountName } from "../types/accounts"
-import { UpdatedCategory } from "../types/categories"
+import { CategoryName, UpdatedCategory } from "../types/categories"
 
 
 type AccountContextType = {
@@ -11,6 +11,7 @@ type AccountContextType = {
 	fetchAccounts: () => Promise<Operation>
 	deleteAccount: (accountId: string) => Promise<Operation>
 	updateAccountInfos: (accountId: string, name: string, amount: number) => Promise<Operation>
+	categoryNames: (accountName: string) => null | CategoryName[]
 	addCategory: (accountId: string, name: string) => Promise<Operation>
 	findAccount: (accountName: string) => Account | null
 	updateCategoryName: (accountId: string, categoryId: string, name: string) => Promise<Operation>

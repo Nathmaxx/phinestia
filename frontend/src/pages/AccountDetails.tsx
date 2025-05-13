@@ -5,6 +5,7 @@ import { AccountParams } from "../types/pages"
 import CategoryList from "../components/categories/CategoryList"
 import AccountInfos from "../components/accounts/AccountInfos"
 import UpdateAmount from "../components/categories/UpdateAmount"
+import Transfert from "../components/categories/Transfert"
 
 const AccountDetails = () => {
 
@@ -27,6 +28,7 @@ const AccountDetails = () => {
 		>
 			<AccountInfos account={account} />
 			<CategoryList account={account} />
+			<Transfert account={account} />
 			<UpdateAmount account={account} />
 		</div>
 	)

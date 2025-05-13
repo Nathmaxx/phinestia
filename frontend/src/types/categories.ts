@@ -18,3 +18,8 @@ export type UpdatedCategory = {
 	name: string
 	amount: number
 }
+
+export type CategoryName = {
+	name: string
+	id: string
+}

@@ -6,6 +6,7 @@ export const successToastMessage = (message: string, duration = 3000) => {
 		autoClose: duration,
 		closeButton: true,
 		closeOnClick: true,
-		pauseOnHover: true
+		pauseOnHover: true,
+
 	});
 };

@@ -119,6 +119,20 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 	// | Fonctions pour les catégories       | 
 	// +-------------------------------------+
 
+	const categoryNames = (accountName: string) => {
+		const account = accounts.find(a => a.name === accountName)
+		if (!account) {
+			return null
+		}
+
+		return account.categories.map(category => {
+			return {
+				name: category.name,
+				id: category.id
+			}
+		})
+	}
+
 	const addCategory = async (accountId: string, name: string) => {
 		try {
 			if (!accountId) {
@@ -243,6 +257,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		fetchAccounts,
 		deleteAccount,
 		updateAccountInfos,
+		categoryNames,
 		addCategory,
 		findAccount,
 		updateCategoryName,
