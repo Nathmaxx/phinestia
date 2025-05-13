@@ -4,6 +4,7 @@ import { catchError } from "../utils/error"
 import { useAuth } from "../hooks/useAuthContext"
 import { AccountContext } from "../hooks/useAccountContext"
 import { Account, DBAccount } from "../types/accounts"
+import { UpdatedCategory } from "../types/categories"
 
 
 type AccountProviderProps = {
@@ -203,6 +204,20 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const updateCategoriesAmounts = async (accountid: string, updatedCategories: UpdatedCategory[]) => {
+
+		if (!accountid || !updatedCategories) {
+			return { success: false, message: "Données manquantes" }
+		}
+
+		try {
+			await api.put(`/account/${accountid}/category`, { updatedCategories })
+			return { success: true, message: "Montants mis à jour" }
+		} catch (error) {
+			return catchError(error, "Impossible de mettre à jour les montants")
+		}
+	}
+
 
 	useEffect(() => {
 		fetchAccounts()
@@ -219,7 +234,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		addCategory,
 		findAccount,
 		updateCategoryName,
-		deleteCategory
+		deleteCategory,
+		updateCategoriesAmounts
 	}
 
 	return (

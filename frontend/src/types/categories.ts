@@ -11,4 +11,10 @@ export type DBCategory = {
 	amount: number | null
 	allocation: number | null
 	_id: string
-} 
+}
+
+export type UpdatedCategory = {
+	id: string
+	name: string
+	amount: number
+}

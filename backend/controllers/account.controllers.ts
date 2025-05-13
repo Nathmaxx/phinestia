@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { catchError } from "../utils/error"
 import { Account } from "../models/account"
 import mongoose from "mongoose"
+import { UpdatedCategory } from "../types/categories"
 
 export const addAccount = async (req: Request, res: Response) => {
 	try {
@@ -184,11 +185,32 @@ export const deleteCategory = async (req: Request, res: Response) => {
 export const updateCategoriesAmounts = async (req: Request, res: Response) => {
 	try {
 		const { accountid } = req.params
+		const updatedCategories = req.body.updatedCategories as UpdatedCategory[]
+
+		if (!accountid) {
+			res.status(404).json({ sucess: false, message: "Identifiant invalide" })
+			return
+		}
+
 		const account = await Account.findById(accountid)
 		if (!account) {
 			res.status(404).json({ success: false, message: "Identifiant invalide" })
 			return
 		}
+
+		updatedCategories.forEach((category) => {
+			const catToUpdate = account.categories.find(
+				(accCat) => accCat._id.toString() === category.id
+			)
+
+			if (catToUpdate) {
+				catToUpdate.amount = category.amount
+			}
+		})
+
+		account.updatedAt = new Date()
+
+		await account.save()
 
 		res.status(200).json({ success: true, message: "Montants mis à jour" })
 	} catch (error) {

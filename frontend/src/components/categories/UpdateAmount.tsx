@@ -5,6 +5,7 @@ import ModalButtons from "../modals/ModalButtons"
 import { useEffect, useState } from "react"
 import { formatEuro } from "../../utils/format"
 import TextInput from "../Inputs/TextInput"
+import { useAccount } from "../../hooks/useAccountContext"
 
 type UpdateAmountProps = {
 	account: Account
@@ -27,9 +28,10 @@ const UpdateAmount = ({ account }: UpdateAmountProps) => {
 			id: category.id,
 			name: category.name,
 			amount: category.amount ? category.amount.toString() : "0.00",
-			allocation: category.allocation
 		}
 	))
+
+	const { updateCategoriesAmounts } = useAccount()
 
 	/** Gestion de l'ouverture de la modale */
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -86,13 +88,13 @@ const UpdateAmount = ({ account }: UpdateAmountProps) => {
 					id: category.id,
 					name: category.name,
 					amount: isNaN(parsedAmount) ? 0 : parsedAmount,
-					allocation: category.allocation
 				}
 			})
-			console.log(updatedCategories)
+			const response = await updateCategoriesAmounts(account.id, updatedCategories)
+			console.log(response)
 			return { success: true, message: "Montants mis à jour" }
 		}
-		return { success: false, message: "Le montant restant doit valoir 0" }
+		return { success: false, message: "Le montant restant doit être nul" }
 	}
 
 	/** Affichage du composant si la valeur absolue du montant total - la somme des montants est supérieure à 0.001 */
