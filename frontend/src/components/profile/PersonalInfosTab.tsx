@@ -123,9 +123,6 @@ const PersonalInfoTab = () => {
 
 	return (
 		<div className="w-full">
-			<div>
-
-			</div>
 			<h2 className="text-xl font-semibold text-gray-800 mb-4 font-figtree">
 				Informations personnelles
 			</h2>

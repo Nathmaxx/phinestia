@@ -2,10 +2,11 @@
 import { useParams } from "react-router-dom"
 import { useAccount } from "../hooks/useAccountContext"
 import { AccountParams } from "../types/pages"
-import CategoryList from "../components/categories/CategoryList"
-import AccountInfos from "../components/accounts/AccountInfos"
-import UpdateAmount from "../components/categories/UpdateAmount"
-import Transfert from "../components/categories/Transfert"
+import PageTabs from "../components/PageTabs"
+import { useState } from "react"
+import { LayoutDashboard, Tags } from "lucide-react"
+import AccountPreview from "../components/accounts/AccountPreview"
+import AccountCategories from "../components/accounts/AccountCategories"
 
 const AccountDetails = () => {
 
@@ -13,6 +14,15 @@ const AccountDetails = () => {
 	const { findAccount } = useAccount()
 
 	const account = findAccount(params.accountname)
+
+	const [activeTab, setActiveTab] = useState("preview")
+	const tabs = [
+		{ id: "preview", label: "Aperçu", icon: LayoutDashboard },
+		{ id: "categories", label: "Catégories", icon: Tags },
+		//{ id: "transactions", label: "Transactions", icon: Receipt },
+		//{ id: "statistics", label: "Statistiques", icon: PieChart },
+		//{ id: "transferts", label: "Transferts", icon: ArrowLeftRight }
+	]
 
 	if (!account) {
 		return (
@@ -24,12 +34,15 @@ const AccountDetails = () => {
 
 	return (
 		<div
-			className="flex items-center justify-center w-full h-screen gap-8"
+			className="flex flex-col items-center justify-center w-full h-screen gap-8"
 		>
-			<AccountInfos account={account} />
-			<CategoryList account={account} />
-			<Transfert account={account} />
-			<UpdateAmount account={account} />
+			<PageTabs
+				activeTab={activeTab}
+				setActiveTab={setActiveTab}
+				tabs={tabs}
+			/>
+			{activeTab === "preview" && <AccountPreview account={account} />}
+			{activeTab === "categories" && <AccountCategories account={account} />}
 		</div>
 	)
 }

@@ -1,17 +1,14 @@
-import { User, Lock } from "lucide-react"
+import { ElementType } from "react"
 
-type TabType = "personal" | "security" | "notifications"
+type TabType = "personal" | "security"
 
 type ProfileTabsProps = {
-	activeTab: TabType
-	setActiveTab: (tab: TabType) => void
+	tabs: { id: string, label: string, icon: ElementType }[]
+	activeTab: string
+	setActiveTab: (tab: string) => void
 }
 
-const ProfileTabs = ({ activeTab, setActiveTab }: ProfileTabsProps) => {
-	const tabs = [
-		{ id: "personal", label: "Informations personnelles", icon: User },
-		{ id: "security", label: "Sécurité", icon: Lock },
-	]
+const ProfileTabs = ({ tabs, activeTab, setActiveTab }: ProfileTabsProps) => {
 
 	return (
 		<div className="flex border-b border-gray-200">
