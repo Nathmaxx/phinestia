@@ -244,6 +244,19 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 	}
 
+	const categoryTransfert = async (accountid: string, initialCategoryId: string, finalCategoryId: string, amount: number) => {
+		if (!initialCategoryId || !finalCategoryId) {
+			return { success: false, message: "Données manquantes" }
+		}
+
+		try {
+			await api.put(`account/${accountid}/category/transfert`, { initialCategoryId, finalCategoryId, amount })
+			return { success: true, message: "Transfert réalisé" }
+		} catch (error) {
+			return catchError(error, "Impossible de réaliser le transfert")
+		}
+	}
+
 
 	useEffect(() => {
 		fetchAccounts()
@@ -262,7 +275,8 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		findAccount,
 		updateCategoryName,
 		deleteCategory,
-		updateCategoriesAmounts
+		updateCategoriesAmounts,
+		categoryTransfert
 	}
 
 	return (

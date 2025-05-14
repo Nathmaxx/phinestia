@@ -1,5 +1,5 @@
 import express from "express"
-import { addAccount, addCategory, deleteAccount, deleteCategory, getAccounts, updateAccountInfos, updateCategoriesAmounts, updateCategoryName } from "../controllers/account.controllers"
+import { addAccount, addCategory, categoryTransfert, deleteAccount, deleteCategory, getAccounts, updateAccountInfos, updateCategoriesAmounts, updateCategoryName } from "../controllers/account.controllers"
 import { createAccountSchema, createCategorySchema, updateAccountInfosSchema, updateCategoryNameSchema } from "../validation/account.validation"
 import { validateRequest } from "../middlewares/validateRequest"
 
@@ -13,6 +13,7 @@ router.delete('/:accountid', deleteAccount)
 
 router.post('/:accountid/category', validateRequest(createCategorySchema), addCategory)
 router.put('/:accountid/category', updateCategoriesAmounts)
+router.put('/:accountid/category/transfert', categoryTransfert)
 router.put('/:accountid/category/:categoryid', validateRequest(updateCategoryNameSchema), updateCategoryName)
 router.delete('/:accountid/category/:categoryid', deleteCategory)
 export default router

@@ -17,6 +17,7 @@ type AccountContextType = {
 	updateCategoryName: (accountId: string, categoryId: string, name: string) => Promise<Operation>
 	deleteCategory: (accountId: string, categoryId: string) => Promise<Operation>
 	updateCategoriesAmounts: (accountid: string, updatedCategories: UpdatedCategory[]) => Promise<Operation>
+	categoryTransfert: (accountid: string, initialCategoryId: string, finalCategoryId: string, amount: number) => Promise<Operation>
 }
 
 export const AccountContext = createContext<AccountContextType | undefined>(undefined)

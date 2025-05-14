@@ -217,3 +217,58 @@ export const updateCategoriesAmounts = async (req: Request, res: Response) => {
 		catchError(res, error)
 	}
 }
+
+export const categoryTransfert = async (req: Request, res: Response) => {
+	type body = {
+		initialCategoryId: string
+		finalCategoryId: string
+		amount: number
+	}
+
+	try {
+		const { accountid } = req.params
+		const { initialCategoryId, finalCategoryId, amount } = req.body as body
+
+		const numAmount = Number(amount)
+		if (isNaN(numAmount) || numAmount <= 0) {
+			res.status(400).json({ success: false, message: "Le montant doit être un nombre positif" })
+			return
+		}
+
+		if (initialCategoryId === finalCategoryId) {
+			res.status(400).json({ success: false, message: "Les catégories doivent être différentes" })
+			return
+		}
+
+		const account = await Account.findById(accountid)
+		if (!account) {
+			res.status(404).json({ success: false, message: "Identifiant invalide" })
+			return
+		}
+
+		const initialCategory = account.categories.find((category) => category._id.toString() === initialCategoryId)
+		const finalCategory = account.categories.find((category) => category._id.toString() === finalCategoryId)
+
+		if (!initialCategory || !finalCategory) {
+			res.status(404).json({ success: false, message: "Identifiant invalide" })
+			return
+		}
+
+		if (initialCategory.amount && initialCategory.amount >= amount) {
+			initialCategory.amount -= amount
+			if (!finalCategory.amount) {
+				finalCategory.amount = amount
+			} else {
+				finalCategory.amount += amount
+			}
+
+			account.updatedAt = new Date()
+			await account.save()
+			res.status(200).json({ success: true, message: "Transfert effectué" })
+		} else {
+			res.status(400).json({ success: false, message: "La catégorie initiale ne dispose pas du montant nécessaire" })
+		}
+	} catch (error) {
+		catchError(res, error)
+	}
+}
