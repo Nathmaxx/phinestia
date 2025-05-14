@@ -245,12 +245,30 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 	}
 
 	const categoryTransfert = async (accountid: string, initialCategoryId: string, finalCategoryId: string, amount: number) => {
+
 		if (!initialCategoryId || !finalCategoryId) {
 			return { success: false, message: "Données manquantes" }
 		}
 
 		try {
-			await api.put(`account/${accountid}/category/transfert`, { initialCategoryId, finalCategoryId, amount })
+			const response = await api.put(`account/${accountid}/category/transfert`, { initialCategoryId, finalCategoryId, amount })
+			const updatedAccount = response.data.account as DBAccount
+			const updatedAccounts = accounts.map((account) => {
+				if (account.id === accountid) {
+					return {
+						...updatedAccount,
+						id: updatedAccount._id,
+						categories: updatedAccount.categories.map((category) => {
+							return {
+								...category,
+								id: category._id
+							}
+						})
+					}
+				}
+				return { ...account }
+			})
+			setAccounts(updatedAccounts)
 			return { success: true, message: "Transfert réalisé" }
 		} catch (error) {
 			return catchError(error, "Impossible de réaliser le transfert")

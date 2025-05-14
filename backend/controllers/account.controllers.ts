@@ -264,7 +264,7 @@ export const categoryTransfert = async (req: Request, res: Response) => {
 
 			account.updatedAt = new Date()
 			await account.save()
-			res.status(200).json({ success: true, message: "Transfert effectué" })
+			res.status(200).json({ success: true, message: "Transfert effectué", account })
 		} else {
 			res.status(400).json({ success: false, message: "La catégorie initiale ne dispose pas du montant nécessaire" })
 		}

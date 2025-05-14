@@ -15,18 +15,24 @@ type TransfertProps = {
 
 const Transfert = ({ account }: TransfertProps) => {
 
-	const { categoryNames } = useAccount()
+	const { categoryNames, categoryTransfert } = useAccount()
 
 	const categories = categoryNames(account.name)
-	const initialValues = categories && categories.length >= 2 ? { name: categories[0].name, id: categories[0].id } : { name: '', id: '' }
-	const [initialCategory, setInitialCategory] = useState<CategoryName>(initialValues)
-	const [finalCategory, setFinalCategory] = useState<CategoryName>(initialValues)
+
+	const getInitialValues = () => {
+		if (categories && categories.length >= 2) {
+			return { name: categories[0].name, id: categories[0].id }
+		}
+		return { name: '', id: '' }
+	}
+	const [initialCategory, setInitialCategory] = useState<CategoryName>(getInitialValues)
+	const [finalCategory, setFinalCategory] = useState<CategoryName>(getInitialValues)
 	const [amount, setAmount] = useState("")
 	const [message, setMessage] = useState("")
 	const [isLoading, setIsLoading] = useState(false)
 
 
-	const handleTransfert = () => {
+	const handleTransfert = async () => {
 		setIsLoading(true)
 		setMessage("")
 
@@ -58,17 +64,24 @@ const Transfert = ({ account }: TransfertProps) => {
 
 		const accountCategory = account.categories.find(category => category.name === initialCategory.name)
 		if (accountCategory && (accountCategory.amount || 0) > parsedAmount) {
-			console.log(accountCategory?.amount)
-			successToastMessage("Transfert réalisé")
-			setIsLoading(false)
-			return
+			const response = await categoryTransfert(account.id, initialCategory.id, finalCategory.id, parsedAmount)
+			if (response.success) {
+				successToastMessage("Transfert réalisé")
+				setInitialCategory(getInitialValues)
+				setFinalCategory(getInitialValues)
+				setAmount("")
+				setIsLoading(false)
+				return
+			} else {
+				setMessage(response.message)
+				setIsLoading(false)
+				return
+			}
 		} else {
 			setMessage(`Vous ne disposez pas du montant nécessaire pour la catégorie ${initialCategory.name}`)
 			setIsLoading(false)
 			return
 		}
-
-
 	}
 
 	return (
