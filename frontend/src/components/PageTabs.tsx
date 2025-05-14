@@ -6,24 +6,25 @@ type ProfileTabsProps = {
 	tabs: { id: string, label: string, icon: ElementType }[]
 	activeTab: string
 	setActiveTab: (tab: string) => void
+	className?: string
 }
 
-const ProfileTabs = ({ tabs, activeTab, setActiveTab }: ProfileTabsProps) => {
+const PageTabs = ({ tabs, activeTab, setActiveTab, className = "" }: ProfileTabsProps) => {
 
 	return (
-		<div className="flex border-b border-gray-200">
+		<div className={`flex border-b border-gray-200 mt-3 gap-x-3 ${className}`}>
 			{tabs.map((tab) => {
 				const Icon = tab.icon
 				return (
 					<button
 						key={tab.id}
 						onClick={() => setActiveTab(tab.id as TabType)}
-						className={`flex items-center px-4 py-3 text-sm font-medium mr-8 transition-all ${activeTab === tab.id
-							? "text-sky-violet border-b border-sky-violet"
-							: "text-gray-500 hover:text-sky-dark-violet"
-							}`}
+						className={`
+							flex items-center py-1.5 px-2 my-1.5 text-sm transition-all font-figtree hover:bg-gray-100 hover:-translate-y-0.5 rounded-md
+							${activeTab === tab.id ? "font-semibold text-sky-dark-violet" : ''}
+						`}
 					>
-						<Icon size={16} className="mr-2" />
+						<Icon size={18} className="mr-2" />
 						{tab.label}
 					</button>
 				)
@@ -32,4 +33,4 @@ const ProfileTabs = ({ tabs, activeTab, setActiveTab }: ProfileTabsProps) => {
 	)
 }
 
-export default ProfileTabs
+export default PageTabs

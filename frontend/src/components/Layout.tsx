@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify"
 
 const Layout = () => {
 	return (
-		<div>
+		<div className="">
 			<nav className="flex gap-5 absolute">
 				<Link to={'/dashboard'}>Dashboard</Link>
 				<Link to={'/profil'}>Profil</Link>
@@ -12,7 +12,7 @@ const Layout = () => {
 				<Link to={'/transactions'}>Transactions</Link>
 			</nav>
 
-			<main>
+			<main className="pt-8">
 				<Outlet />
 			</main>
 			<ToastContainer aria-label="Notifications" />

@@ -7,10 +7,9 @@ type AccountInfosProps = {
 
 const AccountInfos = ({ account }: AccountInfosProps) => {
 	return (
-		<div className="w-[300px]">
-			<p className="font-figtree text-2xl font-semibold text-sky-dark-violet">{account.name}</p>
-			<p>Solde : {formatEuro(account.amount)}</p>
-			<p className="text-gray-600">Dernière mise à jour : {formatDate(account.updatedAt)}</p>
+		<div className="w-full mt-4">
+			<p className="font-figtree text-2xl font-semibold text-sky-dark-violet">{account.name}, {formatEuro(account.amount)}</p>
+			<p className="text-gray-600 text-sm italic">Dernière mise à jour : {formatDate(account.updatedAt)}</p>
 		</div>
 	)
 }
