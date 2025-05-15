@@ -1,23 +1,19 @@
 import React, { useState } from "react";
+import { formatEuro } from "../../utils/format";
 
 type DonutChartProps = {
 	radius?: number;
 	thickness?: number;
-	data?: { label: string; value: number; color: string }[];
+	data: { label: string; value: number; color: string }[];
 	animate?: boolean;
 };
 
-const DonutChart: React.FC<DonutChartProps> = ({
+const DonutChart = ({
 	radius = 100,
 	thickness = 30,
-	data = [
-		{ label: "Épargne", value: 25, color: "#6366F1" },
-		{ label: "Logement", value: 35, color: "#8B5CF6" },
-		{ label: "Transport", value: 20, color: "#A78BFA" },
-		{ label: "Alimentation", value: 20, color: "#C4B5FD" },
-	],
+	data,
 	animate = true,
-}) => {
+}: DonutChartProps) => {
 	const [activeSegment, setActiveSegment] = useState<number | null>(null);
 	const [isAnimated, setIsAnimated] = useState(false);
 
@@ -82,17 +78,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 
 	// Format des pourcentages
 	const formatPercentage = (value: number) => {
-		return `${((value / total) * 100).toFixed(1)}%`;
-	};
-
-	// Format des valeurs (ajoutez votre propre formatage monétaire si nécessaire)
-	const formatValue = (value: number) => {
-		return new Intl.NumberFormat('fr-FR', {
-			style: 'currency',
-			currency: 'EUR',
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 0
-		}).format(value);
+		return `${((value / total) * 100).toFixed(2)}%`;
 	};
 
 	const segments = data.map((entry, i) => {
@@ -138,8 +124,8 @@ const DonutChart: React.FC<DonutChartProps> = ({
 						cx={radius}
 						cy={radius}
 						r={radius - thickness - 5}
-						fill={`${data[activeSegment].color}10`}
-						className="transition-all duration-300"
+						fill={`${data[activeSegment].color}`}
+						className="transition-all duration-300 opacity-15"
 					/>
 
 					{/* Texte pour l'étiquette */}
@@ -167,7 +153,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 						fontWeight="500"
 						className="transition-all duration-200"
 					>
-						{formatValue(entry.value)}
+						{formatEuro(entry.value)}
 					</text>
 
 					{/* Texte pour le pourcentage */}
@@ -206,7 +192,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 						fill="#666"
 						fontSize="16"
 					>
-						{formatValue(total)}
+						{formatEuro(total)}
 					</text>
 				</g>
 			);
@@ -241,7 +227,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 			</div>
 
 			{/* Légende en dehors du SVG */}
-			<div className="flex flex-wrap justify-center mt-6 gap-2">
+			<div className="grid grid-cols-4 mt-6 gap-2">
 				{data.map((entry, i) => (
 					<div
 						key={`legend-${i}`}
