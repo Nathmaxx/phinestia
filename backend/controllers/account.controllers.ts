@@ -109,7 +109,7 @@ export const addCategory = async (req: Request, res: Response) => {
 		account.categories.push({
 			name,
 			allocation: null,
-			amount: null,
+			amount: 0,
 		})
 
 		account.updatedAt = new Date()

@@ -20,12 +20,14 @@ const PageTabs = ({ tabs, activeTab, setActiveTab, className = "" }: ProfileTabs
 						key={tab.id}
 						onClick={() => setActiveTab(tab.id as TabType)}
 						className={`
-							flex items-center py-1.5 px-2 my-1.5 text-sm transition-all font-figtree hover:bg-gray-100 hover:-translate-y-0.5 rounded-md
-							${activeTab === tab.id ? "font-semibold text-sky-dark-violet" : ''}
+							flex items-center py-1.5 text-sm font-figtree group 
+							${activeTab === tab.id ? "font-semibold text-sky-dark-violet border-b border-sky-dark-violet" : ''}
 						`}
 					>
-						<Icon size={18} className="mr-2" />
-						{tab.label}
+						<span className="group-hover:bg-gray-100 py-1.5 px-2 flex rounded-md group-hover:-translate-y-0.5 transition-all">
+							<Icon size={18} className="mr-2" />
+							{tab.label}
+						</span>
 					</button>
 				)
 			})}
