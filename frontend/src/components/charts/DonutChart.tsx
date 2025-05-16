@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { formatEuro } from "../../utils/format";
+import { formatEuro, formatPercentage } from "../../utils/format";
 
 type DonutChartProps = {
 	radius?: number;
@@ -74,11 +74,6 @@ const DonutChart = ({
 			x: cx + r * Math.cos(angleInRadians),
 			y: cy + r * Math.sin(angleInRadians),
 		};
-	};
-
-	// Format des pourcentages
-	const formatPercentage = (value: number) => {
-		return `${((value / total) * 100).toFixed(2)}%`;
 	};
 
 	const segments = data.map((entry, i) => {
@@ -166,7 +161,7 @@ const DonutChart = ({
 						fontSize="14"
 						className="transition-all duration-200"
 					>
-						{formatPercentage(entry.value)}
+						{formatPercentage(entry.value, total)}
 					</text>
 				</g>
 			);
@@ -241,7 +236,7 @@ const DonutChart = ({
 							style={{ backgroundColor: entry.color }}
 						/>
 						<span className="text-sm">
-							{entry.label} ({formatPercentage(entry.value)})
+							{entry.label} ({formatPercentage(entry.value, total)})
 						</span>
 					</div>
 				))}

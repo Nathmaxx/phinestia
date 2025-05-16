@@ -20,3 +20,7 @@ export const formatEuro = (value: number) => {
 		maximumFractionDigits: 2
 	})
 }
+
+export const formatPercentage = (value: number, total: number) => {
+	return `${((value / total) * 100).toFixed(2)}%`;
+};
