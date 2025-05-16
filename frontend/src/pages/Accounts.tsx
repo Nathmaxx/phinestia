@@ -1,6 +1,6 @@
 import AccountsList from "../components/accounts/AccountsList"
 import AddAccount from "../components/accounts/AddAccount"
-import AddCategory from "../components/categories/AddCategory"
+
 
 
 const Accounts = () => {
@@ -11,7 +11,6 @@ const Accounts = () => {
 		>
 			<div>
 				<AddAccount />
-				<AddCategory className="mt-4" />
 			</div>
 			<AccountsList />
 		</div>

@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis } from "recharts"
 import {
 	ChartConfig,
@@ -18,8 +19,10 @@ type LabelBarChartProps = {
 }
 
 const LabelBarChart = ({ data }: LabelBarChartProps) => {
+	// État pour suivre l'élément survolé
+	const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-	const total = data.reduce((acc, cur) => acc + cur.value, 0)
+	const total = data.reduce((acc, cur) => acc + cur.value, 0);
 
 	return (
 		<div className="w-full flex flex-col items-center">
@@ -30,6 +33,7 @@ const LabelBarChart = ({ data }: LabelBarChartProps) => {
 					margin={{
 						top: 20,
 					}}
+					onMouseLeave={() => setActiveIndex(null)}
 				>
 					<CartesianGrid vertical={false} />
 					<XAxis
@@ -41,12 +45,17 @@ const LabelBarChart = ({ data }: LabelBarChartProps) => {
 							value.length > 12 ? value.slice(0, 10) + "..." : value
 						)}
 					/>
-					<Bar dataKey="value" fill="var(--color-desktop)" radius={4}>
+					<Bar
+						dataKey="value"
+						radius={4}
+						onMouseOver={(_, index) => setActiveIndex(index)}
+					>
 						{data.map((entry, index) => (
 							<Cell
 								key={`cell-${index}`}
 								fill={entry.color}
-								className="transition-colors duration-200"
+								fillOpacity={activeIndex === null || activeIndex === index ? 1 : 0.5}
+								className="transition-all duration-200"
 								cursor="pointer"
 							/>
 						))}
@@ -59,29 +68,31 @@ const LabelBarChart = ({ data }: LabelBarChartProps) => {
 					</Bar>
 				</BarChart>
 			</ChartContainer>
-			<div className="grid grid-cols-4 mt-6 gap-2">
+
+			<div className="grid grid-cols-4 mt-6 gap-2 w-full">
 				{data.map((entry, i) => (
 					<div
 						key={`legend-${i}`}
 						className={`flex items-center gap-1.5 cursor-pointer transition-all duration-200 px-2 py-1 rounded-md 
-							}`}
-					//onMouseEnter={() => setActiveSegment(i)}
-					//onMouseLeave={() => setActiveSegment(null)}
-					// ${activeSegment === i ? 'bg-gray-100' : 'hover:bg-gray-50'
+						${activeIndex === i ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+						onMouseEnter={() => setActiveIndex(i)}
+						onMouseLeave={() => setActiveIndex(null)}
 					>
 						<div
-							className="w-3 h-3 rounded-full"
-							style={{ backgroundColor: entry.color }}
+							className="w-3 h-3 rounded-full transition-transform duration-200"
+							style={{
+								backgroundColor: entry.color,
+								transform: activeIndex === i ? 'scale(1.2)' : 'scale(1)'
+							}}
 						/>
-						<span className="text-sm">
+						<span className="text-sm truncate">
 							{entry.label} ({formatPercentage(entry.value, total)})
 						</span>
 					</div>
 				))}
 			</div>
 		</div>
+	);
+};
 
-	)
-}
-
-export default LabelBarChart
+export default LabelBarChart;

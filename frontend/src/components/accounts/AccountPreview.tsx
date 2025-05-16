@@ -5,6 +5,7 @@ import CategoryList from "../categories/CategoryList";
 import UpdateAmount from "../categories/UpdateAmount";
 import DonutChart from "../charts/DonutChart";
 import LabelBarChart from "../charts/LabelBarChart";
+import AddCategory from "../categories/AddCategory";
 
 type AccountPreviewProps = {
 	account: Account;
@@ -34,6 +35,7 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 			<div>
 				<CategoryList account={account} />
 				<UpdateAmount account={account} />
+				<AddCategory accountId={account.id} className="mt-4 shadow-lg rounded-2xl p-2" />
 			</div>
 			<div className="p-4 rounded-2xl shadow-lg relative w-[800px]">
 				<div className="flex items-center justify-between mb-3">

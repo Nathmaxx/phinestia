@@ -195,7 +195,7 @@ const DonutChart = ({
 	};
 
 	return (
-		<div className="font-figtree">
+		<div className="font-figtree w-full">
 			<div className="w-full flex justify-center">
 				<svg
 					width={radius * 2}
@@ -222,7 +222,7 @@ const DonutChart = ({
 			</div>
 
 			{/* Légende en dehors du SVG */}
-			<div className="grid grid-cols-4 mt-6 gap-2">
+			<div className="grid grid-cols-4 mt-6 gap-2 w-full">
 				{data.map((entry, i) => (
 					<div
 						key={`legend-${i}`}
