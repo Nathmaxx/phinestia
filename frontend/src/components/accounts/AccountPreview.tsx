@@ -43,7 +43,6 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 						Répartition des catégories
 					</h2>
 
-					{/* Groupe de boutons pour switcher entre types de graphiques */}
 					<div className="flex items-center bg-gray-100 rounded-lg overflow-hidden">
 						<button
 							className={`flex items-center px-3 py-1.5 transition-colors ${chartType === "donut"
