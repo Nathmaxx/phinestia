@@ -33,6 +33,7 @@ const Transfert = ({ account }: TransfertProps) => {
 
 
 	const handleTransfert = async () => {
+		console.log(initialCategory, finalCategory, amount)
 		setIsLoading(true)
 		setMessage("")
 

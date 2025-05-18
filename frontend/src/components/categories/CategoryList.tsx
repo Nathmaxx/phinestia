@@ -22,6 +22,7 @@ const CategoryList = ({ account }: CategoryListProps) => {
 	const categories = account.categories
 
 	const toggleActions = (id: string) => {
+		console.log(id)
 		if (showActions === id) {
 			setShowActions(null);
 		} else {
@@ -30,7 +31,7 @@ const CategoryList = ({ account }: CategoryListProps) => {
 	};
 
 	return (
-		<div className="w-[350px] bg-white rounded-2xl shadow-md p-2 font-figtree">
+		<div className="w-full bg-white rounded-2xl shadow-md p-2 font-figtree">
 			<div className="flex justify-between items-center mb-3">
 				<h2 className="text-2xl font-bricolage font-semibold text-sky-dark-violet">
 					Mes Catégories
@@ -42,7 +43,7 @@ const CategoryList = ({ account }: CategoryListProps) => {
 					Vous n'avez pas encore ajouté de catégorie.
 				</div>
 			) : (
-				<div className="space-y-1.5">
+				<div className="space-y-1.5 h-72 overflow-auto thin-scrollbar">
 					{categories.map((category) => (
 						<div
 							key={category.id}

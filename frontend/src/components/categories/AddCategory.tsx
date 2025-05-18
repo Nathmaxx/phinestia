@@ -60,7 +60,7 @@ const AddCategory = ({ className = "", accountId }: AddCategoryProps) => {
 	};
 
 	return (
-		<div className={`font-figtree ${className}`}>
+		<div className={`w-full font-figtree ${className}`}>
 			<h2 className="text-2xl font-bricolage font-semibold text-sky-dark-violet mb-3 text-center">
 				Ajouter une catégorie
 			</h2>

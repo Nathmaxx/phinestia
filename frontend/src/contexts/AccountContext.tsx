@@ -4,7 +4,7 @@ import { catchError } from "../utils/error"
 import { useAuth } from "../hooks/useAuthContext"
 import { AccountContext } from "../hooks/useAccountContext"
 import { Account, DBAccount } from "../types/accounts"
-import { UpdatedCategory } from "../types/categories"
+import { DBCategory, UpdatedCategory } from "../types/categories"
 
 
 type AccountProviderProps = {
@@ -139,7 +139,10 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 				return { success: false, message: "Données manquantes" }
 			}
 
-			const response = await api.post(`/account/${accountId}/category`, { name })
+			const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+			console.log(formattedName)
+
+			const response = await api.post(`/account/${accountId}/category`, { name: formattedName })
 			const newCategory = response.data.category
 			const updatedAccounts = accounts.map(account => {
 				if (account.id === accountId) {
@@ -172,7 +175,10 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 		}
 
 		try {
-			await api.put(`/account/${accountId}/category/${categoryId}`, { name })
+
+			const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+
+			await api.put(`/account/${accountId}/category/${categoryId}`, { name: formattedName })
 			const updatedAccounts = accounts.map((account) => {
 				if (account.id === accountId) {
 					return {
@@ -226,12 +232,19 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
 
 		try {
 			const response = await api.put(`/account/${accountid}/category`, { updatedCategories })
-			const newCategories = response.data.newCategories
+			const newCategories = response.data.newCategories as DBCategory[]
 			const updatedAccounts = accounts.map((account) => {
 				if (account.id === accountid) {
 					return {
 						...account,
-						categories: newCategories
+						categories: newCategories.map((category) => {
+							return {
+								id: category._id,
+								name: category.name,
+								amount: category.amount,
+								allocation: category.allocation
+							}
+						})
 					}
 				}
 				return { ...account }
