@@ -50,7 +50,7 @@ const Transfert = ({ account }: TransfertProps) => {
 			return
 		}
 
-		const parsedAmount = parseFloat(amount)
+		const parsedAmount = Math.floor(parseFloat(amount) * 100) / 100
 		if (isNaN(parsedAmount)) {
 			setMessage("Montant incorect")
 			setIsLoading(false)

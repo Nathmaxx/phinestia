@@ -5,7 +5,7 @@ import {
 	ChartConfig,
 	ChartContainer,
 } from "@/components/ui/chart"
-import { formatPercentage } from "@/utils/format"
+import ChartCategories from "../categories/ChartCategories";
 
 const chartConfig = {
 	desktop: {
@@ -69,28 +69,12 @@ const LabelBarChart = ({ data }: LabelBarChartProps) => {
 				</BarChart>
 			</ChartContainer>
 
-			<div className="grid grid-cols-4 mt-6 gap-2 w-full">
-				{data.map((entry, i) => (
-					<div
-						key={`legend-${i}`}
-						className={`flex items-center gap-1.5 cursor-pointer transition-all duration-200 px-2 py-1 rounded-md 
-						${activeIndex === i ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-						onMouseEnter={() => setActiveIndex(i)}
-						onMouseLeave={() => setActiveIndex(null)}
-					>
-						<div
-							className="w-3 h-3 rounded-full transition-transform duration-200"
-							style={{
-								backgroundColor: entry.color,
-								transform: activeIndex === i ? 'scale(1.2)' : 'scale(1)'
-							}}
-						/>
-						<span className="text-sm truncate">
-							{entry.label} ({formatPercentage(entry.value, total)})
-						</span>
-					</div>
-				))}
-			</div>
+			<ChartCategories
+				activeSegment={activeIndex}
+				data={data}
+				setActiveSegment={setActiveIndex}
+				total={total}
+			/>
 		</div>
 	);
 };

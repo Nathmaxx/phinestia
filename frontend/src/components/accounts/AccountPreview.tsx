@@ -38,15 +38,15 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 				<AddCategory accountId={account.id} className="shadow-lg rounded-2xl p-2" />
 			</div>
 
-			<div className="p-4 rounded-2xl shadow-lg bg-white h-[600px] flex flex-col flex-shrink-0">
+			<div className="p-4 rounded-2xl shadow-lg bg-white flex flex-col flex-shrink-0">
 				<div className="flex items-center justify-between mb-3">
-					<h2 className="text-2xl font-semibold font-bricolage text-sky-dark-violet">
+					<h2 className="text-2xl font-semibold font-bricolage text-sky-dark-violet mb-4">
 						Répartition des catégories
 					</h2>
 
-					<div className="flex items-center bg-gray-100 rounded-lg overflow-hidden">
+					<div className="flex mb-4">
 						<button
-							className={`flex items-center px-3 py-1.5 transition-colors ${chartType === "donut"
+							className={`flex rounded-l-lg items-center px-3 py-1.5 transition-colors duration-500 ${chartType === "donut"
 								? "bg-sky-dark-violet text-white"
 								: "hover:bg-gray-200 text-gray-600"
 								}`}
@@ -57,7 +57,7 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 							<span className="ml-2 text-sm font-medium">Camembert</span>
 						</button>
 						<button
-							className={`flex items-center px-3 py-1.5 transition-colors ${chartType === "bar"
+							className={`flex rounded-r-lg  items-center px-3 py-1.5 transition-colors ${chartType === "bar"
 								? "bg-sky-dark-violet text-white"
 								: "hover:bg-gray-200 text-gray-600"
 								}`}
@@ -70,7 +70,7 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 					</div>
 				</div>
 
-				<div className="flex-grow flex items-center justify-center">
+				<div className="flex-grow flex items-center justify-center h-[420px]">
 					{chartType === "donut" ? (
 						<DonutChart radius={150} thickness={50} data={categoriesData} />
 					) : (

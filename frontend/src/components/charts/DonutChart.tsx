@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { formatEuro, formatPercentage } from "../../utils/format";
+import ChartCategories from "../categories/ChartCategories";
+import { ChartData } from "@/types/charts";
 
 type DonutChartProps = {
 	radius?: number;
 	thickness?: number;
-	data: { label: string; value: number; color: string }[];
+	data: ChartData[];
 	animate?: boolean;
 };
 
@@ -222,25 +224,12 @@ const DonutChart = ({
 			</div>
 
 			{/* Légende en dehors du SVG */}
-			<div className="grid grid-cols-4 mt-6 gap-2 w-full">
-				{data.map((entry, i) => (
-					<div
-						key={`legend-${i}`}
-						className={`flex items-center gap-1.5 cursor-pointer transition-all duration-200 px-2 py-1 rounded-md ${activeSegment === i ? 'bg-gray-100' : 'hover:bg-gray-50'
-							}`}
-						onMouseEnter={() => setActiveSegment(i)}
-						onMouseLeave={() => setActiveSegment(null)}
-					>
-						<div
-							className="w-3 h-3 rounded-full"
-							style={{ backgroundColor: entry.color }}
-						/>
-						<span className="text-sm">
-							{entry.label} ({formatPercentage(entry.value, total)})
-						</span>
-					</div>
-				))}
-			</div>
+			<ChartCategories
+				data={data}
+				setActiveSegment={setActiveSegment}
+				activeSegment={activeSegment}
+				total={total}
+			/>
 		</div>
 	);
 };

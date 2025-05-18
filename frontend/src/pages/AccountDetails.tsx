@@ -3,11 +3,12 @@ import { useAccount } from "../hooks/useAccountContext"
 import { AccountParams } from "../types/pages"
 import PageTabs from "../components/PageTabs"
 import { useState, useRef, useLayoutEffect } from "react"
-import { LayoutDashboard, Tags } from "lucide-react"
+import { LayoutDashboard, Receipt, Tags } from "lucide-react"
 import AccountPreview from "../components/accounts/AccountPreview"
 import AccountCategories from "../components/accounts/AccountCategories"
 import AccountInfos from "../components/accounts/AccountInfos"
 import gsap from "gsap"
+import AccountTransactions from "@/components/accounts/AccountTransactions"
 
 const AccountDetails = () => {
 	const params = useParams() as AccountParams
@@ -21,7 +22,7 @@ const AccountDetails = () => {
 	const tabs = [
 		{ id: "preview", label: "Aperçu", icon: LayoutDashboard },
 		{ id: "categories", label: "Catégories", icon: Tags },
-		//{ id: "transactions", label: "Transactions", icon: Receipt },
+		{ id: "transactions", label: "Transactions", icon: Receipt },
 		//{ id: "statistics", label: "Statistiques", icon: PieChart },
 		//{ id: "transferts", label: "Transferts", icon: ArrowLeftRight }
 	]
@@ -81,6 +82,7 @@ const AccountDetails = () => {
 				<div ref={contentRef} className="mt-4">
 					{activeTab === "preview" && <AccountPreview account={account} />}
 					{activeTab === "categories" && <AccountCategories account={account} />}
+					{activeTab === "transactions" && <AccountTransactions account={account} />}
 				</div>
 			</div>
 		</div>
