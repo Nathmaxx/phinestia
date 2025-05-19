@@ -1,7 +1,7 @@
 
 import { Account } from '@/types/accounts'
 import AddTransaction from '../transactions/AddExpense'
-import TransactionList from '../transactions/TransactionList'
+//import TransactionList from '../transactions/TransactionList'
 
 type AccountTransactionsProps = {
 	account: Account
@@ -9,9 +9,11 @@ type AccountTransactionsProps = {
 
 const AccountTransactions = ({ account }: AccountTransactionsProps) => {
 	return (
-		<div>
-			<AddTransaction />
-			<TransactionList />
+		<div className='flex justify-center'>
+			<div className='w-[350px]'>
+				<AddTransaction accountName={account.name} />
+			</div>
+			{/* <TransactionList /> */}
 		</div>
 	)
 }

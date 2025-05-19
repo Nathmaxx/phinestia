@@ -95,3 +95,20 @@ export const validateAmount = (value: string) => {
 
 	return true
 }
+
+export const validateName = (value: string, setName: (value: string) => void, setNameError: (value: string) => void) => {
+	setName(value);
+	if (!value.trim()) {
+		setNameError('Le nom de la catégorie est requis');
+		return false;
+	} else if (value.trim().length < 2) {
+		setNameError('Le nom doit contenir au moins 2 caractères');
+		return false;
+	} else if (value.trim().length > 30) {
+		setNameError('Le nom ne doit pas dépasser 30 caractères');
+		return false;
+	} else {
+		setNameError('');
+		return true;
+	}
+};
