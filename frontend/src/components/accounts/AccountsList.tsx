@@ -5,7 +5,7 @@ import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
 import ModalButtons from '../modals/ModalButtons';
 import { Link } from 'react-router-dom';
-import { formatDate, formatEuro } from '../../utils/format';
+import { formatDateString, formatEuro } from '../../utils/format';
 
 
 const AccountsList = () => {
@@ -57,7 +57,7 @@ const AccountsList = () => {
 								<div>
 									<h3 className="font-medium text-gray-800">{account.name}</h3>
 									<p className="text-xs text-gray-500 mt-1">
-										Mis à jour le {formatDate(account.updatedAt)}
+										Mis à jour le {formatDateString(account.updatedAt)}
 									</p>
 								</div>
 								<div className="flex items-center gap-3">

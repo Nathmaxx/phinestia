@@ -1,4 +1,4 @@
-export const formatDate = (dateString: string) => {
+export const formatDateString = (dateString: string) => {
 	if (!dateString) return "Date inconnue"
 	try {
 		const date = new Date(dateString)
@@ -23,4 +23,13 @@ export const formatEuro = (value: number) => {
 
 export const formatPercentage = (value: number, total: number) => {
 	return `${((value / total) * 100).toFixed(2)}%`;
+};
+
+// Formatage de la date
+export const formatDate = (date: Date): string => {
+	return date.toLocaleDateString("fr-FR", {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric",
+	});
 };

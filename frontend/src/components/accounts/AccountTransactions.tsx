@@ -1,6 +1,6 @@
 
 import { Account } from '@/types/accounts'
-import AddTransaction from '../transactions/AddTransaction'
+import AddTransaction from '../transactions/AddExpense'
 import TransactionList from '../transactions/TransactionList'
 
 type AccountTransactionsProps = {

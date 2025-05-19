@@ -1,6 +1,6 @@
 import { User } from "lucide-react"
 import LogoutButton from "../buttons/LogoutButton"
-import { formatDate } from "../../utils/format"
+import { formatDateString } from "../../utils/format"
 
 
 type ProfileHeaderProps = {
@@ -23,7 +23,7 @@ const ProfileHeader = ({ firstName, email, createdAt }: ProfileHeaderProps) => {
 				</h1>
 				<p className="text-gray-600 mt-1">{email}</p>
 				<p className="text-gray-500 text-sm mt-2">
-					Membre depuis le {formatDate(createdAt)}
+					Membre depuis le {formatDateString(createdAt)}
 				</p>
 			</div>
 			<LogoutButton />

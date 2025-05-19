@@ -31,7 +31,7 @@ const CategoryList = ({ account }: CategoryListProps) => {
 	};
 
 	return (
-		<div className="w-full bg-white rounded-2xl shadow-md p-2 font-figtree">
+		<div className="w-full bg-white rounded-lg shadow-md p-2 font-figtree">
 			<div className="flex justify-between items-center mb-3">
 				<h2 className="text-2xl font-bricolage font-semibold text-sky-dark-violet">
 					Mes Catégories

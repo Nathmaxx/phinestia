@@ -35,10 +35,10 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 			<div className="flex flex-col gap-y-4 w-[350px] flex-shrink-0 self-start">
 				<CategoryList account={account} />
 				<UpdateAmount account={account} />
-				<AddCategory accountId={account.id} className="shadow-lg rounded-2xl p-2" />
+				<AddCategory accountId={account.id} className="shadow-lg rounded-lg p-2" />
 			</div>
 
-			<div className="p-4 rounded-2xl shadow-lg bg-white flex flex-col flex-shrink-0">
+			<div className="p-4 rounded-lg shadow-lg bg-white flex flex-col flex-shrink-0">
 				<div className="flex items-center justify-between mb-3">
 					<h2 className="text-2xl font-semibold font-bricolage text-sky-dark-violet mb-4">
 						Répartition des catégories
@@ -70,7 +70,7 @@ const AccountPreview = ({ account }: AccountPreviewProps) => {
 					</div>
 				</div>
 
-				<div className="flex-grow flex items-center justify-center h-[420px]">
+				<div className="flex-grow flex items-center justify-center">
 					{chartType === "donut" ? (
 						<DonutChart radius={150} thickness={50} data={categoriesData} />
 					) : (
