@@ -6,7 +6,7 @@ enum TransactionType {
 }
 
 const transactionSchema = new mongoose.Schema({
-	name: {
+	title: {
 		type: String,
 		required: true
 	},
@@ -28,7 +28,6 @@ const transactionSchema = new mongoose.Schema({
 	},
 	categoryId: {
 		type: Schema.Types.ObjectId,
-		ref: 'Category',
 		required: true,
 		index: true
 	},
