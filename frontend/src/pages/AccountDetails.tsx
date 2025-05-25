@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { useAccount } from "../hooks/useAccountContext"
+import { useAccount } from "../hooks/useAccount"
 import { AccountParams } from "../types/pages"
 import PageTabs from "../components/PageTabs"
 import { useState, useRef, useLayoutEffect } from "react"

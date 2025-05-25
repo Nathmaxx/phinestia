@@ -4,7 +4,7 @@ import { addTransaction, deleteTransaction, getTransactions, updateTransaction }
 
 const router = express.Router()
 
-router.post('/add-transaction', addTransaction)
+router.post('/account/:accountid/category/:categoryid', addTransaction)
 router.get('/:userid', getTransactions)
 router.delete('/:userid', deleteTransaction)
 router.put('/:userid', updateTransaction)

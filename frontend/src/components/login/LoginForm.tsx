@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../hooks/useAuthContext"
+import { useAuth } from "../../hooks/useAuth"
 import SubmitButton from "../buttons/SubmitButton"
 import PasswordInput from "../Inputs/PasswordInput"
 import TextInput from "../Inputs/TextInput"

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { formatEuro } from "../../utils/format"
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react"
-import { useAccount } from "../../hooks/useAccountContext"
+import { useAccount } from "../../hooks/useAccount"
 import Modal from "../modals/Modal"
 import { Account } from "../../types/accounts"
 import UpdateCategoryModal from "../modals/UpdateCategoryModal"

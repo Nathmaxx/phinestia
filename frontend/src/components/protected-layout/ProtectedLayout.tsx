@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useAuth } from "../../hooks/useAuthContext"
+import { useAuth } from "../../hooks/useAuth"
 import { Navigate, useLocation } from "react-router-dom"
 import Layout from "../Layout";
 import LoadingSpinner from "../LoadingSpinner";

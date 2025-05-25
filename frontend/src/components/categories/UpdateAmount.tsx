@@ -5,7 +5,7 @@ import ModalButtons from "../modals/ModalButtons"
 import { useCallback, useEffect, useState } from "react"
 import { formatEuro } from "../../utils/format"
 import TextInput from "../Inputs/TextInput"
-import { useAccount } from "../../hooks/useAccountContext"
+import { useAccount } from "../../hooks/useAccount"
 import { successToastMessage } from "../../utils/toastify"
 
 type UpdateAmountProps = {

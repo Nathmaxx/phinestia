@@ -3,7 +3,7 @@ import PasswordInput from "../Inputs/PasswordInput"
 import PasswordValidator from "../PasswordValidator"
 import Button from "../buttons/Button"
 import Message from "../Message"
-import { useAuth } from "../../hooks/useAuthContext"
+import { useAuth } from "../../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 
 const SecurityTab = () => {

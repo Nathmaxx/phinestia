@@ -4,7 +4,7 @@ import PasswordInput from "../components/Inputs/PasswordInput"
 import PasswordValidator from "../components/PasswordValidator"
 import Button from "../components/buttons/Button"
 import Message from "../components/Message"
-import { useAuth } from "../hooks/useAuthContext"
+import { useAuth } from "../hooks/useAuth"
 
 const ResetPassword = () => {
 	const { id } = useParams()

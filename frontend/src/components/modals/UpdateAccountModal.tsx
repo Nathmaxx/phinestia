@@ -1,7 +1,7 @@
 import { useState } from "react"
 import AccountInputs from "../accounts/AccountInputs"
 import ModalButtons from "./ModalButtons"
-import { useAccount } from "../../hooks/useAccountContext"
+import { useAccount } from "../../hooks/useAccount"
 
 type UpdateAccountModalProps = {
 	initialName: string

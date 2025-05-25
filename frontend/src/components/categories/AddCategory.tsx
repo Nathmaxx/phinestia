@@ -2,7 +2,7 @@ import { useState } from 'react';
 import SubmitButton from '../buttons/SubmitButton';
 import Message from '../Message';
 import TextInput from '../Inputs/TextInput';
-import { useAccount } from '../../hooks/useAccountContext';
+import { useAccount } from '../../hooks/useAccount';
 
 type AddCategoryProps = {
 	className?: string

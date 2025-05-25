@@ -5,7 +5,7 @@ import PasswordValidator from "../PasswordValidator"
 import Message from "../Message"
 import Button from "../buttons/Button"
 import { ArrowLeft } from "lucide-react"
-import { useAuth } from "../../hooks/useAuthContext"
+import { useAuth } from "../../hooks/useAuth"
 
 type SignInSecondProps = {
 	userInfos: SignInInfos

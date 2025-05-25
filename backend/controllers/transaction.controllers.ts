@@ -4,16 +4,17 @@ import { Account } from "../models/account"
 import { Transaction } from "../models/transaction"
 
 export const addTransaction = async (req: Request, res: Response) => {
-	const { title, amount, categoryName, accountName, description, date, type } = req.body
+	const { title, amount, description, date, type } = req.body
+	const { accountid, categoryid } = req.params
 
-	const account = await Account.findOne({ accountName })
+	const account = await Account.findById(accountid)
 	if (!account) {
 		res.status(404).json({ success: false, message: "Impossible de trouver le compte" })
 		return
 	}
 
-	const categoryId = account.categories.find(cat => cat.name === categoryName)
-	if (categoryId) {
+	const existingCategory = account.categories.some(cat => cat._id.toString() === categoryid)
+	if (!existingCategory) {
 		res.status(404).json({ success: false, message: "Impossible de trouver la catégorie" })
 		return
 	}
@@ -25,8 +26,8 @@ export const addTransaction = async (req: Request, res: Response) => {
 		amount,
 		date,
 		description,
-		accountId,
-		categoryId,
+		accountid,
+		categoryid,
 		type: type === 'expense' ? 'expense' : 'income'
 	})
 

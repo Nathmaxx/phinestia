@@ -5,7 +5,7 @@ import SignInForm from "../components/signin/SignInForm"
 import LoginForm from "../components/login/LoginFormParent"
 import { useLocation, useNavigate } from "react-router-dom"
 import gsap from "gsap"
-import { useAuth } from "../hooks/useAuthContext"
+import { useAuth } from "../hooks/useAuth"
 
 type AuthenticationProps = {
 	method?: "signin" | "login"

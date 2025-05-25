@@ -5,7 +5,7 @@ import { Calendar } from "../ui/calendar";
 import { formatDate } from "@/utils/format";
 import Select from "../Select";
 import { updateAmount } from "@/utils/validation";
-import { useAccount } from "@/hooks/useAccountContext";
+import { useAccount } from "@/hooks/useAccount";
 
 type AddExpenseProps = {
 	className?: string

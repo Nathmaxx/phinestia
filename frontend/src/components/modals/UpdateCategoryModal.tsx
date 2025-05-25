@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useAccount } from "../../hooks/useAccountContext"
+import { useAccount } from "../../hooks/useAccount"
 import TextInput from "../Inputs/TextInput"
 import ModalButtons from "./ModalButtons"
 

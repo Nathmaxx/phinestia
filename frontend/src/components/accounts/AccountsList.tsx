@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Pencil, Trash2, WalletMinimal } from 'lucide-react';
-import { useAccount } from '../../hooks/useAccountContext';
+import { useAccount } from '../../hooks/useAccount';
 import Modal from '../modals/Modal';
 import UpdateAccountModal from '../modals/UpdateAccountModal';
 import ModalButtons from '../modals/ModalButtons';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import CodeInput from "./Inputs/CodeInput"
-import { useAuth } from "../hooks/useAuthContext"
+import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import TimerButton from "./buttons/TimerButton"
 

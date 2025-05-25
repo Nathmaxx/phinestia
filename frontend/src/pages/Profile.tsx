@@ -2,7 +2,7 @@ import { useState } from "react"
 import ProfileHeader from "../components/profile/ProfileHeader"
 import PersonalInfoTab from "../components/profile/PersonalInfosTab"
 import SecurityTab from "../components/profile/SecurityTab"
-import { useAuth } from "../hooks/useAuthContext"
+import { useAuth } from "../hooks/useAuth"
 import { User, Lock } from "lucide-react"
 import PageTabs from "../components/PageTabs"
 

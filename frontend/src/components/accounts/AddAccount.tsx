@@ -1,7 +1,7 @@
 import { useState } from "react"
 import SubmitButton from "../buttons/SubmitButton"
 import Message from "../Message"
-import { useAccount } from "../../hooks/useAccountContext"
+import { useAccount } from "../../hooks/useAccount"
 import AccountInfos from "./AccountInputs"
 
 type AddAccountProps = {

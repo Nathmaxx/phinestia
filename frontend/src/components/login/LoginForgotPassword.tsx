@@ -3,7 +3,7 @@ import TextInput from "../Inputs/TextInput"
 import Message from "../Message"
 import { LoginPages } from "../../types/pages"
 import { ArrowLeft } from "lucide-react"
-import { useAuth } from "../../hooks/useAuthContext"
+import { useAuth } from "../../hooks/useAuth"
 import Button from "../buttons/Button"
 import { validateEmail } from "../../utils/validation"
 
