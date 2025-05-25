@@ -6,6 +6,7 @@ import { formatDate } from "@/utils/format";
 import Select from "../Select";
 import { updateAmount } from "@/utils/validation";
 import { useAccount } from "@/hooks/useAccount";
+import { useTransaction } from "@/hooks/useTransaction";
 
 type AddExpenseProps = {
 	className?: string
@@ -15,32 +16,14 @@ type AddExpenseProps = {
 const AddExpense = ({ accountName, className = "" }: AddExpenseProps) => {
 
 	const { accounts } = useAccount()
-
-
-
-	const getAccountCategories = () => {
-		const targetAccount = accounts.find(account => account.name === accountName);
-
-		if (targetAccount) {
-			return targetAccount.categories.map(category => ({
-				name: category.name,
-				id: category.id
-			}));
-		}
-
-		return [];
-	};
-
-	const accountCategories = getAccountCategories();
-
-	const categories = [{ name: "Sélectionner une catégorie", id: "" }, ...accountCategories]
+	const { addExpense } = useTransaction()
 
 	const [title, setTitle] = useState("");
 	const [amount, setAmount] = useState("");
 	const [description, setDescription] = useState("");
 	const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState<{ name: string, id: string }>(categories[0]);
+	const [selectedCategory, setSelectedCategory] = useState<{ name: string, id: string }>({ name: "", id: "" });
 
 	const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -64,9 +47,24 @@ const AddExpense = ({ accountName, className = "" }: AddExpenseProps) => {
 		};
 	}, [isCalendarOpen]);
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
 
+	const targetAccount = accounts.find(account => account.name === accountName);
+	if (!targetAccount) {
+		return null
+	}
+
+	const accountCategories = targetAccount.categories.map(cat => {
+		return {
+			id: cat.id,
+			name: cat.name
+		}
+	})
+
+	const categories = [{ name: "Sélectionner une catégorie", id: "" }, ...accountCategories]
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		await addExpense(title, parseFloat(amount), description, new Date(selectedDate), targetAccount.id, selectedCategory.id)
 	};
 
 	return (
